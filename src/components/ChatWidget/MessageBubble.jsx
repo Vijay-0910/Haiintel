@@ -12,10 +12,7 @@ import { useStreamingText } from "../../hooks/useStreamingText";
 import { extractArtifacts } from "../../utils/extractCodeBlocks";
 import ThinkingBlock from "./ThinkingBlock";
 import AIIcon from "../common/AIIcon";
-
-// Lazy load markdown renderer (React Markdown + Syntax Highlighting)
-// This saves ~100 KB until user sees markdown content
-const MarkdownMessage = lazy(() => import("./MarkdownMessage"));
+import LazyMarkdown from "./LazyMarkdown";
 
 // Lazy load rich content components
 const StatsCard = lazy(() => import("./RichContent/StatsCard"));
@@ -459,9 +456,11 @@ const MessageBubble = memo(
                         <StreamingCursor />
                       </p>
                     ) : (
-                      <MarkdownMessage
+                      <LazyMarkdown
                         content={textToShow}
                         isDarkMode={isDarkMode}
+                        isStreaming={isStreaming}
+                        onOpenArtifacts={hasArtifacts ? () => onOpenArtifacts(message) : null}
                       />
                     )}
                   </div>
