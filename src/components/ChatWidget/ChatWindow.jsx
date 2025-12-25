@@ -1,10 +1,12 @@
-import { useEffect, useRef, useState, useCallback, useMemo, memo } from "react";
+import { useEffect, useRef, useState, useCallback, useMemo, memo, lazy, Suspense } from "react";
 import { m, AnimatePresence } from "framer-motion";
 import ChatHeader from "./ChatHeader";
 import ChatMessages from "./ChatMessages";
 import ChatInput from "./ChatInput";
-import ArtifactsPanel from "./ArtifactsPanel";
 import ConfirmModal from "./ConfirmModal";
+
+// Lazy load ArtifactsPanel - only loads when user opens artifacts
+const ArtifactsPanel = lazy(() => import("./ArtifactsPanel"));
 import SkeletonLoader from "./SkeletonLoader";
 import ChatContentSkeleton from "./ChatContentSkeleton";
 import { useChatSession } from "../../hooks/useChatSession";
@@ -611,12 +613,16 @@ ${
           isStreaming={streamingMessageId !== null}
           isDarkMode={isDarkMode}
         />
-        <ArtifactsPanel
-          artifacts={currentArtifacts}
-          isOpen={isArtifactsPanelOpen}
-          onClose={handleCloseArtifacts}
-          isDarkMode={isDarkMode}
-        />
+        {isArtifactsPanelOpen && (
+          <Suspense fallback={null}>
+            <ArtifactsPanel
+              artifacts={currentArtifacts}
+              isOpen={isArtifactsPanelOpen}
+              onClose={handleCloseArtifacts}
+              isDarkMode={isDarkMode}
+            />
+          </Suspense>
+        )}
         <ConfirmModal
           isOpen={showDeleteModal}
           onConfirm={handleConfirmDelete}

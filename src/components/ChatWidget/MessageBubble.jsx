@@ -10,11 +10,11 @@ import {
 } from "react";
 import { useStreamingText } from "../../hooks/useStreamingText";
 import { extractArtifacts } from "../../utils/extractCodeBlocks";
-import ThinkingBlock from "./ThinkingBlock";
 import AIIcon from "../common/AIIcon";
 import LazyMarkdown from "./LazyMarkdown";
 
-// Lazy load rich content components
+// Lazy load all heavy components
+const ThinkingBlock = lazy(() => import("./ThinkingBlock"));
 const StatsCard = lazy(() => import("./RichContent/StatsCard"));
 const ImageDisplay = lazy(() => import("./RichContent/ImageDisplay"));
 const BarChart = lazy(() => import("./RichContent/BarChart"));
@@ -397,11 +397,13 @@ const MessageBubble = memo(
         >
           {/* Thinking Block - for AI messages only */}
           {!isUser && message.thinking && (
-            <ThinkingBlock
-              thinking={message.thinking}
-              isThinking={isStreaming && !message.text}
-              isDarkMode={isDarkMode}
-            />
+            <Suspense fallback={<div className="h-8 animate-pulse bg-haiintel-border/30 rounded" />}>
+              <ThinkingBlock
+                thinking={message.thinking}
+                isThinking={isStreaming && !message.text}
+                isDarkMode={isDarkMode}
+              />
+            </Suspense>
           )}
 
           <div className={bubbleClassName}>

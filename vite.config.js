@@ -124,6 +124,16 @@ export default defineConfig({
             return "markdown";
           }
 
+          // Artifacts panel - lazy loaded when user opens it
+          if (id.includes("ArtifactsPanel")) {
+            return "artifacts";
+          }
+
+          // Thinking block - lazy loaded when AI is thinking
+          if (id.includes("ThinkingBlock")) {
+            return "thinking";
+          }
+
           // Chat widget core
           if (id.includes("src/components/ChatWidget")) {
             return "chat";
