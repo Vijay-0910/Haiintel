@@ -2,6 +2,7 @@ import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import compression from "vite-plugin-compression";
 import { createHtmlPlugin } from "vite-plugin-html";
+import { visualizer } from "rollup-plugin-visualizer";
 
 // Custom plugin to make CSS non-render-blocking
 function nonBlockingCss() {
@@ -43,6 +44,13 @@ export default defineConfig({
       algorithm: "brotliCompress",
       ext: ".br",
     }),
+    // Bundle analyzer (run build to generate stats.html)
+    visualizer({
+      filename: "dist/stats.html",
+      open: false,
+      gzipSize: true,
+      brotliSize: true,
+    }),
   ],
   server: {
     port: 5173,
@@ -81,8 +89,9 @@ export default defineConfig({
         comments: false,
       },
     },
-    // Inline small assets
-    assetsInlineLimit: 8192,
+    // Inline only very small assets (4KB instead of 8KB)
+    // Prevents large images from being inlined as base64
+    assetsInlineLimit: 4096,
     // No source maps
     sourcemap: false,
     // Disable CSS code splitting to reduce render-blocking requests

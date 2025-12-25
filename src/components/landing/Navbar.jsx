@@ -1,5 +1,4 @@
 import { memo, useCallback } from "react";
-import logoWhite from "../../assets/white-logo-nobg-1-bLeBMUHY.svg";
 
 const navItems = [
   { id: "products", label: "HaiProducts" },
@@ -58,7 +57,7 @@ const Navbar = memo(
               onClick={() => onScrollToSection("home")}
             >
               <img
-                src={logoWhite}
+                src="/logo.svg"
                 alt="HaiIntel"
                 width="70"
                 height="60"

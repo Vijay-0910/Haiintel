@@ -1,5 +1,4 @@
 import { memo } from "react";
-// import logoWhite from "../../assets/white-logo-nobg-1-bLeBMUHY.svg";
 
 const footerLinks = {
   product: ["Features", "Integrations", "Pricing", "Changelog"],

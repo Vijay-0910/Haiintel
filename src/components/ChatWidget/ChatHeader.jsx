@@ -1,5 +1,4 @@
 import { memo, useMemo } from "react";
-import logoWhite from "../../assets/white-logo-nobg-1-bLeBMUHY.svg";
 
 // Memoized Icons
 const TrashIcon = memo(() => (
@@ -111,7 +110,7 @@ const ChatHeader = memo(({ isDarkMode, onClearChat, onClose }) => {
       {/* Logo & Title */}
       <div className="flex items-center gap-2 sm:gap-3 min-w-0">
         <img
-          src={logoWhite}
+          src="/logo.svg"
           alt="HaiIntel Logo"
           className={logoClassName}
           loading="eager"
