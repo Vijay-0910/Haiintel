@@ -7,6 +7,7 @@ import 'highlight.js/styles/github-dark.css';
 // Lazy load chart components
 const BarChart = lazy(() => import('./RichContent/BarChart'));
 const PieChart = lazy(() => import('./RichContent/PieChart'));
+const LineChart = lazy(() => import('./RichContent/LineChart'));
 
 /**
  * Artifacts Panel - Claude-style code preview panel
@@ -16,6 +17,7 @@ const ArtifactsPanel = memo(({ artifacts, isOpen, onClose, isDarkMode = true }) 
   const [activeTab, setActiveTab] = useState(0);
   const [viewMode, setViewMode] = useState('code'); // 'code' or 'preview'
   const [copied, setCopied] = useState(false);
+  const [chartType, setChartType] = useState('bar'); // 'bar', 'pie', or 'line'
 
   const currentArtifact = artifacts?.[activeTab];
   const isChart = currentArtifact?.type === 'chart';
@@ -76,7 +78,7 @@ const ArtifactsPanel = memo(({ artifacts, isOpen, onClose, isDarkMode = true }) 
 
     // Chart preview
     if (isChart) {
-      const ChartComponent = currentArtifact.chartType === 'pie' ? PieChart : BarChart;
+      const ChartComponent = chartType === 'pie' ? PieChart : chartType === 'line' ? LineChart : BarChart;
       return (
         <div className="w-full h-full flex items-center justify-center p-4 overflow-auto">
           <div className="w-full max-w-2xl">
@@ -115,7 +117,7 @@ const ArtifactsPanel = memo(({ artifacts, isOpen, onClose, isDarkMode = true }) 
         Preview not available for {currentArtifact.language}
       </div>
     );
-  }, [currentArtifact, viewMode, isDarkMode, isChart]);
+  }, [currentArtifact, viewMode, isDarkMode, isChart, chartType]);
 
   if (!isOpen || !artifacts || artifacts.length === 0) return null;
 
@@ -148,6 +150,59 @@ const ArtifactsPanel = memo(({ artifacts, isOpen, onClose, isDarkMode = true }) 
           </div>
 
           <div className="flex items-center gap-2">
+            {/* Chart Type Selector (only for charts) */}
+            {isChart && (
+              <div className={`flex items-center gap-1 p-1 rounded-lg ${
+                isDarkMode ? 'bg-haiintel-dark' : 'bg-gray-100'
+              }`}>
+                <button
+                  onClick={() => setChartType('bar')}
+                  className={`px-2 py-1 text-xs rounded transition-colors ${
+                    chartType === 'bar'
+                      ? isDarkMode
+                        ? 'bg-haiintel-blue text-white'
+                        : 'bg-blue-500 text-white'
+                      : isDarkMode
+                      ? 'text-gray-400 hover:text-gray-200'
+                      : 'text-gray-600 hover:text-gray-900'
+                  }`}
+                  title="Bar Chart"
+                >
+                  📊
+                </button>
+                <button
+                  onClick={() => setChartType('pie')}
+                  className={`px-2 py-1 text-xs rounded transition-colors ${
+                    chartType === 'pie'
+                      ? isDarkMode
+                        ? 'bg-haiintel-blue text-white'
+                        : 'bg-blue-500 text-white'
+                      : isDarkMode
+                      ? 'text-gray-400 hover:text-gray-200'
+                      : 'text-gray-600 hover:text-gray-900'
+                  }`}
+                  title="Pie Chart"
+                >
+                  🥧
+                </button>
+                <button
+                  onClick={() => setChartType('line')}
+                  className={`px-2 py-1 text-xs rounded transition-colors ${
+                    chartType === 'line'
+                      ? isDarkMode
+                        ? 'bg-haiintel-blue text-white'
+                        : 'bg-blue-500 text-white'
+                      : isDarkMode
+                      ? 'text-gray-400 hover:text-gray-200'
+                      : 'text-gray-600 hover:text-gray-900'
+                  }`}
+                  title="Line Chart"
+                >
+                  📈
+                </button>
+              </div>
+            )}
+
             {/* View Mode Toggle (Code/Preview) */}
             {canPreview && (
               <div className={`flex items-center gap-1 p-1 rounded-lg ${
