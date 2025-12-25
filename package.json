@@ -35,9 +35,11 @@
     "globals": "^16.5.0",
     "prettier": "^3.7.4",
     "serve-static": "^2.2.1",
+    "sharp": "^0.34.5",
     "tailwindcss": "^3.4.19",
     "terser": "^5.44.1",
     "vite": "^5.4.21",
+    "vite-imagetools": "^8.0.0",
     "vite-plugin-compression": "^0.5.1",
     "vite-plugin-compression2": "^2.4.0",
     "vite-plugin-html": "^3.2.2"

@@ -2,12 +2,15 @@ import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import compression from "vite-plugin-compression";
 import { createHtmlPlugin } from "vite-plugin-html";
+import { imagetools } from "vite-imagetools";
 
 export default defineConfig({
   plugins: [
     react({
       jsxRuntime: "automatic",
     }),
+    // Image optimization - converts to WebP automatically
+    imagetools(),
     // HTML optimization plugin
     createHtmlPlugin({
       minify: true,

@@ -1,6 +1,8 @@
 import { memo } from "react";
 import { motion } from "framer-motion";
-import heroImage from "../../../assets/hero-intelligence-CXC1fGWY.jpg";
+import heroImageWebp from "../../../assets/hero-intelligence-CXC1fGWY.jpg?format=webp&w=1920&quality=85";
+import heroImageMobile from "../../../assets/hero-intelligence-CXC1fGWY.jpg?format=webp&w=768&quality=85";
+import heroImageFallback from "../../../assets/hero-intelligence-CXC1fGWY.jpg";
 
 const HeroSection = memo(({ onScrollToSection }) => {
   return (
@@ -15,16 +17,24 @@ const HeroSection = memo(({ onScrollToSection }) => {
         animate={{ scale: 1, opacity: 1 }}
         transition={{ duration: 1.2, ease: "easeOut" }}
       >
-        <img
-          src={heroImage}
-          alt="Hero Background"
-          className="absolute inset-0 w-full h-full object-cover"
-          fetchpriority="high"
-          decoding="async"
-          loading="eager"
-          width="1920"
-          height="1080"
-        />
+        <picture>
+          <source
+            srcSet={heroImageMobile}
+            media="(max-width: 768px)"
+            type="image/webp"
+          />
+          <source srcSet={heroImageWebp} type="image/webp" />
+          <img
+            src={heroImageFallback}
+            alt="AI-powered enterprise intelligence background"
+            className="absolute inset-0 w-full h-full object-cover"
+            fetchpriority="high"
+            decoding="sync"
+            loading="eager"
+            width="1920"
+            height="1080"
+          />
+        </picture>
         <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/40 to-black/70" />
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(46,144,250,0.08),transparent_70%)]" />
       </motion.div>
