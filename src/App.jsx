@@ -1,5 +1,4 @@
 import { useState, useEffect, lazy, Suspense, useCallback, memo } from "react";
-import LazyMotionWrapper from "./components/common/LazyMotionWrapper";
 import Navbar from "./components/landing/Navbar";
 import HeroSection from "./components/landing/sections/HeroSection";
 import { useInView } from "./hooks/useInView";
@@ -111,41 +110,39 @@ function App() {
   }, []);
 
   return (
-    <LazyMotionWrapper>
-      <div
-        className={`min-h-screen ${
-          isDarkMode ? "bg-haiintel-dark" : "bg-gray-50"
-        }`}
-      >
-        <Navbar
-          isDarkMode={isDarkMode}
-          activeSection={activeSection}
-          isMobileMenuOpen={isMobileMenuOpen}
-          onToggleTheme={toggleTheme}
-          onToggleMobileMenu={toggleMobileMenu}
-          onCloseMobileMenu={closeMobileMenu}
-          onScrollToSection={scrollToSection}
-        />
+    <div
+      className={`min-h-screen ${
+        isDarkMode ? "bg-haiintel-dark" : "bg-gray-50"
+      }`}
+    >
+      <Navbar
+        isDarkMode={isDarkMode}
+        activeSection={activeSection}
+        isMobileMenuOpen={isMobileMenuOpen}
+        onToggleTheme={toggleTheme}
+        onToggleMobileMenu={toggleMobileMenu}
+        onCloseMobileMenu={closeMobileMenu}
+        onScrollToSection={scrollToSection}
+      />
 
-        {/* Critical: Hero loads immediately for LCP */}
-        <HeroSection onScrollToSection={scrollToSection} />
+      {/* Critical: Hero loads immediately for LCP */}
+      <HeroSection onScrollToSection={scrollToSection} />
 
-        {/* Below fold: Only load when visible */}
-        <LazySection Component={BannerSection} isDarkMode={isDarkMode} />
-        <LazySection Component={FeaturesSection} isDarkMode={isDarkMode} />
-        <LazySection Component={HowItWorksSection} isDarkMode={isDarkMode} />
-        <LazySection Component={UseCasesSection} isDarkMode={isDarkMode} />
-        <LazySection Component={CTASection} isDarkMode={isDarkMode} />
-        <LazySection Component={Footer} isDarkMode={isDarkMode} />
+      {/* Below fold: Only load when visible */}
+      <LazySection Component={BannerSection} isDarkMode={isDarkMode} />
+      <LazySection Component={FeaturesSection} isDarkMode={isDarkMode} />
+      <LazySection Component={HowItWorksSection} isDarkMode={isDarkMode} />
+      <LazySection Component={UseCasesSection} isDarkMode={isDarkMode} />
+      <LazySection Component={CTASection} isDarkMode={isDarkMode} />
+      <LazySection Component={Footer} isDarkMode={isDarkMode} />
 
-        {/* Chat widget - delays until interaction */}
-        {shouldLoadChat && (
-          <Suspense fallback={null}>
-            <ChatWidget isDarkMode={isDarkMode} />
-          </Suspense>
-        )}
-      </div>
-    </LazyMotionWrapper>
+      {/* Chat widget - delays until interaction */}
+      {shouldLoadChat && (
+        <Suspense fallback={null}>
+          <ChatWidget isDarkMode={isDarkMode} />
+        </Suspense>
+      )}
+    </div>
   );
 }
 

@@ -1,6 +1,5 @@
 import { useState, lazy, Suspense, useCallback, memo } from "react";
 import { AnimatePresence } from "framer-motion";
-import LazyMotionWrapper from "../common/LazyMotionWrapper";
 import ChatButton from "./ChatButton";
 import ChatSkeleton from "./ChatSkeleton";
 import { ErrorBoundary } from "../common";
@@ -74,7 +73,7 @@ const ChatWidget = memo(({ isDarkMode = true }) => {
   }, []);
 
   return (
-    <LazyMotionWrapper>
+    <>
       <ChatButton
         onClick={toggleChat}
         isOpen={isOpen}
@@ -94,7 +93,7 @@ const ChatWidget = memo(({ isDarkMode = true }) => {
           </ErrorBoundary>
         )}
       </AnimatePresence>
-    </LazyMotionWrapper>
+    </>
   );
 });
 
