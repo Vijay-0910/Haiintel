@@ -20,15 +20,19 @@ const ChatMessages = memo(
     const containerRef = useRef(null);
     const scrollingRef = useRef(false);
 
-    // Optimized scroll to bottom - instant for better performance
-    const scrollToBottom = useCallback(() => {
+    // Smooth scroll to bottom with animation
+    const scrollToBottom = useCallback((smooth = true) => {
       if (scrollingRef.current) return;
       scrollingRef.current = true;
 
       requestAnimationFrame(() => {
         if (messagesEndRef.current && containerRef.current) {
-          // Use scrollTop for instant, performant scrolling
-          containerRef.current.scrollTop = containerRef.current.scrollHeight;
+          // Use smooth scrolling for better UX
+          messagesEndRef.current.scrollIntoView({
+            behavior: smooth ? 'smooth' : 'auto',
+            block: 'end',
+            inline: 'nearest'
+          });
         }
         scrollingRef.current = false;
       });
@@ -48,15 +52,26 @@ const ChatMessages = memo(
       scrollToBottom();
     }, [messages.length, isTyping, scrollToBottom]);
 
-    // Continuous auto-scroll during streaming - runs on every animation frame
+    // Continuous auto-scroll during streaming - smooth and consistent
     useEffect(() => {
       if (!streamingMessageId) return;
 
       let rafId;
+      let lastScrollHeight = 0;
+
       const keepScrolling = () => {
-        if (containerRef.current) {
-          // Always scroll to absolute bottom while streaming
-          containerRef.current.scrollTop = containerRef.current.scrollHeight;
+        if (containerRef.current && messagesEndRef.current) {
+          const currentScrollHeight = containerRef.current.scrollHeight;
+
+          // Only scroll if content height changed (new text appeared)
+          if (currentScrollHeight !== lastScrollHeight) {
+            messagesEndRef.current.scrollIntoView({
+              behavior: 'smooth',
+              block: 'end',
+              inline: 'nearest'
+            });
+            lastScrollHeight = currentScrollHeight;
+          }
         }
         rafId = requestAnimationFrame(keepScrolling);
       };
@@ -69,13 +84,6 @@ const ChatMessages = memo(
         }
       };
     }, [streamingMessageId]);
-
-    // Also scroll whenever messages array updates (catches text changes)
-    useEffect(() => {
-      if (streamingMessageId && containerRef.current) {
-        containerRef.current.scrollTop = containerRef.current.scrollHeight;
-      }
-    }, [messages, streamingMessageId]);
 
     // Memoize container class to prevent recalculation - Claude-style
     const containerClass = useMemo(
@@ -120,6 +128,7 @@ const ChatMessages = memo(
           contain: "layout style paint",
           willChange: "scroll-position",
           transform: "translateZ(0)", // Force GPU acceleration
+          scrollBehavior: "smooth", // Enable smooth scrolling
         }}
       >
         {/* Claude-style Empty State */}
