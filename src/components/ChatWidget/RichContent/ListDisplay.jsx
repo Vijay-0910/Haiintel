@@ -9,7 +9,9 @@ const ListDisplay = memo(({ items, ordered = false, isDarkMode = true }) => {
         {items.map((item, index) => (
           <li
             key={index}
-            className={`text-[11px] sm:text-xs md:text-sm flex gap-1.5 sm:gap-2 ${isDarkMode ? "text-gray-300" : "text-gray-700"}`}
+            className={`text-[11px] sm:text-xs md:text-sm flex gap-1.5 sm:gap-2 ${
+              isDarkMode ? "text-gray-300" : "text-gray-700"
+            }`}
           >
             <span className="text-haiintel-blue font-semibold flex-shrink-0">
               {ordered ? `${index + 1}.` : "•"}

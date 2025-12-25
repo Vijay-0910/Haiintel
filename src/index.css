@@ -19,8 +19,18 @@
   }
 
   body {
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-      'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    font-family:
+      "Inter",
+      -apple-system,
+      BlinkMacSystemFont,
+      "Segoe UI",
+      "Roboto",
+      "Oxygen",
+      "Ubuntu",
+      "Cantarell",
+      "Fira Sans",
+      "Droid Sans",
+      "Helvetica Neue",
       sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
@@ -29,7 +39,8 @@
     color: #fafafa;
     min-height: 100vh;
     /* Support for safe areas on notched devices */
-    padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+    padding: env(safe-area-inset-top) env(safe-area-inset-right)
+      env(safe-area-inset-bottom) env(safe-area-inset-left);
     /* Performance: Enable font display swap */
     font-display: swap;
     /* Prevent content shift */
@@ -45,7 +56,8 @@
   }
 
   /* Optimize images */
-  img, video {
+  img,
+  video {
     max-width: 100%;
     height: auto;
     /* Prevent layout shift */
@@ -59,14 +71,19 @@
 
   /* Improve touch targets for accessibility */
   @media (pointer: coarse) {
-    button, a, input, textarea {
+    button,
+    a,
+    input,
+    textarea {
       min-height: 44px;
     }
   }
 
   /* Reduce motion for users who prefer it */
   @media (prefers-reduced-motion: reduce) {
-    *, *::before, *::after {
+    *,
+    *::before,
+    *::after {
       animation-duration: 0.01ms !important;
       animation-iteration-count: 1 !important;
       transition-duration: 0.01ms !important;
@@ -246,7 +263,7 @@
     background: white;
     color: black;
   }
-  
+
   /* Hide non-essential elements when printing */
   .no-print,
   [data-chat-widget] {
@@ -259,8 +276,9 @@
   :root {
     --border-width: 2px;
   }
-  
-  button, a {
+
+  button,
+  a {
     border-width: var(--border-width);
   }
 }

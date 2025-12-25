@@ -1,6 +1,6 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef } from "react";
 
-export function useInView({ rootMargin = '0px', threshold = 0.1 } = {}) {
+export function useInView({ rootMargin = "0px", threshold = 0.1 } = {}) {
   const ref = useRef(null);
   const [isInView, setIsInView] = useState(false);
 

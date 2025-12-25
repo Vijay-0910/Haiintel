@@ -5,8 +5,8 @@ import ChatSkeleton from "./ChatSkeleton";
 import { ErrorBoundary } from "../common";
 
 // Lazy load ChatWindow
-const ChatWindow = lazy(() =>
-  import(/* webpackChunkName: "chat-window" */ "./ChatWindow")
+const ChatWindow = lazy(
+  () => import(/* webpackChunkName: "chat-window" */ "./ChatWindow")
 );
 
 // Error fallback component
@@ -17,19 +17,38 @@ const ChatErrorFallback = memo(({ isDarkMode, onClose }) => (
       inset-0
       sm:inset-auto sm:bottom-4 sm:right-4 sm:w-[380px] sm:h-[400px] sm:rounded-2xl
       border shadow-2xl animate-fade-in
-      ${isDarkMode
-        ? "bg-haiintel-darker border-haiintel-border"
-        : "bg-white border-gray-200"
+      ${
+        isDarkMode
+          ? "bg-haiintel-darker border-haiintel-border"
+          : "bg-white border-gray-200"
       }
     `}
   >
-    <svg className="w-16 h-16 mb-4 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+    <svg
+      className="w-16 h-16 mb-4 text-red-500"
+      fill="none"
+      stroke="currentColor"
+      viewBox="0 0 24 24"
+    >
+      <path
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth={1.5}
+        d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
+      />
     </svg>
-    <p className={`text-lg font-medium mb-2 ${isDarkMode ? "text-white" : "text-gray-900"}`}>
+    <p
+      className={`text-lg font-medium mb-2 ${
+        isDarkMode ? "text-white" : "text-gray-900"
+      }`}
+    >
       Chat unavailable
     </p>
-    <p className={`text-sm mb-6 ${isDarkMode ? "text-gray-400" : "text-gray-600"}`}>
+    <p
+      className={`text-sm mb-6 ${
+        isDarkMode ? "text-gray-400" : "text-gray-600"
+      }`}
+    >
       Something went wrong. Please try again.
     </p>
     <button
@@ -55,12 +74,18 @@ const ChatWidget = memo(({ isDarkMode = true }) => {
 
   return (
     <>
-      <ChatButton onClick={toggleChat} isOpen={isOpen} isDarkMode={isDarkMode} />
+      <ChatButton
+        onClick={toggleChat}
+        isOpen={isOpen}
+        isDarkMode={isDarkMode}
+      />
       <AnimatePresence>
         {isOpen && (
           <ErrorBoundary
             isDarkMode={isDarkMode}
-            fallback={<ChatErrorFallback isDarkMode={isDarkMode} onClose={closeChat} />}
+            fallback={
+              <ChatErrorFallback isDarkMode={isDarkMode} onClose={closeChat} />
+            }
           >
             <Suspense fallback={<ChatSkeleton isDarkMode={isDarkMode} />}>
               <ChatWindow onClose={closeChat} isDarkMode={isDarkMode} />

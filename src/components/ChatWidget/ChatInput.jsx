@@ -276,8 +276,8 @@ const ChatInput = memo(
                 isListening
                   ? "text-red-500 bg-red-500/10 animate-pulse"
                   : isDarkMode
-                  ? "text-gray-500 hover:text-gray-300 hover:bg-haiintel-border/50"
-                  : "text-gray-400 hover:text-gray-600 hover:bg-gray-100"
+                    ? "text-gray-500 hover:text-gray-300 hover:bg-haiintel-border/50"
+                    : "text-gray-400 hover:text-gray-600 hover:bg-gray-100"
               } ${disabled ? "opacity-50 cursor-not-allowed" : ""}`}
               title={isListening ? "Stop recording" : "Voice input"}
               aria-label={isListening ? "Stop recording" : "Voice input"}
@@ -347,8 +347,8 @@ const ChatInput = memo(
                   (message.trim() || uploadedImages.length > 0) && !disabled
                     ? "bg-haiintel-blue text-white hover:bg-haiintel-blue/90 hover:scale-105 active:scale-95 shadow-sm"
                     : isDarkMode
-                    ? "bg-haiintel-border/50 text-gray-600 cursor-not-allowed"
-                    : "bg-gray-200 text-gray-400 cursor-not-allowed"
+                      ? "bg-haiintel-border/50 text-gray-600 cursor-not-allowed"
+                      : "bg-gray-200 text-gray-400 cursor-not-allowed"
                 }`}
                 aria-label="Send message"
               >
@@ -379,10 +379,10 @@ const ChatInput = memo(
               {isStreaming
                 ? "AI is generating... Click stop to interrupt"
                 : disabled && !isListening
-                ? "AI is thinking..."
-                : isListening
-                ? "Listening... Speak now"
-                : ""}
+                  ? "AI is thinking..."
+                  : isListening
+                    ? "Listening... Speak now"
+                    : ""}
             </span>
             <span aria-live="polite">
               {message.length > 0 ? `${message.length} chars` : ""}

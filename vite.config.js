@@ -37,7 +37,7 @@ export default defineConfig({
       compress: {
         drop_console: true,
         drop_debugger: true,
-        pure_funcs: ['console.log', 'console.info', 'console.debug'],
+        pure_funcs: ["console.log", "console.info", "console.debug"],
         passes: 2,
       },
       mangle: {
@@ -63,25 +63,25 @@ export default defineConfig({
     rollupOptions: {
       output: {
         manualChunks: {
-          'react-vendor': ['react', 'react-dom'],
-          'chat-widget': [
-            './src/components/ChatWidget/ChatWidget.jsx',
-            './src/components/ChatWidget/ChatWindow.jsx',
-            './src/components/ChatWidget/ChatMessages.jsx',
-            './src/components/ChatWidget/MessageBubble.jsx',
+          "react-vendor": ["react", "react-dom"],
+          "chat-widget": [
+            "./src/components/ChatWidget/ChatWidget.jsx",
+            "./src/components/ChatWidget/ChatWindow.jsx",
+            "./src/components/ChatWidget/ChatMessages.jsx",
+            "./src/components/ChatWidget/MessageBubble.jsx",
           ],
-          'landing-sections': [
-            './src/components/landing/sections/BannerSection.jsx',
-            './src/components/landing/sections/FeaturesSection.jsx',
-            './src/components/landing/sections/HowItWorksSection.jsx',
-            './src/components/landing/sections/UseCasesSection.jsx',
-            './src/components/landing/sections/CTASection.jsx',
+          "landing-sections": [
+            "./src/components/landing/sections/BannerSection.jsx",
+            "./src/components/landing/sections/FeaturesSection.jsx",
+            "./src/components/landing/sections/HowItWorksSection.jsx",
+            "./src/components/landing/sections/UseCasesSection.jsx",
+            "./src/components/landing/sections/CTASection.jsx",
           ],
         },
         // Optimize chunk file names
-        chunkFileNames: 'assets/js/[name]-[hash].js',
-        entryFileNames: 'assets/js/[name]-[hash].js',
-        assetFileNames: 'assets/[ext]/[name]-[hash].[ext]',
+        chunkFileNames: "assets/js/[name]-[hash].js",
+        entryFileNames: "assets/js/[name]-[hash].js",
+        assetFileNames: "assets/[ext]/[name]-[hash].[ext]",
       },
     },
   },

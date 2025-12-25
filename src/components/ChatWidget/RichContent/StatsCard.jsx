@@ -15,7 +15,11 @@ const StatsCard = memo(({ stats, isDarkMode = true }) => (
         <div className="text-lg sm:text-xl md:text-2xl font-bold text-haiintel-blue mb-0.5 sm:mb-1">
           {stat.value}
         </div>
-        <div className={`text-[10px] sm:text-xs ${isDarkMode ? "text-gray-400" : "text-gray-500"}`}>
+        <div
+          className={`text-[10px] sm:text-xs ${
+            isDarkMode ? "text-gray-400" : "text-gray-500"
+          }`}
+        >
           {stat.label}
         </div>
       </div>

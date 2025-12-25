@@ -18,7 +18,7 @@ class ErrorBoundary extends Component {
   render() {
     if (this.state.hasError) {
       const { fallback, isDarkMode = true } = this.props;
-      
+
       if (fallback) {
         return fallback;
       }
@@ -26,7 +26,9 @@ class ErrorBoundary extends Component {
       return (
         <div
           className={`flex flex-col items-center justify-center p-8 rounded-lg ${
-            isDarkMode ? "bg-haiintel-dark text-gray-400" : "bg-gray-100 text-gray-600"
+            isDarkMode
+              ? "bg-haiintel-dark text-gray-400"
+              : "bg-gray-100 text-gray-600"
           }`}
         >
           <svg
@@ -58,4 +60,3 @@ class ErrorBoundary extends Component {
 }
 
 export default ErrorBoundary;
-

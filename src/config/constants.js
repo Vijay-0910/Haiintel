@@ -59,7 +59,7 @@ export const UI_CONFIG = {
     md: 768,
     lg: 1024,
     xl: 1280,
-    '2xl': 1536,
+    "2xl": 1536,
   },
 
   // Common sizes
@@ -72,16 +72,16 @@ export const UI_CONFIG = {
 };
 
 export const THEME_CONFIG = {
-  STORAGE_KEY: 'haiintel-theme',
-  DEFAULT_THEME: 'dark',
+  STORAGE_KEY: "haiintel-theme",
+  DEFAULT_THEME: "dark",
   THEMES: {
-    DARK: 'dark',
-    LIGHT: 'light',
+    DARK: "dark",
+    LIGHT: "light",
   },
 };
 
 export const API_CONFIG = {
-  BASE_URL: '/api',
+  BASE_URL: "/api",
   TIMEOUT: 30000, // 30 seconds
   RETRY_ATTEMPTS: 3,
 };

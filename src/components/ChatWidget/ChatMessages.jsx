@@ -2,6 +2,7 @@ import { useEffect, useRef, memo, useCallback, useMemo } from "react";
 import MessageBubble from "./MessageBubble";
 import TypingIndicator from "./TypingIndicator";
 import SuggestionChips from "./SuggestionChips";
+import AIIcon from "../common/AIIcon";
 
 const ChatMessages = memo(
   ({
@@ -18,41 +19,94 @@ const ChatMessages = memo(
   }) => {
     const messagesEndRef = useRef(null);
     const containerRef = useRef(null);
-    const scrollingRef = useRef(false);
+    const isUserScrollingRef = useRef(false);
+    const scrollTimeoutRef = useRef(null);
 
-    // Smooth scroll to bottom with animation
-    const scrollToBottom = useCallback((smooth = true) => {
-      if (scrollingRef.current) return;
-      scrollingRef.current = true;
+    // Check if user is scrolled near the bottom (within 100px)
+    const isNearBottom = useCallback(() => {
+      if (!containerRef.current) return true;
+      const { scrollTop, scrollHeight, clientHeight } = containerRef.current;
+      return scrollHeight - scrollTop - clientHeight < 100;
+    }, []);
 
+    // Smooth scroll to bottom with animation - always keeps latest message visible
+    const scrollToBottom = useCallback((behavior = "smooth") => {
       requestAnimationFrame(() => {
-        if (messagesEndRef.current && containerRef.current) {
-          // Use smooth scrolling for better UX
+        if (messagesEndRef.current) {
           messagesEndRef.current.scrollIntoView({
-            behavior: smooth ? 'smooth' : 'auto',
-            block: 'end',
-            inline: 'nearest'
+            behavior,
+            block: "end",
+            inline: "nearest",
           });
         }
-        scrollingRef.current = false;
       });
     }, []);
 
-    // Scroll to bottom on initial mount
+    // Detect user manual scrolling
     useEffect(() => {
-      // Use a slight delay to ensure DOM is fully rendered
+      const container = containerRef.current;
+      if (!container) return;
+
+      const handleScroll = () => {
+        // Clear any existing timeout
+        if (scrollTimeoutRef.current) {
+          clearTimeout(scrollTimeoutRef.current);
+        }
+
+        // Mark as user scrolling
+        isUserScrollingRef.current = true;
+
+        // Reset after 150ms of no scrolling
+        scrollTimeoutRef.current = setTimeout(() => {
+          isUserScrollingRef.current = false;
+        }, 150);
+      };
+
+      container.addEventListener("scroll", handleScroll, { passive: true });
+      return () => {
+        container.removeEventListener("scroll", handleScroll);
+        if (scrollTimeoutRef.current) {
+          clearTimeout(scrollTimeoutRef.current);
+        }
+      };
+    }, []);
+
+    // Scroll to bottom on initial mount - instant (after window animation completes)
+    useEffect(() => {
       const timer = setTimeout(() => {
-        scrollToBottom();
-      }, 100);
+        scrollToBottom("auto");
+      }, 300); // Increased delay to account for ChatWindow animation (250ms)
       return () => clearTimeout(timer);
     }, [scrollToBottom]);
 
-    // Auto-scroll when messages change
+    // Auto-scroll when new messages arrive or typing state changes
     useEffect(() => {
-      scrollToBottom();
-    }, [messages.length, isTyping, scrollToBottom]);
+      // Only auto-scroll if user hasn't manually scrolled up
+      if (!isUserScrollingRef.current || isNearBottom()) {
+        scrollToBottom("smooth");
+      }
+    }, [messages.length, isTyping, scrollToBottom, isNearBottom]);
 
-    // Continuous auto-scroll during streaming - smooth and consistent
+    // Auto-scroll when suggestions appear (after AI response completes)
+    useEffect(() => {
+      if (suggestions.length > 0 && !streamingMessageId && !isTyping) {
+        // Small delay to let suggestions render
+        const timer = setTimeout(() => {
+          if (!isUserScrollingRef.current || isNearBottom()) {
+            scrollToBottom("smooth");
+          }
+        }, 100);
+        return () => clearTimeout(timer);
+      }
+    }, [
+      suggestions.length,
+      streamingMessageId,
+      isTyping,
+      scrollToBottom,
+      isNearBottom,
+    ]);
+
+    // Continuous auto-scroll during streaming - keeps latest content visible
     useEffect(() => {
       if (!streamingMessageId) return;
 
@@ -63,13 +117,15 @@ const ChatMessages = memo(
         if (containerRef.current && messagesEndRef.current) {
           const currentScrollHeight = containerRef.current.scrollHeight;
 
-          // Only scroll if content height changed (new text appeared)
+          // Scroll if content changed AND (user is near bottom OR hasn't manually scrolled)
           if (currentScrollHeight !== lastScrollHeight) {
-            messagesEndRef.current.scrollIntoView({
-              behavior: 'smooth',
-              block: 'end',
-              inline: 'nearest'
-            });
+            if (!isUserScrollingRef.current || isNearBottom()) {
+              messagesEndRef.current.scrollIntoView({
+                behavior: "smooth",
+                block: "end",
+                inline: "nearest",
+              });
+            }
             lastScrollHeight = currentScrollHeight;
           }
         }
@@ -83,7 +139,7 @@ const ChatMessages = memo(
           cancelAnimationFrame(rafId);
         }
       };
-    }, [streamingMessageId]);
+    }, [streamingMessageId, isNearBottom]);
 
     // Memoize container class to prevent recalculation - Claude-style
     const containerClass = useMemo(
@@ -117,7 +173,14 @@ const ChatMessages = memo(
           }
         />
       ));
-    }, [messages, streamingMessageId, isDarkMode, onRegenerate, onRetry, onOpenArtifacts]);
+    }, [
+      messages,
+      streamingMessageId,
+      isDarkMode,
+      onRegenerate,
+      onRetry,
+      onOpenArtifacts,
+    ]);
 
     return (
       <div
@@ -137,20 +200,18 @@ const ChatMessages = memo(
             <div className="w-full max-w-2xl mx-auto text-center">
               {/* Logo/Icon */}
               <div className="mb-4">
-                <div className="w-12 h-12 mx-auto rounded-2xl bg-gradient-to-br from-haiintel-blue to-haiintel-cyan flex items-center justify-center shadow-lg">
-                  <svg
-                    className="w-6 h-6 text-white"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"
-                    />
-                  </svg>
+                <div
+                  className={`w-12 h-12 mx-auto rounded-full flex items-center justify-center shadow-lg ${
+                    isDarkMode
+                      ? "bg-gradient-to-br from-gray-700 to-gray-800"
+                      : "bg-gradient-to-br from-gray-200 to-gray-300"
+                  }`}
+                >
+                  <AIIcon
+                    className={`w-9 h-9 ${
+                      isDarkMode ? "text-gray-300" : "text-gray-700"
+                    }`}
+                  />
                 </div>
               </div>
 

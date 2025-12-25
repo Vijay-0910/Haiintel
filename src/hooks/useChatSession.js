@@ -13,30 +13,31 @@ const safeJSONParse = (str, fallback = []) => {
 };
 
 // Utility to generate unique ID
-const generateId = () => `${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+const generateId = () =>
+  `${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
 
 export const useChatSession = () => {
   const [messages, setMessages] = useState(() => {
-    // Initialize from localStorage (lazy initial state)
+    // Initialize from sessionStorage (lazy initial state)
     if (typeof window === "undefined") return [];
-    const saved = localStorage.getItem(STORAGE_KEY);
+    const saved = sessionStorage.getItem(STORAGE_KEY);
     return saved ? safeJSONParse(saved, []) : [];
   });
 
-  // Save messages to localStorage whenever they change
+  // Save messages to sessionStorage whenever they change
   useEffect(() => {
     if (messages.length > 0) {
       // Only keep last MAX_MESSAGES for performance
       const messagesToSave = messages.slice(-MAX_MESSAGES);
       try {
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(messagesToSave));
+        sessionStorage.setItem(STORAGE_KEY, JSON.stringify(messagesToSave));
       } catch (error) {
         // Handle quota exceeded error
         console.warn("Failed to save chat session:", error);
         // Try clearing old messages
         try {
           const reducedMessages = messagesToSave.slice(-50);
-          localStorage.setItem(STORAGE_KEY, JSON.stringify(reducedMessages));
+          sessionStorage.setItem(STORAGE_KEY, JSON.stringify(reducedMessages));
         } catch {
           // Give up if still failing
           console.error("Unable to save chat session");
@@ -52,15 +53,15 @@ export const useChatSession = () => {
       timestamp: new Date().toISOString(),
       ...message,
     };
-    
+
     setMessages((prev) => {
       // Limit messages in memory
       const newMessages = [...prev, newMessage];
-      return newMessages.length > MAX_MESSAGES 
-        ? newMessages.slice(-MAX_MESSAGES) 
+      return newMessages.length > MAX_MESSAGES
+        ? newMessages.slice(-MAX_MESSAGES)
         : newMessages;
     });
-    
+
     return newMessage;
   }, []);
 
@@ -68,19 +69,22 @@ export const useChatSession = () => {
   const clearChat = useCallback(() => {
     setMessages([]);
     try {
-      localStorage.removeItem(STORAGE_KEY);
+      sessionStorage.removeItem(STORAGE_KEY);
     } catch (error) {
       console.warn("Failed to clear chat session:", error);
     }
   }, []);
 
   // Memoized return value to prevent unnecessary re-renders
-  return useMemo(() => ({
-    messages,
-    addMessage,
-    clearChat,
-    setMessages, // Expose setMessages for loading history
-  }), [messages, addMessage, clearChat]);
+  return useMemo(
+    () => ({
+      messages,
+      addMessage,
+      clearChat,
+      setMessages, // Expose setMessages for loading history
+    }),
+    [messages, addMessage, clearChat]
+  );
 };
 
 export default useChatSession;

@@ -10,6 +10,8 @@ export const mockResponses = {
       "What services do you offer?",
       "Tell me about Vibrant Capital",
       "Show me code examples",
+      "What's your tech stack?",
+      "Show me your projects",
     ],
   },
 
@@ -17,9 +19,12 @@ export const mockResponses = {
   "show me code": {
     text: 'Here\'s an example of how to integrate our AI Chat Widget into your React application:\n\n```javascript\nimport { ChatWidget } from \'@haiintel/chat-widget\';\n\nfunction App() {\n  return (\n    <div className="app">\n      <ChatWidget\n        apiKey="your-api-key"\n        theme="dark"\n        position="bottom-right"\n      />\n    </div>\n  );\n}\n\nexport default App;\n```\n\n**Features:**\n- ✅ Easy integration\n- ✅ Customizable themes\n- ✅ Real-time responses\n- ✅ Markdown support\n\n**Installation:**\n\n```bash\nnpm install @haiintel/chat-widget\n```\n\nThat\'s it! The widget is ready to use.',
     suggestions: [
-      "What is HaiIntel?",
+      "Can I customize the chat widget?",
+      "How do I integrate this?",
+      "What's your tech stack?",
+      "Tell me about analytics features",
       "What services do you offer?",
-      "Tell me about pricing",
+      "Show me your projects",
     ],
   },
 
@@ -52,9 +57,11 @@ export const mockResponses = {
     ],
     suggestions: [
       "What services do you offer?",
-      "Tell me about your team",
-      "View our tech stack",
-      "How can I join?",
+      "Tell me about Vibrant Capital",
+      "What's your tech stack?",
+      "Show me your projects",
+      "What are the open positions?",
+      "How do I integrate this?",
     ],
   },
 
@@ -73,10 +80,12 @@ export const mockResponses = {
     ],
     listOrdered: false,
     suggestions: [
-      "View our tech stack",
-      "See our projects",
-      "Get in touch",
-      "Learn about careers",
+      "What's your tech stack?",
+      "Show me your projects",
+      "Can I customize the chat widget?",
+      "How do I integrate this?",
+      "What are the open positions?",
+      "Tell me about analytics features",
     ],
   },
 
@@ -105,9 +114,11 @@ export const mockResponses = {
     ],
     suggestions: [
       "What is HaiIntel?",
-      "View our services",
-      "Explore careers",
-      "Contact us",
+      "What services do you offer?",
+      "Show me your projects",
+      "What's your tech stack?",
+      "What are the open positions?",
+      "How do I integrate this?",
     ],
   },
 
@@ -142,10 +153,12 @@ export const mockResponses = {
       values: [95, 92, 90, 94],
     },
     suggestions: [
+      "What frontend technologies do you use?",
+      "What backend technologies do you support?",
+      "What databases and cloud platforms do you use?",
+      "Show me code examples",
+      "How do I integrate this?",
       "What services do you offer?",
-      "View projects",
-      "Learn about careers",
-      "Contact team",
     ],
   },
 
@@ -175,10 +188,12 @@ export const mockResponses = {
       },
     ],
     suggestions: [
-      "View open positions",
-      "Learn about benefits",
-      "See our projects",
-      "Apply now",
+      "What are the open positions?",
+      "Why work at HaiIntel?",
+      "What's your tech stack?",
+      "How do I apply?",
+      "What's the interview process?",
+      "Show me your projects",
     ],
   },
 
@@ -200,10 +215,12 @@ export const mockResponses = {
       { value: "Learning", label: "Budget & Time" },
     ],
     suggestions: [
-      "View open positions",
-      "Learn about team",
-      "See tech stack",
-      "Apply now",
+      "Tell me about your team",
+      "Why work at HaiIntel?",
+      "How do I apply?",
+      "What's the interview process?",
+      "What are the open positions?",
+      "What's your tech stack?",
     ],
   },
 
@@ -233,10 +250,12 @@ export const mockResponses = {
       },
     ],
     suggestions: [
-      "Learn about our tech",
-      "View services",
-      "Join the team",
-      "Get in touch",
+      "What's your tech stack?",
+      "What services do you offer?",
+      "Can I customize the chat widget?",
+      "How do I integrate this?",
+      "Show me code examples",
+      "What are the open positions?",
     ],
   },
 
@@ -252,10 +271,12 @@ export const mockResponses = {
     ],
     listOrdered: false,
     suggestions: [
-      "View open positions",
-      "Learn about services",
-      "See our tech stack",
-      "Explore projects",
+      "What are the open positions?",
+      "What services do you offer?",
+      "What's your tech stack?",
+      "Show me your projects",
+      "How do I integrate this?",
+      "Tell me about Vibrant Capital",
     ],
   },
 
@@ -274,10 +295,12 @@ export const mockResponses = {
     ],
     listOrdered: false,
     suggestions: [
-      "View open positions",
-      "Learn about team",
-      "See projects",
-      "Apply now",
+      "What are the open positions?",
+      "Tell me about your team",
+      "How do I apply?",
+      "What's the application process?",
+      "What's the interview process?",
+      "What's your tech stack?",
     ],
   },
 
@@ -298,16 +321,171 @@ export const mockResponses = {
       { value: "100%", label: "Remote OK" },
     ],
     suggestions: [
-      "Learn about benefits",
-      "View tech stack",
-      "See the team",
-      "Contact us",
+      "Why work at HaiIntel?",
+      "What are the open positions?",
+      "Tell me about your team",
+      "What's the interview process?",
+      "What's the application process?",
+      "What's your tech stack?",
+    ],
+  },
+
+  // Frontend Technologies
+  "frontend technologies": {
+    text: "Our frontend stack is built for performance and developer experience:",
+    details: [
+      {
+        icon: "⚛️",
+        title: "React 18+",
+        description:
+          "Modern React with hooks, Suspense, and concurrent features",
+      },
+      {
+        icon: "🚀",
+        title: "Next.js & Vite",
+        description: "SSR with Next.js and lightning-fast builds with Vite",
+      },
+      {
+        icon: "🎨",
+        title: "Tailwind CSS",
+        description: "Utility-first CSS for rapid UI development",
+      },
+      {
+        icon: "✨",
+        title: "Framer Motion",
+        description: "Production-ready animations and interactions",
+      },
+    ],
+    suggestions: [
+      "What backend technologies do you support?",
+      "What databases and cloud platforms do you use?",
+      "Show me code examples",
+      "What's your tech stack?",
+      "How do I integrate this?",
+      "What services do you offer?",
+    ],
+  },
+
+  // Backend Technologies
+  "backend technologies": {
+    text: "Our backend infrastructure is scalable, secure, and developer-friendly:",
+    details: [
+      {
+        icon: "🟢",
+        title: "Node.js & Express",
+        description: "Fast, scalable JavaScript runtime for APIs",
+      },
+      {
+        icon: "🐍",
+        title: "Python & FastAPI",
+        description: "High-performance Python APIs for AI/ML workloads",
+      },
+      {
+        icon: "🔌",
+        title: "REST & GraphQL",
+        description: "Flexible API architectures for any use case",
+      },
+      {
+        icon: "🔐",
+        title: "Authentication",
+        description: "JWT, OAuth, and enterprise SSO support",
+      },
+    ],
+    suggestions: [
+      "What databases and cloud platforms do you use?",
+      "What frontend technologies do you use?",
+      "Show me code examples",
+      "How do I integrate this?",
+      "What's your tech stack?",
+      "What services do you offer?",
+    ],
+  },
+
+  // Database & Cloud
+  "databases and cloud": {
+    text: "We use modern cloud infrastructure and databases optimized for AI workloads:",
+    details: [
+      {
+        icon: "🗄️",
+        title: "MongoDB & PostgreSQL",
+        description: "Flexible NoSQL and robust relational databases",
+      },
+      {
+        icon: "⚡",
+        title: "Redis & Caching",
+        description: "In-memory data structures for lightning-fast performance",
+      },
+      {
+        icon: "☁️",
+        title: "AWS & Vercel",
+        description: "Scalable cloud infrastructure with edge deployment",
+      },
+      {
+        icon: "🔍",
+        title: "Vector Databases",
+        description: "Pinecone, Weaviate for AI embeddings and semantic search",
+      },
+    ],
+    suggestions: [
+      "What frontend technologies do you use?",
+      "What backend technologies do you support?",
+      "Show me code examples",
+      "What's your tech stack?",
+      "How do I integrate this?",
+      "What services do you offer?",
+    ],
+  },
+
+  // Interview Process
+  "interview process": {
+    text: "Our interview process is designed to be respectful of your time while giving us a good sense of your skills:",
+    list: [
+      "1. Initial Chat (30 min) - Get to know each other, discuss your background",
+      "2. Technical Assessment (1-2 hours) - Build something real, showcase your skills",
+      "3. Team Interview (45 min) - Meet potential teammates, deep dive on experience",
+      "4. Final Discussion (30 min) - Talk compensation, expectations, questions",
+    ],
+    listOrdered: true,
+    stats: [
+      { value: "5 days", label: "Average Response" },
+      { value: "2-3 rounds", label: "Interview Rounds" },
+      { value: "1-2 weeks", label: "Total Process" },
+    ],
+    suggestions: [
+      "How do I apply?",
+      "Why work at HaiIntel?",
+      "What are the open positions?",
+      "Tell me about your team",
+      "What's the application process?",
+      "What's your tech stack?",
+    ],
+  },
+
+  // Application Process
+  "application process": {
+    text: "Here's our simple, straightforward application process:",
+    list: [
+      "1. Visit haiintel.com/careers or email careers@haiintel.com",
+      "2. Share your resume, portfolio, or GitHub profile",
+      "3. Tell us what excites you about AI and HaiIntel",
+      "4. Include links to projects you're proud of",
+      "5. We'll review and respond within 5 business days",
+    ],
+    listOrdered: true,
+    suggestions: [
+      "What's the interview process?",
+      "Why work at HaiIntel?",
+      "What are the open positions?",
+      "Tell me about your team",
+      "How do I apply?",
+      "What's your tech stack?",
     ],
   },
 
   // Analytics
   analytics: {
-    thinking: "The user is asking about analytics. I should show them relevant data with a downloadable chart to demonstrate our analytics capabilities.",
+    thinking:
+      "The user is asking about analytics. I should show them relevant data with a downloadable chart to demonstrate our analytics capabilities.",
     text: "Here's an overview of our chat widget analytics features. You can download the chart data by clicking the download button on the chart.",
     chart: {
       title: "Monthly User Engagement",
@@ -320,10 +498,12 @@ export const mockResponses = {
       { value: "2.4min", label: "Avg. Session" },
     ],
     suggestions: [
-      "Tell me about pricing",
+      "How do I set up analytics?",
+      "Can I customize the chat widget?",
       "How do I integrate this?",
-      "What services do you offer?",
-      "Contact sales team",
+      "What other features are available?",
+      "Show me code examples",
+      "What's your tech stack?",
     ],
   },
 
@@ -332,9 +512,11 @@ export const mockResponses = {
     text: "I'm here to help you learn about HaiIntel! We're part of Vibrant Capital, building human-centered AI experiences. Ask me about our services, team, technology, or how to join us!",
     suggestions: [
       "What is HaiIntel?",
-      "View services",
-      "Explore careers",
-      "Contact us",
+      "What services do you offer?",
+      "What are the open positions?",
+      "What's your tech stack?",
+      "Show me code examples",
+      "Tell me about Vibrant Capital",
     ],
   },
 
@@ -352,9 +534,11 @@ export const mockResponses = {
     listOrdered: false,
     suggestions: [
       "What is HaiIntel?",
-      "View services",
-      "Explore careers",
-      "Contact us",
+      "What services do you offer?",
+      "What are the open positions?",
+      "What's your tech stack?",
+      "Show me code examples",
+      "Tell me about Vibrant Capital",
     ],
   },
 };
@@ -382,11 +566,30 @@ export const getResponse = (userMessage) => {
     capital: "vibrant capital",
     parent: "vibrant capital",
 
-    // Tech
+    // Tech Stack
     tech: "tech stack",
     technology: "tech stack",
     stack: "tech stack",
     tools: "tech stack",
+
+    // Frontend
+    frontend: "frontend technologies",
+    react: "frontend technologies",
+    "front-end": "frontend technologies",
+
+    // Backend
+    backend: "backend technologies",
+    "back-end": "backend technologies",
+    nodejs: "backend technologies",
+    python: "backend technologies",
+    api: "backend technologies",
+
+    // Database & Cloud
+    database: "databases and cloud",
+    cloud: "databases and cloud",
+    mongodb: "databases and cloud",
+    postgresql: "databases and cloud",
+    aws: "databases and cloud",
 
     // Team
     team: "team",
@@ -423,6 +626,13 @@ export const getResponse = (userMessage) => {
     apply: "apply",
     "how to apply": "apply",
     join: "apply",
+
+    // Interview
+    interview: "interview process",
+    "application process": "application process",
+
+    // Analytics
+    analytic: "analytics",
 
     // Help
     help: "help",

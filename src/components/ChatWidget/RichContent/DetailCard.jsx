@@ -19,14 +19,24 @@ const DetailCard = memo(({ details, isDarkMode = true }) => (
                 isDarkMode ? "bg-haiintel-blue/20" : "bg-haiintel-blue/10"
               }`}
             >
-              <span className="text-sm sm:text-base md:text-lg">{detail.icon}</span>
+              <span className="text-sm sm:text-base md:text-lg">
+                {detail.icon}
+              </span>
             </div>
           )}
           <div className="flex-1 min-w-0">
-            <h5 className={`text-xs sm:text-sm font-semibold mb-0.5 sm:mb-1 ${isDarkMode ? "text-haiintel-text" : "text-gray-900"}`}>
+            <h5
+              className={`text-xs sm:text-sm font-semibold mb-0.5 sm:mb-1 ${
+                isDarkMode ? "text-haiintel-text" : "text-gray-900"
+              }`}
+            >
               {detail.title}
             </h5>
-            <p className={`text-[10px] sm:text-xs leading-relaxed ${isDarkMode ? "text-gray-400" : "text-gray-500"}`}>
+            <p
+              className={`text-[10px] sm:text-xs leading-relaxed ${
+                isDarkMode ? "text-gray-400" : "text-gray-500"
+              }`}
+            >
               {detail.description}
             </p>
           </div>

@@ -4,11 +4,21 @@ import HeroSection from "./components/landing/sections/HeroSection";
 import { useInView } from "./hooks/useInView";
 
 // Lazy load each section
-const BannerSection = lazy(() => import("./components/landing/sections/BannerSection"));
-const FeaturesSection = lazy(() => import("./components/landing/sections/FeaturesSection"));
-const HowItWorksSection = lazy(() => import("./components/landing/sections/HowItWorksSection"));
-const UseCasesSection = lazy(() => import("./components/landing/sections/UseCasesSection"));
-const CTASection = lazy(() => import("./components/landing/sections/CTASection"));
+const BannerSection = lazy(
+  () => import("./components/landing/sections/BannerSection")
+);
+const FeaturesSection = lazy(
+  () => import("./components/landing/sections/FeaturesSection")
+);
+const HowItWorksSection = lazy(
+  () => import("./components/landing/sections/HowItWorksSection")
+);
+const UseCasesSection = lazy(
+  () => import("./components/landing/sections/UseCasesSection")
+);
+const CTASection = lazy(
+  () => import("./components/landing/sections/CTASection")
+);
 const Footer = lazy(() => import("./components/landing/Footer"));
 const ChatWidget = lazy(() => import("./components/ChatWidget"));
 
@@ -52,7 +62,10 @@ function App() {
   }, []);
 
   const toggleTheme = useCallback(() => setIsDarkMode((p) => !p), []);
-  const toggleMobileMenu = useCallback(() => setIsMobileMenuOpen((p) => !p), []);
+  const toggleMobileMenu = useCallback(
+    () => setIsMobileMenuOpen((p) => !p),
+    []
+  );
   const closeMobileMenu = useCallback(() => setIsMobileMenuOpen(false), []);
   const scrollToSection = useCallback((id) => {
     setActiveSection(id);
@@ -71,9 +84,10 @@ function App() {
         const progress = Math.min(timeElapsed / duration, 1);
 
         // Easing function for smooth animation
-        const ease = progress < 0.5
-          ? 4 * progress * progress * progress
-          : 1 - Math.pow(-2 * progress + 2, 3) / 2;
+        const ease =
+          progress < 0.5
+            ? 4 * progress * progress * progress
+            : 1 - Math.pow(-2 * progress + 2, 3) / 2;
 
         window.scrollTo(0, startPosition + distance * ease);
 
@@ -87,7 +101,11 @@ function App() {
   }, []);
 
   return (
-    <div className={`min-h-screen ${isDarkMode ? "bg-haiintel-dark" : "bg-gray-50"}`}>
+    <div
+      className={`min-h-screen ${
+        isDarkMode ? "bg-haiintel-dark" : "bg-gray-50"
+      }`}
+    >
       <Navbar
         isDarkMode={isDarkMode}
         activeSection={activeSection}

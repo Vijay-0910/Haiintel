@@ -29,8 +29,13 @@ const BrandColumn = memo(({ isDarkMode }) => (
         className={`h-12 w-auto ${!isDarkMode ? "invert" : ""}`}
       />
     </div>
-    <p className={`mb-6 text-sm leading-relaxed ${isDarkMode ? "text-gray-500" : "text-gray-600"}`}>
-      AI-powered chat widget for modern businesses. Deliver exceptional customer experiences with intelligent conversations.
+    <p
+      className={`mb-6 text-sm leading-relaxed ${
+        isDarkMode ? "text-gray-500" : "text-gray-600"
+      }`}
+    >
+      AI-powered chat widget for modern businesses. Deliver exceptional customer
+      experiences with intelligent conversations.
     </p>
 
     {/* Social Links - CSS hover */}
@@ -57,7 +62,11 @@ BrandColumn.displayName = "BrandColumn";
 // Link Column - Memoized
 const LinkColumn = memo(({ title, links, isDarkMode }) => (
   <div>
-    <h4 className={`font-semibold mb-4 text-sm ${isDarkMode ? "text-haiintel-text" : "text-gray-900"}`}>
+    <h4
+      className={`font-semibold mb-4 text-sm ${
+        isDarkMode ? "text-haiintel-text" : "text-gray-900"
+      }`}
+    >
       {title}
     </h4>
     <ul className="space-y-3">
@@ -65,7 +74,11 @@ const LinkColumn = memo(({ title, links, isDarkMode }) => (
         <li key={item}>
           <a
             href="#"
-            className={`transition-colors duration-150 text-sm ${isDarkMode ? "text-gray-500 hover:text-haiintel-cyan" : "text-gray-600 hover:text-haiintel-blue"}`}
+            className={`transition-colors duration-150 text-sm ${
+              isDarkMode
+                ? "text-gray-500 hover:text-haiintel-cyan"
+                : "text-gray-600 hover:text-haiintel-blue"
+            }`}
           >
             {item}
           </a>
@@ -78,7 +91,11 @@ LinkColumn.displayName = "LinkColumn";
 
 // Bottom Bar - Memoized
 const BottomBar = memo(({ isDarkMode }) => (
-  <div className={`pt-8 border-t flex flex-col md:flex-row items-center justify-between gap-4 ${isDarkMode ? "border-haiintel-border/50" : "border-gray-200"}`}>
+  <div
+    className={`pt-8 border-t flex flex-col md:flex-row items-center justify-between gap-4 ${
+      isDarkMode ? "border-haiintel-border/50" : "border-gray-200"
+    }`}
+  >
     <p className={`text-sm ${isDarkMode ? "text-gray-600" : "text-gray-500"}`}>
       © 2025 HaiIntel. All rights reserved.
     </p>
@@ -87,7 +104,11 @@ const BottomBar = memo(({ isDarkMode }) => (
         <a
           key={link}
           href="#"
-          className={`transition-colors duration-150 ${isDarkMode ? "text-gray-500 hover:text-haiintel-cyan" : "text-gray-600 hover:text-haiintel-blue"}`}
+          className={`transition-colors duration-150 ${
+            isDarkMode
+              ? "text-gray-500 hover:text-haiintel-cyan"
+              : "text-gray-600 hover:text-haiintel-blue"
+          }`}
         >
           {link}
         </a>
@@ -99,16 +120,32 @@ BottomBar.displayName = "BottomBar";
 
 const Footer = memo(({ isDarkMode }) => (
   <footer
-    className={`py-12 sm:py-16 px-4 sm:px-6 border-t transition-colors duration-200 ${isDarkMode ? "bg-black border-haiintel-border/50" : "bg-gray-50 border-gray-200"}`}
+    className={`py-12 sm:py-16 px-4 sm:px-6 border-t transition-colors duration-200 ${
+      isDarkMode
+        ? "bg-black border-haiintel-border/50"
+        : "bg-gray-50 border-gray-200"
+    }`}
     style={{ contentVisibility: "auto", containIntrinsicSize: "0 400px" }}
   >
     <div className="container mx-auto max-w-6xl">
       {/* Main Grid */}
       <div className="grid grid-cols-2 md:grid-cols-5 gap-8 mb-12">
         <BrandColumn isDarkMode={isDarkMode} />
-        <LinkColumn title="Product" links={footerLinks.product} isDarkMode={isDarkMode} />
-        <LinkColumn title="Resources" links={footerLinks.resources} isDarkMode={isDarkMode} />
-        <LinkColumn title="Company" links={footerLinks.company} isDarkMode={isDarkMode} />
+        <LinkColumn
+          title="Product"
+          links={footerLinks.product}
+          isDarkMode={isDarkMode}
+        />
+        <LinkColumn
+          title="Resources"
+          links={footerLinks.resources}
+          isDarkMode={isDarkMode}
+        />
+        <LinkColumn
+          title="Company"
+          links={footerLinks.company}
+          isDarkMode={isDarkMode}
+        />
       </div>
 
       <BottomBar isDarkMode={isDarkMode} />

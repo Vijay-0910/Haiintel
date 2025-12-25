@@ -1,23 +1,29 @@
 import { memo } from "react";
 import { motion } from "framer-motion";
+import heroImage from "../../../assets/hero-intelligence-CXC1fGWY.jpg";
 
 const HeroSection = memo(({ onScrollToSection }) => {
   return (
     <section
       id="home"
-      className="relative min-h-screen flex items-center justify-center pt-20 px-6 overflow-hidden"
+      className="relative min-h-screen flex items-center justify-center pt-20 px-6 overflow-hidden bg-gradient-to-br from-gray-900 via-blue-900 to-gray-900"
     >
       {/* Background */}
       <motion.div
-        className="absolute inset-0 z-0"
+        className="absolute inset-0 z-0 bg-gradient-to-br from-gray-900 via-blue-900 to-gray-900"
         initial={{ scale: 1.1, opacity: 0 }}
         animate={{ scale: 1, opacity: 1 }}
         transition={{ duration: 1.2, ease: "easeOut" }}
       >
         <img
-          src="https://kovaion-prod-backup.s3.ap-south-1.amazonaws.com/Engage/Absence%20Request/37519f66-fc78-4241-be23-04bd150e756c_hero-intelligence-CXC1fGWY.jpg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIAZEBAZEFJREIZNHKC%2F20251225%2Fap-south-1%2Fs3%2Faws4_request&X-Amz-Date=20251225T070935Z&X-Amz-Expires=120&X-Amz-Signature=ca864b909d178185672cc7e5f5471b696d7d51fbf30f17a3c97fa0fb5be851b3&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject"
+          src={heroImage}
           alt="Hero Background"
           className="absolute inset-0 w-full h-full object-cover"
+          fetchpriority="high"
+          decoding="async"
+          loading="eager"
+          width="1920"
+          height="1080"
         />
         <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-transparent to-black/70" />
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(46,144,250,0.08),transparent_70%)]" />
@@ -36,7 +42,7 @@ const HeroSection = memo(({ onScrollToSection }) => {
             <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-bold text-white mb-2 leading-tight">
               Intelligence.
             </h1>
-            <h2 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold leading-tight text-[#00d4ff]">
+            <h2 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold leading-tight bg-gradient-to-r from-haiintel-cyan to-haiintel-accent bg-clip-text text-transparent">
               Not Just Software.
             </h2>
           </motion.div>
