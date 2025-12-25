@@ -1,6 +1,6 @@
 /**
  * Extract code blocks from markdown content
- * Returns an array of { language, code, title } objects
+ * Returns an array of { language, code, title, type: 'code' } objects
  */
 export function extractCodeBlocks(markdown) {
   if (!markdown) return [];
@@ -42,9 +42,38 @@ export function extractCodeBlocks(markdown) {
     };
 
     artifacts.push({
+      type: 'code',
       language,
       code,
       title: titles[language.toLowerCase()] || `${language} Code`,
+    });
+  }
+
+  return artifacts;
+}
+
+/**
+ * Extract artifacts (code blocks and charts) from a message
+ * Returns an array of artifacts with type: 'code' or 'chart'
+ */
+export function extractArtifacts(message) {
+  if (!message) return [];
+
+  const artifacts = [];
+
+  // Extract code blocks from text
+  if (message.text) {
+    const codeBlocks = extractCodeBlocks(message.text);
+    artifacts.push(...codeBlocks);
+  }
+
+  // Extract chart if present
+  if (message.chart) {
+    artifacts.push({
+      type: 'chart',
+      chartType: 'bar',
+      data: message.chart,
+      title: message.chart.title || 'Chart',
     });
   }
 

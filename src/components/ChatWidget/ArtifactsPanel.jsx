@@ -1,8 +1,12 @@
-import { memo, useState, useCallback, useMemo } from 'react';
+import { memo, useState, useCallback, useMemo, lazy, Suspense } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import ReactMarkdown from 'react-markdown';
 import rehypeHighlight from 'rehype-highlight';
 import 'highlight.js/styles/github-dark.css';
+
+// Lazy load chart components
+const BarChart = lazy(() => import('./RichContent/BarChart'));
+const PieChart = lazy(() => import('./RichContent/PieChart'));
 
 /**
  * Artifacts Panel - Claude-style code preview panel
@@ -14,25 +18,35 @@ const ArtifactsPanel = memo(({ artifacts, isOpen, onClose, isDarkMode = true }) 
   const [copied, setCopied] = useState(false);
 
   const currentArtifact = artifacts?.[activeTab];
+  const isChart = currentArtifact?.type === 'chart';
   const canPreview = useMemo(() => {
     if (!currentArtifact) return false;
+    if (isChart) return true;
     const lang = currentArtifact.language?.toLowerCase();
     return ['html', 'xml', 'svg', 'javascript', 'js', 'jsx', 'css'].includes(lang);
-  }, [currentArtifact]);
+  }, [currentArtifact, isChart]);
 
   const handleCopy = useCallback(async () => {
     if (!currentArtifact) return;
     try {
-      await navigator.clipboard.writeText(currentArtifact.code);
+      if (isChart) {
+        const csvContent = [
+          ['Label', 'Value'],
+          ...currentArtifact.data.labels.map((label, index) => [label, currentArtifact.data.values[index]])
+        ].map(row => row.join(',')).join('\n');
+        await navigator.clipboard.writeText(csvContent);
+      } else {
+        await navigator.clipboard.writeText(currentArtifact.code);
+      }
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
     } catch (err) {
       console.error('Failed to copy:', err);
     }
-  }, [currentArtifact]);
+  }, [currentArtifact, isChart]);
 
   const handleDownload = useCallback(() => {
-    if (!currentArtifact) return;
+    if (!currentArtifact || isChart) return; // Charts have their own download buttons
     const extensions = {
       javascript: 'js',
       typescript: 'ts',
@@ -55,10 +69,26 @@ const ArtifactsPanel = memo(({ artifacts, isOpen, onClose, isDarkMode = true }) 
     a.click();
     document.body.removeChild(a);
     window.URL.revokeObjectURL(url);
-  }, [currentArtifact]);
+  }, [currentArtifact, isChart]);
 
   const previewContent = useMemo(() => {
     if (!currentArtifact || viewMode !== 'preview') return null;
+
+    // Chart preview
+    if (isChart) {
+      const ChartComponent = currentArtifact.chartType === 'pie' ? PieChart : BarChart;
+      return (
+        <div className="w-full h-full flex items-center justify-center p-4 overflow-auto">
+          <div className="w-full max-w-2xl">
+            <Suspense fallback={<div className="text-center">Loading chart...</div>}>
+              <ChartComponent data={currentArtifact.data} isDarkMode={isDarkMode} />
+            </Suspense>
+          </div>
+        </div>
+      );
+    }
+
+    // Code preview
     const lang = currentArtifact.language?.toLowerCase();
 
     if (lang === 'html' || lang === 'xml') {
@@ -85,7 +115,7 @@ const ArtifactsPanel = memo(({ artifacts, isOpen, onClose, isDarkMode = true }) 
         Preview not available for {currentArtifact.language}
       </div>
     );
-  }, [currentArtifact, viewMode, isDarkMode]);
+  }, [currentArtifact, viewMode, isDarkMode, isChart]);
 
   if (!isOpen || !artifacts || artifacts.length === 0) return null;
 
@@ -135,7 +165,7 @@ const ArtifactsPanel = memo(({ artifacts, isOpen, onClose, isDarkMode = true }) 
                       : 'text-gray-600 hover:text-gray-900'
                   }`}
                 >
-                  Code
+                  {isChart ? 'Data' : 'Code'}
                 </button>
                 <button
                   onClick={() => setViewMode('preview')}
@@ -173,19 +203,21 @@ const ArtifactsPanel = memo(({ artifacts, isOpen, onClose, isDarkMode = true }) 
               </svg>
             </button>
 
-            <button
-              onClick={handleDownload}
-              className={`p-2 rounded-lg transition-colors ${
-                isDarkMode
-                  ? 'hover:bg-haiintel-border text-gray-400 hover:text-gray-200'
-                  : 'hover:bg-gray-100 text-gray-600 hover:text-gray-900'
-              }`}
-              title="Download file"
-            >
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
-              </svg>
-            </button>
+            {!isChart && (
+              <button
+                onClick={handleDownload}
+                className={`p-2 rounded-lg transition-colors ${
+                  isDarkMode
+                    ? 'hover:bg-haiintel-border text-gray-400 hover:text-gray-200'
+                    : 'hover:bg-gray-100 text-gray-600 hover:text-gray-900'
+                }`}
+                title="Download file"
+              >
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                </svg>
+              </button>
+            )}
 
             <button
               onClick={onClose}
@@ -232,34 +264,63 @@ const ArtifactsPanel = memo(({ artifacts, isOpen, onClose, isDarkMode = true }) 
         <div className="flex-1 overflow-hidden">
           {viewMode === 'code' ? (
             <div className="h-full overflow-auto">
-              <div className={`p-4 ${isDarkMode ? 'bg-[#0d1117]' : 'bg-gray-50'}`}>
-                <div className="text-xs font-medium mb-2 uppercase tracking-wide opacity-60">
-                  {currentArtifact?.language || 'code'}
+              {isChart ? (
+                // Chart data view
+                <div className={`p-4 ${isDarkMode ? 'bg-[#0d1117]' : 'bg-gray-50'}`}>
+                  <div className="text-xs font-medium mb-4 uppercase tracking-wide opacity-60">
+                    Chart Data
+                  </div>
+                  <div className={`space-y-2 ${isDarkMode ? 'text-gray-300' : 'text-gray-700'}`}>
+                    <div className="font-semibold">{currentArtifact.data.title}</div>
+                    <table className="w-full text-sm">
+                      <thead>
+                        <tr className={`border-b ${isDarkMode ? 'border-gray-700' : 'border-gray-300'}`}>
+                          <th className="text-left py-2">Label</th>
+                          <th className="text-right py-2">Value</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {currentArtifact.data.labels.map((label, index) => (
+                          <tr key={index} className={`border-b ${isDarkMode ? 'border-gray-800' : 'border-gray-200'}`}>
+                            <td className="py-2">{label}</td>
+                            <td className="text-right py-2 font-mono">{currentArtifact.data.values[index]}</td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
                 </div>
-                <ReactMarkdown
-                  rehypePlugins={[rehypeHighlight]}
-                  components={{
-                    code: ({ node, inline, className, children, ...props }) => {
-                      if (inline) {
+              ) : (
+                // Code view
+                <div className={`p-4 ${isDarkMode ? 'bg-[#0d1117]' : 'bg-gray-50'}`}>
+                  <div className="text-xs font-medium mb-2 uppercase tracking-wide opacity-60">
+                    {currentArtifact?.language || 'code'}
+                  </div>
+                  <ReactMarkdown
+                    rehypePlugins={[rehypeHighlight]}
+                    components={{
+                      code: ({ node, inline, className, children, ...props }) => {
+                        if (inline) {
+                          return (
+                            <code className={className} {...props}>
+                              {children}
+                            </code>
+                          );
+                        }
                         return (
-                          <code className={className} {...props}>
-                            {children}
-                          </code>
+                          <pre className="!bg-transparent !p-0 !m-0">
+                            <code className={className} {...props}>
+                              {children}
+                            </code>
+                          </pre>
                         );
-                      }
-                      return (
-                        <pre className="!bg-transparent !p-0 !m-0">
-                          <code className={className} {...props}>
-                            {children}
-                          </code>
-                        </pre>
-                      );
-                    },
-                  }}
-                >
-                  {`\`\`\`${currentArtifact?.language || ''}\n${currentArtifact?.code}\n\`\`\``}
-                </ReactMarkdown>
-              </div>
+                      },
+                    }}
+                  >
+                    {`\`\`\`${currentArtifact?.language || ''}\n${currentArtifact?.code}\n\`\`\``}
+                  </ReactMarkdown>
+                </div>
+              )}
             </div>
           ) : (
             <div className="h-full overflow-auto">

@@ -1,6 +1,6 @@
 import { lazy, Suspense, memo, useMemo, useState, useCallback, useRef, Fragment } from "react";
 import { useStreamingText } from "../../hooks/useStreamingText";
-import { extractCodeBlocks } from "../../utils/extractCodeBlocks";
+import { extractArtifacts } from "../../utils/extractCodeBlocks";
 import MarkdownMessage from "./MarkdownMessage";
 import ThinkingBlock from "./ThinkingBlock";
 
@@ -184,7 +184,7 @@ const RetryButton = memo(({ onRetry, isDarkMode }) => {
 RetryButton.displayName = "RetryButton";
 
 // Message Actions
-const MessageActions = memo(({ text, isUser, isDarkMode, onRegenerate, hasError, onRetry, onOpenArtifacts, hasCodeBlocks }) => (
+const MessageActions = memo(({ text, isUser, isDarkMode, onRegenerate, hasError, onRetry, onOpenArtifacts, hasArtifacts }) => (
   <div className={`flex items-center gap-1.5`}>
     {hasError ? (
       <RetryButton onRetry={onRetry} isDarkMode={isDarkMode} />
@@ -195,7 +195,7 @@ const MessageActions = memo(({ text, isUser, isDarkMode, onRegenerate, hasError,
           <>
             <SpeakButton text={text} isDarkMode={isDarkMode} />
             {onRegenerate && <RegenerateButton onRegenerate={onRegenerate} isDarkMode={isDarkMode} />}
-            {hasCodeBlocks && onOpenArtifacts && <OpenArtifactsButton onOpenArtifacts={onOpenArtifacts} isDarkMode={isDarkMode} />}
+            {hasArtifacts && onOpenArtifacts && <OpenArtifactsButton onOpenArtifacts={onOpenArtifacts} isDarkMode={isDarkMode} />}
           </>
         )}
       </>
@@ -222,11 +222,11 @@ const MessageBubble = memo(({ message, isStreaming = false, isDarkMode = true, o
     [message.images]
   );
 
-  const hasCodeBlocks = useMemo(() => {
-    if (!message.text || isUser) return false;
-    const codeBlocks = extractCodeBlocks(message.text);
-    return codeBlocks.length > 0;
-  }, [message.text, isUser]);
+  const hasArtifacts = useMemo(() => {
+    if (isUser) return false;
+    const artifacts = extractArtifacts(message);
+    return artifacts.length > 0;
+  }, [message, isUser]);
 
   // Format timestamp
   const formattedTime = useMemo(() => {
@@ -356,7 +356,7 @@ const MessageBubble = memo(({ message, isStreaming = false, isDarkMode = true, o
                 onRegenerate={!isUser ? onRegenerate : null}
                 onRetry={hasError ? onRetry : null}
                 onOpenArtifacts={!isUser ? onOpenArtifacts : null}
-                hasCodeBlocks={hasCodeBlocks}
+                hasArtifacts={hasArtifacts}
               />
             )}
           </div>

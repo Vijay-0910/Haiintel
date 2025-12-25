@@ -104,7 +104,7 @@ const ChatMessages = memo(
           onRetry={message.error ? () => onRetry(message.id) : null}
           onOpenArtifacts={
             message.role === "assistant" && onOpenArtifacts
-              ? () => onOpenArtifacts(message.text)
+              ? () => onOpenArtifacts(message)
               : null
           }
         />

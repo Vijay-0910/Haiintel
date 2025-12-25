@@ -6,7 +6,7 @@ import ChatInput from "./ChatInput";
 import ArtifactsPanel from "./ArtifactsPanel";
 import { useChatSession } from "../../hooks/useChatSession";
 import { getResponse } from "../../data/mockResponses";
-import { extractCodeBlocks } from "../../utils/extractCodeBlocks";
+import { extractArtifacts } from "../../utils/extractCodeBlocks";
 
 // Helper chip suggestions pool
 const HELPER_CHIPS_POOL = [
@@ -137,8 +137,8 @@ ${messageData.text ? `\n\nRegarding your message: "${messageData.text}"\n\nI'd l
     [handleSendMessage]
   );
 
-  const handleOpenArtifacts = useCallback((messageText) => {
-    const artifacts = extractCodeBlocks(messageText);
+  const handleOpenArtifacts = useCallback((message) => {
+    const artifacts = extractArtifacts(message);
     if (artifacts.length > 0) {
       setCurrentArtifacts(artifacts);
       setIsArtifactsPanelOpen(true);
