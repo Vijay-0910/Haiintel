@@ -1,12 +1,17 @@
 import { createRoot } from "react-dom/client";
-import { LazyMotion, domAnimation } from "framer-motion";
+import { LazyMotion } from "framer-motion";
 import App from "./App.jsx";
 import "./index.css";
 
+// Async load animation features to reduce TBT
+// This defers ~35KB of JS parsing from the critical path
+const loadFeatures = () =>
+  import("framer-motion").then((mod) => mod.domAnimation);
+
 // Production-optimized render with LazyMotion at TOP level
-// This ensures ALL components (including lazy-loaded ones) have access to animation features
+// Features load asynchronously - animations work once loaded
 createRoot(document.getElementById("root")).render(
-  <LazyMotion features={domAnimation} strict>
+  <LazyMotion features={loadFeatures} strict>
     <App />
   </LazyMotion>
 );

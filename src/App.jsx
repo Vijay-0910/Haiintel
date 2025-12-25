@@ -1,4 +1,12 @@
-import { useState, useEffect, lazy, Suspense, useCallback, memo } from "react";
+import {
+  useState,
+  useEffect,
+  lazy,
+  Suspense,
+  useCallback,
+  memo,
+  startTransition,
+} from "react";
 import Navbar from "./components/landing/Navbar";
 import HeroSection from "./components/landing/sections/HeroSection";
 import { useInView } from "./hooks/useInView";
@@ -24,19 +32,29 @@ import Footer from "./components/landing/Footer";
 const ChatWidget = lazy(() => import("./components/ChatWidget"));
 
 // Lazy Section wrapper - only loads when in view
+// Uses startTransition to avoid blocking the main thread
 const LazySection = memo(({ Component, isDarkMode, ...props }) => {
-  const [ref, isInView] = useInView({ rootMargin: "50px", threshold: 0 });
+  const [ref, isInView] = useInView({ rootMargin: "100px", threshold: 0 });
   const [hasLoaded, setHasLoaded] = useState(false);
 
-  // Load once and keep loaded
+  // Load once and keep loaded - use transition for non-blocking update
   useEffect(() => {
     if (isInView && !hasLoaded) {
-      setHasLoaded(true);
+      startTransition(() => {
+        setHasLoaded(true);
+      });
     }
   }, [isInView, hasLoaded]);
 
   return (
-    <div ref={ref} style={{ minHeight: hasLoaded ? "auto" : "400px" }}>
+    <div
+      ref={ref}
+      style={{
+        minHeight: hasLoaded ? "auto" : "400px",
+        contain: "layout",
+        contentVisibility: hasLoaded ? "visible" : "auto",
+      }}
+    >
       {hasLoaded ? (
         <Suspense fallback={null}>
           <Component isDarkMode={isDarkMode} {...props} />
@@ -65,9 +83,23 @@ function App() {
     localStorage.setItem("haiintel-theme", isDarkMode ? "dark" : "light");
   }, [isDarkMode]);
 
-  // Load chat widget immediately - Framer Motion will handle the animation delay
+  // Defer chat widget loading to reduce TBT
+  // Uses requestIdleCallback for truly idle-time loading
   useEffect(() => {
-    setShouldLoadChat(true);
+    const loadChat = () => {
+      startTransition(() => {
+        setShouldLoadChat(true);
+      });
+    };
+
+    // Load during idle time, or after 2s max
+    if ("requestIdleCallback" in window) {
+      const id = requestIdleCallback(loadChat, { timeout: 2000 });
+      return () => cancelIdleCallback(id);
+    } else {
+      const timer = setTimeout(loadChat, 100);
+      return () => clearTimeout(timer);
+    }
   }, []);
 
   const toggleTheme = useCallback(() => setIsDarkMode((p) => !p), []);

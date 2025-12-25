@@ -102,6 +102,12 @@ export default defineConfig({
             return "vendor";
           }
 
+          // Framer Motion - separate chunk, loaded async via LazyMotion
+          // This reduces TBT by deferring animation code from critical path
+          if (id.includes("framer-motion")) {
+            return "motion";
+          }
+
           // Syntax highlighting - separate chunk for code blocks only
           // Only loads when code blocks are detected in messages
           if (

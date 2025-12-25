@@ -1,5 +1,9 @@
 import { memo } from "react";
 
+/**
+ * ChatSkeleton - GPU-optimized loading skeleton
+ * Uses CSS containment and compositor-only animations to reduce TBT
+ */
 const ChatSkeleton = memo(({ isDarkMode = true }) => (
   <div
     className={`fixed z-[9999] flex flex-col shadow-2xl inset-0 sm:inset-auto sm:bottom-4 sm:right-4 sm:w-[min(90vw,380px)] sm:h-[min(85vh,600px)] sm:rounded-2xl md:w-[min(85vw,440px)] md:h-[min(80vh,650px)] lg:w-[500px] lg:h-[min(80vh,700px)] xl:w-[550px] xl:max-h-[750px] border overflow-hidden animate-slide-up ${
@@ -7,6 +11,7 @@ const ChatSkeleton = memo(({ isDarkMode = true }) => (
         ? "bg-haiintel-darker border-haiintel-border"
         : "bg-white border-gray-200"
     }`}
+    style={{ contain: "layout paint", contentVisibility: "auto" }}
   >
     {/* Skeleton Header */}
     <div
@@ -18,18 +23,18 @@ const ChatSkeleton = memo(({ isDarkMode = true }) => (
     >
       <div className="flex items-center gap-3">
         <div
-          className={`w-10 h-10 rounded-full animate-pulse ${
+          className={`w-10 h-10 rounded-full skeleton-shimmer ${
             isDarkMode ? "bg-haiintel-border" : "bg-gray-300"
           }`}
         />
         <div>
           <div
-            className={`h-4 w-24 rounded animate-pulse mb-1 ${
+            className={`h-4 w-24 rounded skeleton-shimmer mb-1 ${
               isDarkMode ? "bg-haiintel-border" : "bg-gray-300"
             }`}
           />
           <div
-            className={`h-3 w-16 rounded animate-pulse ${
+            className={`h-3 w-16 rounded skeleton-shimmer ${
               isDarkMode ? "bg-haiintel-border/70" : "bg-gray-200"
             }`}
           />
@@ -37,19 +42,19 @@ const ChatSkeleton = memo(({ isDarkMode = true }) => (
       </div>
       <div className="flex items-center gap-2">
         <div
-          className={`w-8 h-8 rounded-lg animate-pulse ${
+          className={`w-8 h-8 rounded-lg skeleton-shimmer ${
             isDarkMode ? "bg-haiintel-border" : "bg-gray-300"
           }`}
         />
         <div
-          className={`w-8 h-8 rounded-lg animate-pulse ${
+          className={`w-8 h-8 rounded-lg skeleton-shimmer ${
             isDarkMode ? "bg-haiintel-border" : "bg-gray-300"
           }`}
         />
       </div>
     </div>
 
-    {/* Skeleton Messages */}
+    {/* Skeleton Messages - uses single shimmer animation */}
     <div
       className={`flex-1 overflow-hidden px-4 py-4 ${
         isDarkMode ? "bg-haiintel-darker" : "bg-gray-50"
@@ -58,7 +63,7 @@ const ChatSkeleton = memo(({ isDarkMode = true }) => (
       {/* Assistant Message Skeleton */}
       <div className="flex gap-2 mb-4">
         <div
-          className={`w-6 h-6 rounded-full flex-shrink-0 animate-pulse ${
+          className={`w-6 h-6 rounded-full flex-shrink-0 skeleton-shimmer ${
             isDarkMode ? "bg-haiintel-border" : "bg-gray-300"
           }`}
         />
@@ -69,19 +74,19 @@ const ChatSkeleton = memo(({ isDarkMode = true }) => (
             }`}
           >
             <div
-              className={`h-3 rounded animate-pulse mb-2 ${
+              className={`h-3 rounded skeleton-shimmer mb-2 ${
                 isDarkMode ? "bg-haiintel-border" : "bg-gray-300"
               }`}
               style={{ width: "90%" }}
             />
             <div
-              className={`h-3 rounded animate-pulse mb-2 ${
+              className={`h-3 rounded skeleton-shimmer mb-2 ${
                 isDarkMode ? "bg-haiintel-border" : "bg-gray-300"
               }`}
               style={{ width: "75%" }}
             />
             <div
-              className={`h-3 rounded animate-pulse ${
+              className={`h-3 rounded skeleton-shimmer ${
                 isDarkMode ? "bg-haiintel-border" : "bg-gray-300"
               }`}
               style={{ width: "60%" }}
@@ -99,7 +104,7 @@ const ChatSkeleton = memo(({ isDarkMode = true }) => (
             }`}
           >
             <div
-              className={`h-3 rounded animate-pulse ${
+              className={`h-3 rounded skeleton-shimmer ${
                 isDarkMode ? "bg-haiintel-blue/40" : "bg-blue-300"
               }`}
               style={{ width: "120px" }}
@@ -111,7 +116,7 @@ const ChatSkeleton = memo(({ isDarkMode = true }) => (
       {/* Another Assistant Message Skeleton */}
       <div className="flex gap-2 mb-4">
         <div
-          className={`w-6 h-6 rounded-full flex-shrink-0 animate-pulse ${
+          className={`w-6 h-6 rounded-full flex-shrink-0 skeleton-shimmer ${
             isDarkMode ? "bg-haiintel-border" : "bg-gray-300"
           }`}
         />
@@ -122,13 +127,13 @@ const ChatSkeleton = memo(({ isDarkMode = true }) => (
             }`}
           >
             <div
-              className={`h-3 rounded animate-pulse mb-2 ${
+              className={`h-3 rounded skeleton-shimmer mb-2 ${
                 isDarkMode ? "bg-haiintel-border" : "bg-gray-300"
               }`}
               style={{ width: "95%" }}
             />
             <div
-              className={`h-3 rounded animate-pulse ${
+              className={`h-3 rounded skeleton-shimmer ${
                 isDarkMode ? "bg-haiintel-border" : "bg-gray-300"
               }`}
               style={{ width: "70%" }}
@@ -155,14 +160,14 @@ const ChatSkeleton = memo(({ isDarkMode = true }) => (
           }`}
         >
           <div
-            className={`h-4 rounded animate-pulse ${
+            className={`h-4 rounded skeleton-shimmer ${
               isDarkMode ? "bg-haiintel-border" : "bg-gray-300"
             }`}
             style={{ width: "60%" }}
           />
         </div>
         <div
-          className={`w-10 h-10 rounded-xl animate-pulse ${
+          className={`w-10 h-10 rounded-xl skeleton-shimmer ${
             isDarkMode ? "bg-haiintel-blue/30" : "bg-blue-200"
           }`}
         />
