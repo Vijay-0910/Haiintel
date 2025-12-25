@@ -1,7 +1,7 @@
 import { memo } from "react";
 import { motion } from "framer-motion";
-import heroImageWebp from "../../../assets/hero-intelligence-CXC1fGWY.jpg?format=webp&w=1920&quality=85";
-import heroImageMobile from "../../../assets/hero-intelligence-CXC1fGWY.jpg?format=webp&w=768&quality=85";
+import heroImageWebp from "../../../assets/hero-desktop.webp";
+import heroImageMobile from "../../../assets/hero-mobile.webp";
 import heroImageFallback from "../../../assets/hero-intelligence-CXC1fGWY.jpg";
 
 const HeroSection = memo(({ onScrollToSection }) => {

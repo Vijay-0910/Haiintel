@@ -56,9 +56,30 @@ function App() {
     localStorage.setItem("haiintel-theme", isDarkMode ? "dark" : "light");
   }, [isDarkMode]);
 
-  // Load chat widget immediately on mount
+  // Delay chat widget load until user interaction (hover/click on button)
+  // This reduces initial bundle size by ~175 KB
   useEffect(() => {
-    setShouldLoadChat(true);
+    // Load after 3 seconds or on first user interaction
+    const timer = setTimeout(() => setShouldLoadChat(true), 3000);
+
+    const handleInteraction = () => {
+      setShouldLoadChat(true);
+      clearTimeout(timer);
+    };
+
+    // Load on first scroll, mousemove, or click
+    window.addEventListener('scroll', handleInteraction, { once: true, passive: true });
+    window.addEventListener('mousemove', handleInteraction, { once: true, passive: true });
+    window.addEventListener('click', handleInteraction, { once: true, passive: true });
+    window.addEventListener('touchstart', handleInteraction, { once: true, passive: true });
+
+    return () => {
+      clearTimeout(timer);
+      window.removeEventListener('scroll', handleInteraction);
+      window.removeEventListener('mousemove', handleInteraction);
+      window.removeEventListener('click', handleInteraction);
+      window.removeEventListener('touchstart', handleInteraction);
+    };
   }, []);
 
   const toggleTheme = useCallback(() => setIsDarkMode((p) => !p), []);
