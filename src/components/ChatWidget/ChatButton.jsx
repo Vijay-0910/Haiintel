@@ -1,5 +1,5 @@
 import { memo, useCallback } from "react";
-import { motion } from "framer-motion";
+import { m } from "framer-motion";
 import AIIcon from "../common/AIIcon";
 
 // Preload ChatWindow when user hovers over button
@@ -13,7 +13,7 @@ const ChatButton = memo(({ onClick, isOpen, isDarkMode = true }) => {
   }, []);
 
   return (
-    <motion.button
+    <m.button
       onClick={onClick}
       onMouseEnter={handleMouseEnter}
       onFocus={handleMouseEnter}
@@ -89,7 +89,7 @@ const ChatButton = memo(({ onClick, isOpen, isDarkMode = true }) => {
           />
         </svg>
       </div>
-    </motion.button>
+    </m.button>
   );
 });
 

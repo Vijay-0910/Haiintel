@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState, useCallback, useMemo, memo } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { m, AnimatePresence } from "framer-motion";
 import ChatHeader from "./ChatHeader";
 import ChatMessages from "./ChatMessages";
 import ChatInput from "./ChatInput";
@@ -552,7 +552,7 @@ ${
   return (
     <>
       {/* Backdrop - Click outside to close */}
-      <motion.div
+      <m.div
         className="fixed inset-0 z-[9998] bg-black/20 backdrop-blur-sm"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
@@ -563,7 +563,7 @@ ${
       />
 
       {/* Chat Window */}
-      <motion.div
+      <m.div
         className={windowClassName}
         initial={{ opacity: 0, y: 20, scale: 0.95 }}
         animate={{ opacity: 1, y: 0, scale: 1 }}
@@ -625,7 +625,7 @@ ${
           message="Are you sure you want to delete the entire chat history? This action cannot be undone."
           isDarkMode={isDarkMode}
         />
-      </motion.div>
+      </m.div>
     </>
   );
 });

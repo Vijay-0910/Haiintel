@@ -1,5 +1,5 @@
 import { memo } from "react";
-import { motion } from "framer-motion";
+import { m } from "framer-motion";
 
 const badges = [
   "Free 14-day trial",
@@ -52,7 +52,7 @@ const CTASection = memo(({ isDarkMode }) => (
     />
 
     <div className="container mx-auto max-w-4xl relative z-10">
-      <motion.div
+      <m.div
         className={`text-center p-8 sm:p-12 rounded-3xl border backdrop-blur-sm ${
           isDarkMode
             ? "bg-gradient-to-br from-haiintel-blue/20 to-haiintel-accent/20 border-haiintel-border"
@@ -63,7 +63,7 @@ const CTASection = memo(({ isDarkMode }) => (
         viewport={{ once: true }}
         transition={{ duration: 0.7, ease: "easeOut" }}
       >
-        <motion.h2
+        <m.h2
           className={`text-3xl sm:text-4xl md:text-5xl font-bold mb-6 ${
             isDarkMode ? "text-haiintel-text" : "text-gray-900"
           }`}
@@ -73,8 +73,8 @@ const CTASection = memo(({ isDarkMode }) => (
           transition={{ duration: 0.6, delay: 0.2 }}
         >
           Ready to Transform Your Customer Experience?
-        </motion.h2>
-        <motion.p
+        </m.h2>
+        <m.p
           className={`text-lg sm:text-xl mb-8 sm:mb-10 max-w-2xl mx-auto ${
             isDarkMode ? "text-gray-400" : "text-gray-600"
           }`}
@@ -85,17 +85,17 @@ const CTASection = memo(({ isDarkMode }) => (
         >
           Join thousands of businesses using HaiIntel to deliver exceptional
           support at scale
-        </motion.p>
+        </m.p>
 
         {/* Buttons */}
-        <motion.div
+        <m.div
           className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-8 sm:mb-10"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6, delay: 0.4 }}
         >
-          <motion.button
+          <m.button
             className={`px-10 py-4 rounded-full font-semibold text-lg transition-all duration-150 ${
               isDarkMode
                 ? "bg-white text-black hover:bg-gray-100"
@@ -105,8 +105,8 @@ const CTASection = memo(({ isDarkMode }) => (
             whileTap={{ scale: 0.95 }}
           >
             Start Free Trial
-          </motion.button>
-          <motion.button
+          </m.button>
+          <m.button
             className={`px-10 py-4 bg-transparent border-2 rounded-full font-semibold text-lg transition-all duration-150 ${
               isDarkMode
                 ? "border-haiintel-cyan text-haiintel-cyan hover:bg-haiintel-cyan/10"
@@ -116,18 +116,18 @@ const CTASection = memo(({ isDarkMode }) => (
             whileTap={{ scale: 0.95 }}
           >
             Book a Demo
-          </motion.button>
-        </motion.div>
+          </m.button>
+        </m.div>
 
-        <motion.div
+        <m.div
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6, delay: 0.5 }}
         >
           <TrustBadges isDarkMode={isDarkMode} />
-        </motion.div>
-      </motion.div>
+        </m.div>
+      </m.div>
     </div>
   </section>
 ));

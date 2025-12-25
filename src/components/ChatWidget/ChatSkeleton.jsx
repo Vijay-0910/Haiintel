@@ -1,8 +1,8 @@
 import { memo } from "react";
-import { motion } from "framer-motion";
+import { m } from "framer-motion";
 
 const ChatSkeleton = memo(({ isDarkMode = true }) => (
-  <motion.div
+  <m.div
     className={`fixed z-[9999] flex flex-col shadow-2xl inset-0 sm:inset-auto sm:bottom-4 sm:right-4 sm:w-[min(90vw,380px)] sm:h-[min(85vh,600px)] sm:rounded-2xl md:w-[min(85vw,440px)] md:h-[min(80vh,650px)] lg:w-[500px] lg:h-[min(80vh,700px)] xl:w-[550px] xl:max-h-[750px] border overflow-hidden ${
       isDarkMode
         ? "bg-haiintel-darker border-haiintel-border"
@@ -173,7 +173,7 @@ const ChatSkeleton = memo(({ isDarkMode = true }) => (
         />
       </div>
     </div>
-  </motion.div>
+  </m.div>
 ));
 
 ChatSkeleton.displayName = "ChatSkeleton";

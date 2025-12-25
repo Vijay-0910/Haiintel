@@ -7,7 +7,7 @@ import {
   lazy,
   Suspense,
 } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { m, AnimatePresence } from "framer-motion";
 import ReactMarkdown from "react-markdown";
 import rehypeHighlight from "rehype-highlight";
 import "highlight.js/styles/github-dark.css";
@@ -170,7 +170,7 @@ const ArtifactsPanel = memo(
         {isOpen && artifacts && artifacts.length > 0 && (
           <>
             {/* Backdrop */}
-            <motion.div
+            <m.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
@@ -179,7 +179,7 @@ const ArtifactsPanel = memo(
             />
 
             {/* Panel */}
-            <motion.div
+            <m.div
               initial={{ x: "100%" }}
               animate={{ x: 0 }}
               exit={{ x: "100%" }}
@@ -479,7 +479,7 @@ const ArtifactsPanel = memo(
                   <div className="h-full overflow-auto">{previewContent}</div>
                 )}
               </div>
-            </motion.div>
+            </m.div>
           </>
         )}
       </AnimatePresence>

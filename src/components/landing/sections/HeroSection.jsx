@@ -1,5 +1,5 @@
 import { memo } from "react";
-import { motion } from "framer-motion";
+import { m } from "framer-motion";
 
 // Cloudinary with aggressive optimization
 const heroImageMobile =
@@ -39,7 +39,7 @@ const HeroSection = memo(({ onScrollToSection }) => {
       <div className="container mx-auto relative z-10 px-2 sm:px-0">
         <div className="text-center max-w-5xl mx-auto">
           {/* Main Headline - LCP target */}
-          <motion.div
+          <m.div
             className="mb-4 sm:mb-6 md:mb-8"
             initial={{ y: 30, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
@@ -51,9 +51,9 @@ const HeroSection = memo(({ onScrollToSection }) => {
             <h2 className="text-2xl xs:text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-bold leading-tight bg-gradient-to-r from-haiintel-cyan to-haiintel-accent bg-clip-text text-transparent">
               Not Just Software.
             </h2>
-          </motion.div>
+          </m.div>
 
-          <motion.p
+          <m.p
             className="text-sm xs:text-base sm:text-lg md:text-xl text-gray-200 mb-6 sm:mb-8 md:mb-12 max-w-4xl mx-auto leading-relaxed px-2"
             initial={{ y: 30, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
@@ -65,16 +65,16 @@ const HeroSection = memo(({ onScrollToSection }) => {
             Haiintel partners with CIOs to embed human-rooted AI into enterprise
             transformation — accelerating outcomes through domain-aware,
             intelligence-first systems.
-          </motion.p>
+          </m.p>
 
           {/* CTA Buttons */}
-          <motion.div
+          <m.div
             className="flex flex-col sm:flex-row items-stretch sm:items-center justify-center gap-3 sm:gap-4 px-2"
             initial={{ y: 30, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{ duration: 0.8, delay: 0.6, ease: "easeOut" }}
           >
-            <motion.button
+            <m.button
               onClick={() => onScrollToSection("dos")}
               className="w-full sm:w-auto min-h-[44px] px-6 sm:px-8 py-3 sm:py-4 bg-white text-black rounded-full font-semibold text-sm sm:text-base hover:bg-gray-100 transition-all duration-150 shadow-lg flex items-center justify-center gap-2"
               whileHover={{ scale: 1.05 }}
@@ -94,16 +94,16 @@ const HeroSection = memo(({ onScrollToSection }) => {
                   d="M14 5l7 7m0 0l-7 7m7-7H3"
                 />
               </svg>
-            </motion.button>
-            <motion.button
+            </m.button>
+            <m.button
               onClick={() => onScrollToSection("products")}
               className="w-full sm:w-auto min-h-[44px] px-6 sm:px-8 py-3 sm:py-4 bg-transparent border-2 border-white text-white rounded-full font-semibold text-sm sm:text-base hover:bg-white/10 transition-all duration-150 shadow-lg"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >
               Explore HaiProducts
-            </motion.button>
-          </motion.div>
+            </m.button>
+          </m.div>
         </div>
       </div>
     </section>

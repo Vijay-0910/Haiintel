@@ -1,5 +1,5 @@
 import { memo, useState, useCallback } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { m, AnimatePresence } from "framer-motion";
 
 const ThinkingBlock = memo(
   ({ thinking, isThinking = false, isDarkMode = true }) => {
@@ -32,7 +32,7 @@ const ThinkingBlock = memo(
               <div className="flex items-center gap-1.5">
                 <div className="flex gap-1">
                   {[0, 1, 2].map((i) => (
-                    <motion.div
+                    <m.div
                       key={i}
                       className="w-1.5 h-1.5 rounded-full bg-haiintel-blue"
                       animate={{
@@ -101,7 +101,7 @@ const ThinkingBlock = memo(
         {/* Expandable Content */}
         <AnimatePresence>
           {isExpanded && (
-            <motion.div
+            <m.div
               initial={{ height: 0, opacity: 0 }}
               animate={{ height: "auto", opacity: 1 }}
               exit={{ height: 0, opacity: 0 }}
@@ -127,7 +127,7 @@ const ThinkingBlock = memo(
                   </div>
                 )}
               </div>
-            </motion.div>
+            </m.div>
           )}
         </AnimatePresence>
       </div>

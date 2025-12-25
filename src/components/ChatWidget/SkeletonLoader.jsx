@@ -1,9 +1,9 @@
 import { memo } from "react";
-import { motion } from "framer-motion";
+import { m } from "framer-motion";
 
 const SkeletonLoader = memo(({ isDarkMode = true }) => {
   return (
-    <motion.div
+    <m.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
@@ -112,7 +112,7 @@ const SkeletonLoader = memo(({ isDarkMode = true }) => {
           />
         </div>
       </div>
-    </motion.div>
+    </m.div>
   );
 });
 

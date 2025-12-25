@@ -1,5 +1,5 @@
 import { memo } from "react";
-import { motion } from "framer-motion";
+import { m } from "framer-motion";
 
 const useCases = [
   {
@@ -79,7 +79,7 @@ const UseCasesSection = memo(({ isDarkMode }) => (
     <div className="container mx-auto max-w-6xl">
       {/* Header */}
       <div className="text-center mb-12 sm:mb-16">
-        <motion.span
+        <m.span
           className={`text-sm font-semibold tracking-wider uppercase mb-4 block ${
             isDarkMode ? "text-haiintel-green" : "text-green-600"
           }`}
@@ -89,8 +89,8 @@ const UseCasesSection = memo(({ isDarkMode }) => (
           transition={{ duration: 0.5 }}
         >
           Use Cases
-        </motion.span>
-        <motion.h2
+        </m.span>
+        <m.h2
           className={`text-3xl sm:text-4xl md:text-5xl font-bold mb-6 ${
             isDarkMode ? "text-haiintel-text" : "text-gray-900"
           }`}
@@ -100,13 +100,13 @@ const UseCasesSection = memo(({ isDarkMode }) => (
           transition={{ duration: 0.6, delay: 0.1 }}
         >
           Built for Every Industry
-        </motion.h2>
+        </m.h2>
       </div>
 
       {/* Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
         {useCases.map((useCase, index) => (
-          <motion.div
+          <m.div
             key={index}
             initial={{ opacity: 0, scale: 0.9 }}
             whileInView={{ opacity: 1, scale: 1 }}
@@ -114,7 +114,7 @@ const UseCasesSection = memo(({ isDarkMode }) => (
             transition={{ duration: 0.5, delay: index * 0.1 }}
           >
             <UseCaseCard useCase={useCase} isDarkMode={isDarkMode} />
-          </motion.div>
+          </m.div>
         ))}
       </div>
     </div>

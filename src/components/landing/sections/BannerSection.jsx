@@ -1,5 +1,5 @@
 import { memo } from "react";
-import { motion } from "framer-motion";
+import { m } from "framer-motion";
 
 const benefits = [
   "24/7 instant customer support without human agents",
@@ -155,13 +155,13 @@ const BannerSection = memo(({ isDarkMode }) => (
     <div className="container mx-auto max-w-6xl">
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
         {/* Left Content */}
-        <motion.div
+        <m.div
           initial={{ x: -50, opacity: 0 }}
           whileInView={{ x: 0, opacity: 1 }}
           viewport={{ once: true, margin: "-100px" }}
           transition={{ duration: 0.6, ease: "easeOut" }}
         >
-          <motion.span
+          <m.span
             className={`text-sm font-semibold tracking-wider uppercase mb-4 block ${
               isDarkMode ? "text-haiintel-cyan" : "text-haiintel-blue"
             }`}
@@ -171,8 +171,8 @@ const BannerSection = memo(({ isDarkMode }) => (
             transition={{ delay: 0.2 }}
           >
             Why Choose Us
-          </motion.span>
-          <motion.h2
+          </m.span>
+          <m.h2
             className={`text-3xl sm:text-4xl md:text-5xl font-bold mb-6 leading-tight ${
               isDarkMode ? "text-haiintel-text" : "text-gray-900"
             }`}
@@ -189,8 +189,8 @@ const BannerSection = memo(({ isDarkMode }) => (
             >
               Convert
             </span>
-          </motion.h2>
-          <motion.p
+          </m.h2>
+          <m.p
             className={`text-base sm:text-lg mb-8 leading-relaxed ${
               isDarkMode ? "text-gray-400" : "text-gray-600"
             }`}
@@ -202,12 +202,12 @@ const BannerSection = memo(({ isDarkMode }) => (
             Our AI-powered chat widget understands context, remembers
             conversations, and delivers personalized responses that feel
             genuinely human.
-          </motion.p>
+          </m.p>
 
           {/* Benefits List */}
           <div className="space-y-4">
             {benefits.map((item, index) => (
-              <motion.div
+              <m.div
                 key={index}
                 initial={{ x: -20, opacity: 0 }}
                 whileInView={{ x: 0, opacity: 1 }}
@@ -215,11 +215,11 @@ const BannerSection = memo(({ isDarkMode }) => (
                 transition={{ delay: 0.5 + index * 0.1, duration: 0.5 }}
               >
                 <BenefitItem item={item} isDarkMode={isDarkMode} />
-              </motion.div>
+              </m.div>
             ))}
           </div>
 
-          <motion.button
+          <m.button
             className="mt-8 px-8 py-4 bg-gradient-to-r from-haiintel-blue to-haiintel-cyan text-white rounded-full font-semibold hover:opacity-90 transition-all duration-150 shadow-intelligence"
             initial={{ y: 20, opacity: 0 }}
             whileInView={{ y: 0, opacity: 1 }}
@@ -229,18 +229,18 @@ const BannerSection = memo(({ isDarkMode }) => (
             whileTap={{ scale: 0.95 }}
           >
             Try It Free
-          </motion.button>
-        </motion.div>
+          </m.button>
+        </m.div>
 
         {/* Right Content */}
-        <motion.div
+        <m.div
           initial={{ x: 50, opacity: 0 }}
           whileInView={{ x: 0, opacity: 1 }}
           viewport={{ once: true, margin: "-100px" }}
           transition={{ duration: 0.6, delay: 0.2, ease: "easeOut" }}
         >
           <ChatPreview isDarkMode={isDarkMode} />
-        </motion.div>
+        </m.div>
       </div>
     </div>
   </section>

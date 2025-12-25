@@ -1,5 +1,5 @@
 import { memo } from "react";
-import { motion } from "framer-motion";
+import { m } from "framer-motion";
 
 const features = [
   {
@@ -100,7 +100,7 @@ const FeaturesSection = memo(({ isDarkMode }) => (
     <div className="container mx-auto max-w-6xl">
       {/* Section Header */}
       <div className="text-center mb-12 sm:mb-16">
-        <motion.span
+        <m.span
           className={`text-sm font-semibold tracking-wider uppercase mb-4 block ${
             isDarkMode ? "text-haiintel-cyan" : "text-haiintel-blue"
           }`}
@@ -110,8 +110,8 @@ const FeaturesSection = memo(({ isDarkMode }) => (
           transition={{ duration: 0.5 }}
         >
           Powerful Features
-        </motion.span>
-        <motion.h2
+        </m.span>
+        <m.h2
           className={`text-3xl sm:text-4xl md:text-5xl font-bold mb-6 ${
             isDarkMode ? "text-haiintel-text" : "text-gray-900"
           }`}
@@ -121,8 +121,8 @@ const FeaturesSection = memo(({ isDarkMode }) => (
           transition={{ duration: 0.6, delay: 0.1 }}
         >
           AI-Powered Conversations
-        </motion.h2>
-        <motion.p
+        </m.h2>
+        <m.p
           className={`text-base sm:text-lg max-w-2xl mx-auto ${
             isDarkMode ? "text-gray-400" : "text-gray-600"
           }`}
@@ -133,13 +133,13 @@ const FeaturesSection = memo(({ isDarkMode }) => (
         >
           Transform customer interactions with intelligent, context-aware
           responses
-        </motion.p>
+        </m.p>
       </div>
 
       {/* Features Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
         {features.map((feature, index) => (
-          <motion.div
+          <m.div
             key={index}
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -147,7 +147,7 @@ const FeaturesSection = memo(({ isDarkMode }) => (
             transition={{ duration: 0.5, delay: index * 0.1 }}
           >
             <FeatureCard feature={feature} isDarkMode={isDarkMode} />
-          </motion.div>
+          </m.div>
         ))}
       </div>
     </div>

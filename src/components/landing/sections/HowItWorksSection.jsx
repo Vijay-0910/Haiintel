@@ -1,5 +1,5 @@
 import { memo } from "react";
-import { motion } from "framer-motion";
+import { m } from "framer-motion";
 
 const steps = [
   {
@@ -96,7 +96,7 @@ const HowItWorksSection = memo(({ isDarkMode }) => (
     <div className="container mx-auto max-w-6xl relative z-10">
       {/* Header */}
       <div className="text-center mb-12 sm:mb-16">
-        <motion.span
+        <m.span
           className={`text-sm font-semibold tracking-wider uppercase mb-4 block ${
             isDarkMode ? "text-haiintel-accent" : "text-orange-500"
           }`}
@@ -106,8 +106,8 @@ const HowItWorksSection = memo(({ isDarkMode }) => (
           transition={{ duration: 0.5 }}
         >
           Simple Setup
-        </motion.span>
-        <motion.h2
+        </m.span>
+        <m.h2
           className={`text-3xl sm:text-4xl md:text-5xl font-bold mb-6 ${
             isDarkMode ? "text-haiintel-text" : "text-gray-900"
           }`}
@@ -117,8 +117,8 @@ const HowItWorksSection = memo(({ isDarkMode }) => (
           transition={{ duration: 0.6, delay: 0.1 }}
         >
           Get Started in Minutes
-        </motion.h2>
-        <motion.p
+        </m.h2>
+        <m.p
           className={`text-base sm:text-lg max-w-2xl mx-auto ${
             isDarkMode ? "text-gray-400" : "text-gray-600"
           }`}
@@ -128,13 +128,13 @@ const HowItWorksSection = memo(({ isDarkMode }) => (
           transition={{ duration: 0.6, delay: 0.2 }}
         >
           Three simple steps to transform your customer support
-        </motion.p>
+        </m.p>
       </div>
 
       {/* Steps Grid */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
         {steps.map((item, index) => (
-          <motion.div
+          <m.div
             key={index}
             initial={{ opacity: 0, y: 40 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -146,13 +146,13 @@ const HowItWorksSection = memo(({ isDarkMode }) => (
               isDarkMode={isDarkMode}
               isLast={index === steps.length - 1}
             />
-          </motion.div>
+          </m.div>
         ))}
       </div>
 
       {/* CTA */}
       <div className="text-center mt-12 sm:mt-16">
-        <motion.button
+        <m.button
           className="px-10 py-4 bg-gradient-to-r from-haiintel-blue to-haiintel-cyan rounded-full text-white font-semibold text-lg shadow-intelligence hover:opacity-90 transition-all duration-150"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -162,7 +162,7 @@ const HowItWorksSection = memo(({ isDarkMode }) => (
           whileTap={{ scale: 0.95 }}
         >
           Start Free Trial
-        </motion.button>
+        </m.button>
       </div>
     </div>
   </section>
