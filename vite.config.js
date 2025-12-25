@@ -105,11 +105,12 @@ export default defineConfig({
           // ✅ REMOVED Framer Motion manual chunking
           // Let Vite tree-shake it automatically with LazyMotion
 
-          // Markdown rendering
+          // Markdown rendering (includes MarkdownMessage component)
           if (
             id.includes("react-markdown") ||
             id.includes("rehype-") ||
-            id.includes("remark-")
+            id.includes("remark-") ||
+            id.includes("MarkdownMessage")
           ) {
             return "markdown";
           }
@@ -119,7 +120,7 @@ export default defineConfig({
             return "syntax";
           }
 
-          // Chat widget core
+          // Chat widget core (excludes MarkdownMessage - that goes in markdown chunk)
           if (id.includes("src/components/ChatWidget")) {
             return "chat";
           }
