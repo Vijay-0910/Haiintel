@@ -24,9 +24,7 @@ const HowItWorksSection = lazy(
 const UseCasesSection = lazy(
   () => import("./components/landing/sections/UseCasesSection")
 );
-const CTASection = lazy(
-  () => import("./components/landing/sections/CTASection")
-);
+
 // const Footer = lazy(() => import("./components/landing/Footer"));
 import Footer from "./components/landing/Footer";
 const ChatWidget = lazy(() => import("./components/ChatWidget"));
@@ -165,7 +163,6 @@ function App() {
       <LazySection Component={FeaturesSection} isDarkMode={isDarkMode} />
       <LazySection Component={HowItWorksSection} isDarkMode={isDarkMode} />
       <LazySection Component={UseCasesSection} isDarkMode={isDarkMode} />
-      <LazySection Component={CTASection} isDarkMode={isDarkMode} />
       <LazySection Component={Footer} isDarkMode={isDarkMode} />
 
       {/* Chat widget - delays until interaction */}
