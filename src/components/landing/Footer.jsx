@@ -37,11 +37,11 @@ BrandColumn.displayName = "BrandColumn";
 // Link Column - Memoized
 const LinkColumn = memo(({ title, links, isDarkMode }) => (
   <div>
-    <h4
+    <p
       className={`font-semibold mb-4 text-sm ${isDarkMode ? "text-haiintel-text" : "text-gray-900"}`}
     >
       {title}
-    </h4>
+    </p>
     <ul className="space-y-3">
       {links.map((item) => (
         <li key={item}>
