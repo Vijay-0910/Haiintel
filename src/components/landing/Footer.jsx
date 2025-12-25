@@ -1,4 +1,5 @@
 import { memo } from "react";
+// import logoWhite from "../../assets/white-logo-nobg-1-bLeBMUHY.svg";
 
 const footerLinks = {
   product: ["Features", "Integrations", "Pricing", "Changelog"],
@@ -6,129 +7,70 @@ const footerLinks = {
   company: ["About Us", "Careers", "Contact", "Partners"],
 };
 
+const socialLinks = [
+  { name: "Twitter", icon: "𝕏" },
+  { name: "LinkedIn", icon: "in" },
+  { name: "GitHub", icon: "⌘" },
+];
+
 const legalLinks = ["Privacy", "Terms", "Security"];
 
-// Inline Logo SVG - No external file needed
-const LogoIcon = memo(({ isDarkMode }: { isDarkMode: boolean }) => (
-  <svg
-    width="48"
-    height="48"
-    viewBox="0 0 48 48"
-    fill="none"
-    xmlns="http://www.w3.org/2000/svg"
-    className={`${!isDarkMode ? "invert" : ""}`}
-  >
-    {/* Simple HaiIntel logo - replace with actual logo path if available */}
-    <rect width="48" height="48" rx="8" fill="url(#gradient)" />
-    <text
-      x="24"
-      y="32"
-      fontSize="20"
-      fontWeight="bold"
-      fill="white"
-      textAnchor="middle"
-      fontFamily="system-ui"
-    >
-      HI
-    </text>
-    <defs>
-      <linearGradient id="gradient" x1="0" y1="0" x2="48" y2="48">
-        <stop offset="0%" stopColor="#06b6d4" />
-        <stop offset="100%" stopColor="#3b82f6" />
-      </linearGradient>
-    </defs>
-  </svg>
-));
-LogoIcon.displayName = "LogoIcon";
-
-// Inline Social Icons - No external requests
-const TwitterIcon = () => (
-  <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
-    <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
-  </svg>
-);
-
-const LinkedInIcon = () => (
-  <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
-    <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" />
-  </svg>
-);
-
-const GitHubIcon = () => (
-  <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
-    <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" />
-  </svg>
-);
-
-const socialIcons = {
-  Twitter: TwitterIcon,
-  LinkedIn: LinkedInIcon,
-  GitHub: GitHubIcon,
-};
-
-// Brand Column - Optimized
-const BrandColumn = memo(({ isDarkMode }: { isDarkMode: boolean }) => (
+// Brand Column - Memoized
+const BrandColumn = memo(({ isDarkMode }) => (
   <div className="col-span-2">
     <div className="flex items-center gap-2 mb-4">
-      <LogoIcon isDarkMode={isDarkMode} />
+      {/* <img
+        src={logoWhite}
+        alt="HaiIntel Logo"
+        loading="lazy"
+        decoding="async"
+        width="48"
+        height="48"
+        className={`h-12 w-auto ${!isDarkMode ? "invert" : ""}`}
+      /> */}
     </div>
     <p
-      className={`mb-6 text-sm leading-relaxed ${
-        isDarkMode ? "text-gray-400" : "text-gray-600"
-      }`}
+      className={`mb-6 text-sm leading-relaxed ${isDarkMode ? "text-gray-500" : "text-gray-600"}`}
     >
       AI-powered chat widget for modern businesses. Deliver exceptional customer
       experiences with intelligent conversations.
     </p>
 
-    {/* Social Links with inline SVG icons */}
+    {/* Social Links - CSS hover */}
     <div className="flex gap-3">
-      {(Object.keys(socialIcons) as Array<keyof typeof socialIcons>).map((name) => {
-        const Icon = socialIcons[name];
-        return (
-          
-            key={name}
-            href="#"
-            aria-label={name}
-            className={`w-9 h-9 rounded-lg border flex items-center justify-center transition-all duration-150 hover:scale-110 hover:-translate-y-0.5 ${
-              isDarkMode
-                ? "bg-haiintel-darker/80 border-haiintel-border text-gray-400 hover:text-white hover:border-haiintel-cyan hover:bg-haiintel-cyan/20"
-                : "bg-white border-gray-200 text-gray-500 hover:text-haiintel-blue hover:border-haiintel-blue hover:bg-haiintel-blue/10"
-            }`}
-          >
-            <Icon />
-          </a>
-        );
-      })}
+      {socialLinks.map((social) => (
+        <a
+          key={social.name}
+          href="#"
+          aria-label={social.name}
+          className={`w-9 h-9 rounded-lg border flex items-center justify-center transition-all duration-150 text-sm font-medium hover:scale-110 hover:-translate-y-0.5 ${
+            isDarkMode
+              ? "bg-haiintel-darker/80 border-haiintel-border text-gray-400 hover:text-white hover:border-haiintel-cyan hover:bg-haiintel-cyan/20"
+              : "bg-white border-gray-200 text-gray-500 hover:text-haiintel-blue hover:border-haiintel-blue hover:bg-haiintel-blue/10"
+          }`}
+        >
+          {social.icon}
+        </a>
+      ))}
     </div>
   </div>
 ));
 BrandColumn.displayName = "BrandColumn";
 
 // Link Column - Memoized
-const LinkColumn = memo(({ title, links, isDarkMode }: { 
-  title: string; 
-  links: string[]; 
-  isDarkMode: boolean 
-}) => (
+const LinkColumn = memo(({ title, links, isDarkMode }) => (
   <div>
-    <h3
-      className={`font-semibold mb-4 text-sm ${
-        isDarkMode ? "text-haiintel-text" : "text-gray-900"
-      }`}
+    <h4
+      className={`font-semibold mb-4 text-sm ${isDarkMode ? "text-haiintel-text" : "text-gray-900"}`}
     >
       {title}
-    </h3>
+    </h4>
     <ul className="space-y-3">
       {links.map((item) => (
         <li key={item}>
-          
+          <a
             href="#"
-            className={`transition-colors duration-150 text-sm ${
-              isDarkMode
-                ? "text-gray-400 hover:text-haiintel-cyan"
-                : "text-gray-600 hover:text-haiintel-blue"
-            }`}
+            className={`transition-colors duration-150 text-sm ${isDarkMode ? "text-gray-500 hover:text-haiintel-cyan" : "text-gray-600 hover:text-haiintel-blue"}`}
           >
             {item}
           </a>
@@ -140,25 +82,19 @@ const LinkColumn = memo(({ title, links, isDarkMode }: {
 LinkColumn.displayName = "LinkColumn";
 
 // Bottom Bar - Memoized
-const BottomBar = memo(({ isDarkMode }: { isDarkMode: boolean }) => (
+const BottomBar = memo(({ isDarkMode }) => (
   <div
-    className={`pt-8 border-t flex flex-col md:flex-row items-center justify-between gap-4 ${
-      isDarkMode ? "border-haiintel-border/50" : "border-gray-200"
-    }`}
+    className={`pt-8 border-t flex flex-col md:flex-row items-center justify-between gap-4 ${isDarkMode ? "border-haiintel-border/50" : "border-gray-200"}`}
   >
     <p className={`text-sm ${isDarkMode ? "text-gray-600" : "text-gray-500"}`}>
       © 2025 HaiIntel. All rights reserved.
     </p>
     <div className="flex items-center gap-6 text-sm">
       {legalLinks.map((link) => (
-        
+        <a
           key={link}
           href="#"
-          className={`transition-colors duration-150 ${
-            isDarkMode
-              ? "text-gray-400 hover:text-haiintel-cyan"
-              : "text-gray-600 hover:text-haiintel-blue"
-          }`}
+          className={`transition-colors duration-150 ${isDarkMode ? "text-gray-500 hover:text-haiintel-cyan" : "text-gray-600 hover:text-haiintel-blue"}`}
         >
           {link}
         </a>
@@ -168,13 +104,9 @@ const BottomBar = memo(({ isDarkMode }: { isDarkMode: boolean }) => (
 ));
 BottomBar.displayName = "BottomBar";
 
-const Footer = memo(({ isDarkMode }: { isDarkMode: boolean }) => (
+const Footer = memo(({ isDarkMode }) => (
   <footer
-    className={`py-12 sm:py-16 px-4 sm:px-6 border-t transition-colors duration-200 ${
-      isDarkMode
-        ? "bg-black border-haiintel-border/50"
-        : "bg-gray-50 border-gray-200"
-    }`}
+    className={`py-12 sm:py-16 px-4 sm:px-6 border-t transition-colors duration-200 ${isDarkMode ? "bg-black border-haiintel-border/50" : "bg-gray-50 border-gray-200"}`}
     style={{ contentVisibility: "auto", containIntrinsicSize: "0 400px" }}
   >
     <div className="container mx-auto max-w-6xl">
