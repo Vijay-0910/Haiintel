@@ -61,18 +61,23 @@ export default defineConfig({
     assetsInlineLimit: 8192,
     // No source maps
     sourcemap: false,
-    // CSS code splitting
-    cssCodeSplit: true,
+    // Disable CSS code splitting to reduce render-blocking requests
+    cssCodeSplit: false,
     // Warning threshold
     chunkSizeWarningLimit: 200,
-    // Enable modulePreload for faster loading
+    // Optimize modulePreload to reduce initial requests
     modulePreload: {
-      polyfill: true,
+      polyfill: false,
       resolveDependencies: (filename, deps) => {
-        // Preload all dependencies
-        return deps;
+        // Only preload critical chunks (react-vendor and index)
+        return deps.filter(dep =>
+          dep.includes('react-vendor') ||
+          dep.includes('index')
+        );
       },
     },
+    // CSS minification
+    cssMinify: true,
     // Manual chunk splitting for better caching
     rollupOptions: {
       output: {

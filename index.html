@@ -8,8 +8,8 @@
     />
 
     <!-- Resource hints for performance -->
-    <link rel="dns-prefetch" href="//fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin />
+    <link rel="preconnect" href="https://res.cloudinary.com" crossorigin />
+    <link rel="dns-prefetch" href="//res.cloudinary.com" />
 
     <!-- Preload critical hero image for LCP optimization -->
 
@@ -24,8 +24,9 @@
     <!-- Favicon -->
     <link
       rel="icon"
-      type="image/svg+xml"
+      type="image/png"
       href="https://res.cloudinary.com/di9opoguc/image/upload/v1766681664/favicon_pnh5cw.png"
+      fetchpriority="low"
     />
 
     <!-- Critical CSS - Inline for instant FCP -->
@@ -92,6 +93,10 @@
       img,
       video {
         transform: translateZ(0);
+        content-visibility: auto;
+      }
+      img {
+        decoding: async;
       }
       .animate-fade-in,
       .animate-slide-up {
@@ -100,6 +105,14 @@
       .transition-colors,
       .transition-all {
         will-change: auto;
+      }
+
+      /* Prevent layout shifts */
+      nav,
+      header,
+      main,
+      footer {
+        contain: layout style paint;
       }
     </style>
   </head>
