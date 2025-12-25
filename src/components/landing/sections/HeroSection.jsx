@@ -15,28 +15,25 @@ const HeroSection = memo(({ onScrollToSection }) => {
   return (
     <section
       id="home"
-      className="relative min-h-screen flex items-center justify-center pt-16 sm:pt-20 px-4 sm:px-6 overflow-hidden bg-gradient-to-br from-gray-900 via-blue-900 to-gray-900"
+      className="relative min-h-screen flex items-center justify-center pt-16 sm:pt-20 px-4 sm:px-6 overflow-hidden bg-black"
     >
       {/* Background */}
-      <motion.div
-        className="absolute inset-0 z-0 bg-gradient-to-br from-gray-900 via-blue-900 to-gray-900"
-        initial={{ scale: 1.1, opacity: 0 }}
-        animate={{ scale: 1, opacity: 1 }}
-        transition={{ duration: 1.2, ease: "easeOut" }}
-      >
+      <div className="absolute inset-0 z-0">
         <img
           srcSet={`${heroImageMobile} 640w, ${heroImageTablet} 1024w, ${heroImageDesktop} 1280w`}
           sizes="100vw"
           src={heroImageFallback}
           alt="AI-powered enterprise intelligence background"
           className="absolute inset-0 w-full h-full object-cover"
+          loading="eager"
+          fetchpriority="high"
           decoding="async"
           width="1280"
           height="720"
         />
         <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/40 to-black/70" />
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(46,144,250,0.08),transparent_70%)]" />
-      </motion.div>
+      </div>
 
       {/* Content */}
       <div className="container mx-auto relative z-10 px-2 sm:px-0">

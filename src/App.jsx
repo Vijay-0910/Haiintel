@@ -64,50 +64,9 @@ function App() {
     localStorage.setItem("haiintel-theme", isDarkMode ? "dark" : "light");
   }, [isDarkMode]);
 
-  // Load chat widget only after page is fully loaded and idle
+  // Load chat widget immediately - Framer Motion will handle the animation delay
   useEffect(() => {
-    let loaded = false;
-
-    const loadChatWidget = () => {
-      if (!loaded) {
-        loaded = true;
-        setShouldLoadChat(true);
-        // Cleanup listeners
-        window.removeEventListener("scroll", loadChatWidget);
-        window.removeEventListener("click", loadChatWidget);
-        window.removeEventListener("touchstart", loadChatWidget);
-      }
-    };
-
-    // Wait for page to be fully loaded first
-    const initializeChatLoading = () => {
-      // Use requestIdleCallback to defer until browser is idle
-      const scheduleLoad = window.requestIdleCallback || ((cb) => setTimeout(cb, 1));
-
-      scheduleLoad(() => {
-        // Load on actual user interaction (not passive events like mousemove)
-        window.addEventListener("scroll", loadChatWidget, { passive: true, once: true });
-        window.addEventListener("click", loadChatWidget, { passive: true, once: true });
-        window.addEventListener("touchstart", loadChatWidget, { passive: true, once: true });
-
-        // Fallback: Load after 5 seconds of idle time if no interaction
-        setTimeout(loadChatWidget, 5000);
-      });
-    };
-
-    // Wait for window load event
-    if (document.readyState === "complete") {
-      initializeChatLoading();
-    } else {
-      window.addEventListener("load", initializeChatLoading, { once: true });
-    }
-
-    return () => {
-      window.removeEventListener("scroll", loadChatWidget);
-      window.removeEventListener("click", loadChatWidget);
-      window.removeEventListener("touchstart", loadChatWidget);
-      window.removeEventListener("load", initializeChatLoading);
-    };
+    setShouldLoadChat(true);
   }, []);
 
   const toggleTheme = useCallback(() => setIsDarkMode((p) => !p), []);
