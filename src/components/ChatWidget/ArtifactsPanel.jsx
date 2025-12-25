@@ -8,8 +8,7 @@ import {
   Suspense,
 } from "react";
 import { m, AnimatePresence } from "framer-motion";
-import ReactMarkdown from "react-markdown";
-import rehypeHighlight from "rehype-highlight";
+import hljs from "../../utils/highlightConfig";
 import "highlight.js/styles/github-dark.css";
 
 // Lazy load chart components
@@ -442,37 +441,17 @@ const ArtifactsPanel = memo(
                       <div className="text-xs font-medium mb-2 uppercase tracking-wide opacity-60">
                         {currentArtifact?.language || "code"}
                       </div>
-                      <ReactMarkdown
-                        rehypePlugins={[rehypeHighlight]}
-                        components={{
-                          code: ({
-                            node,
-                            inline,
-                            className,
-                            children,
-                            ...props
-                          }) => {
-                            if (inline) {
-                              return (
-                                <code className={className} {...props}>
-                                  {children}
-                                </code>
-                              );
-                            }
-                            return (
-                              <pre className="!bg-transparent !p-0 !m-0">
-                                <code className={className} {...props}>
-                                  {children}
-                                </code>
-                              </pre>
-                            );
-                          },
-                        }}
-                      >
-                        {`\`\`\`${currentArtifact?.language || ""}\n${
-                          currentArtifact?.code
-                        }\n\`\`\``}
-                      </ReactMarkdown>
+                      <pre className="!bg-transparent !p-0 !m-0 text-sm">
+                        <code
+                          className={`language-${currentArtifact?.language || "plaintext"}`}
+                          dangerouslySetInnerHTML={{
+                            __html: hljs.highlightAuto(
+                              currentArtifact?.code || "",
+                              [currentArtifact?.language]
+                            ).value,
+                          }}
+                        />
+                      </pre>
                     </div>
                   </div>
                 ) : (
