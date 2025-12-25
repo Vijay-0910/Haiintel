@@ -6,12 +6,6 @@ const footerLinks = {
   company: ["About Us", "Careers", "Contact", "Partners"],
 };
 
-const socialLinks = [
-  { name: "Twitter", icon: "𝕏" },
-  { name: "LinkedIn", icon: "in" },
-  { name: "GitHub", icon: "⌘" },
-];
-
 const legalLinks = ["Privacy", "Terms", "Security"];
 
 // Brand Column - Memoized
@@ -36,22 +30,6 @@ const BrandColumn = memo(({ isDarkMode }) => (
     </p>
 
     {/* Social Links - CSS hover */}
-    <div className="flex gap-3">
-      {socialLinks.map((social) => (
-        <a
-          key={social.name}
-          href="#"
-          aria-label={social.name}
-          className={`w-9 h-9 rounded-lg border flex items-center justify-center transition-all duration-150 text-sm font-medium hover:scale-110 hover:-translate-y-0.5 ${
-            isDarkMode
-              ? "bg-haiintel-darker/80 border-haiintel-border text-gray-400 hover:text-white hover:border-haiintel-cyan hover:bg-haiintel-cyan/20"
-              : "bg-white border-gray-200 text-gray-500 hover:text-haiintel-blue hover:border-haiintel-blue hover:bg-haiintel-blue/10"
-          }`}
-        >
-          {social.icon}
-        </a>
-      ))}
-    </div>
   </div>
 ));
 BrandColumn.displayName = "BrandColumn";
