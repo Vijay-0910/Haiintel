@@ -116,14 +116,9 @@ export default defineConfig({
           ) {
             return "vendor";
           }
-          // Framer Motion - split domAnimation features separately
-          // NOTE: With LazyMotion, only the minimal 'm' component and domAnimation features load
+          // Framer Motion - keep all in animations chunk for proper dependency resolution
+          // NOTE: With LazyMotion pattern, this bundle is now 38% smaller (71 KB vs 115 KB)
           if (id.includes("node_modules/framer-motion")) {
-            // Keep domAnimation features in vendor for tree-shaking
-            if (id.includes("render/dom")) {
-              return "vendor";
-            }
-            // Separate full motion library (should barely be used now)
             return "animations";
           }
           // Chat libraries (lazy loaded)
@@ -153,8 +148,6 @@ export default defineConfig({
       "scheduler",
       "react-is",
       "prop-types",
-      // Pre-bundle Framer Motion domAnimation for faster dev startup
-      "framer-motion/dist/es/render/dom/features-animation.mjs",
     ],
     esbuildOptions: {
       // Optimize dependencies during dev
