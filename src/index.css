@@ -55,13 +55,18 @@
     touch-action: manipulation;
   }
 
-  /* Optimize images */
+  /* Optimize images - prevent CLS */
   img,
   video {
     max-width: 100%;
     height: auto;
-    /* Prevent layout shift */
-    aspect-ratio: attr(width) / attr(height);
+    /* Prevent layout shift - browsers will use width/height attributes */
+    display: block;
+  }
+
+  /* Images with width/height attributes maintain aspect ratio */
+  img[width][height] {
+    aspect-ratio: auto;
   }
 
   /* Prevent pull-to-refresh on mobile when inside chat */
