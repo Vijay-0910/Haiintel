@@ -23,7 +23,7 @@ const BrandColumn = memo(({ isDarkMode }) => (
       /> */}
     </div>
     <p
-      className={`mb-6 text-sm leading-relaxed ${isDarkMode ? "text-gray-500" : "text-gray-600"}`}
+      className={`mb-6 text-sm leading-relaxed ${isDarkMode ? "text-gray-400" : "text-gray-600"}`}
     >
       AI-powered chat widget for modern businesses. Deliver exceptional customer
       experiences with intelligent conversations.
@@ -47,7 +47,7 @@ const LinkColumn = memo(({ title, links, isDarkMode }) => (
         <li key={item}>
           <a
             href="#"
-            className={`transition-colors duration-150 text-sm ${isDarkMode ? "text-gray-500 hover:text-haiintel-cyan" : "text-gray-600 hover:text-haiintel-blue"}`}
+            className={`transition-colors duration-150 text-sm ${isDarkMode ? "text-gray-400 hover:text-haiintel-cyan" : "text-gray-600 hover:text-haiintel-blue"}`}
           >
             {item}
           </a>
@@ -63,7 +63,7 @@ const BottomBar = memo(({ isDarkMode }) => (
   <div
     className={`pt-8 border-t flex flex-col md:flex-row items-center justify-between gap-4 ${isDarkMode ? "border-haiintel-border/50" : "border-gray-200"}`}
   >
-    <p className={`text-sm ${isDarkMode ? "text-gray-600" : "text-gray-500"}`}>
+    <p className={`text-sm ${isDarkMode ? "text-gray-400" : "text-gray-500"}`}>
       © 2025 HaiIntel. All rights reserved.
     </p>
     <div className="flex items-center gap-6 text-sm">
@@ -71,7 +71,7 @@ const BottomBar = memo(({ isDarkMode }) => (
         <a
           key={link}
           href="#"
-          className={`transition-colors duration-150 ${isDarkMode ? "text-gray-500 hover:text-haiintel-cyan" : "text-gray-600 hover:text-haiintel-blue"}`}
+          className={`transition-colors duration-150 ${isDarkMode ? "text-gray-400 hover:text-haiintel-cyan" : "text-gray-600 hover:text-haiintel-blue"}`}
         >
           {link}
         </a>

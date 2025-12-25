@@ -1,7 +1,7 @@
 import { memo } from "react";
 import { m } from "framer-motion";
 
-// Cloudinary with aggressive optimization
+// Cloudinary URLs (keep as-is - these are good)
 const heroImageMobile =
   "https://res.cloudinary.com/di9opoguc/image/upload/f_auto,q_auto:eco,w_640,c_limit/v1766678008/hero-intelligence-CXC1fGWY_eb8wfc.jpg";
 const heroImageTablet =
@@ -38,26 +38,30 @@ const HeroSection = memo(({ onScrollToSection }) => {
       {/* Content */}
       <div className="container mx-auto relative z-10 px-2 sm:px-0">
         <div className="text-center max-w-5xl mx-auto">
-          {/* Main Headline - LCP target */}
-          <m.div
-            className="mb-4 sm:mb-6 md:mb-8"
-            initial={{ y: 30, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
-          >
+          {/* ✅ FIXED: NO animation wrapper on LCP element */}
+          <div className="mb-4 sm:mb-6 md:mb-8">
+            {/* LCP Element - renders immediately, no animation delay */}
             <h1 className="text-3xl xs:text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-bold text-white mb-1 sm:mb-2 leading-tight">
               Intelligence.
             </h1>
-            <h2 className="text-2xl xs:text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-bold leading-tight bg-gradient-to-r from-haiintel-cyan to-haiintel-accent bg-clip-text text-transparent">
-              Not Just Software.
-            </h2>
-          </m.div>
 
+            {/* Animate the subtitle instead (not LCP) */}
+            <m.h2
+              className="text-2xl xs:text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-bold leading-tight bg-gradient-to-r from-haiintel-cyan to-haiintel-accent bg-clip-text text-transparent"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.1, ease: "easeOut" }}
+            >
+              Not Just Software.
+            </m.h2>
+          </div>
+
+          {/* Animate description */}
           <m.p
             className="text-sm xs:text-base sm:text-lg md:text-xl text-gray-200 mb-6 sm:mb-8 md:mb-12 max-w-4xl mx-auto leading-relaxed px-2"
-            initial={{ y: 30, opacity: 0 }}
+            initial={{ y: 20, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
-            transition={{ duration: 0.8, delay: 0.4, ease: "easeOut" }}
+            transition={{ duration: 0.6, delay: 0.2, ease: "easeOut" }}
             style={{
               textShadow: "0 1px 2px rgba(0, 0, 0, 0.5)",
             }}
@@ -70,9 +74,9 @@ const HeroSection = memo(({ onScrollToSection }) => {
           {/* CTA Buttons */}
           <m.div
             className="flex flex-col sm:flex-row items-stretch sm:items-center justify-center gap-3 sm:gap-4 px-2"
-            initial={{ y: 30, opacity: 0 }}
+            initial={{ y: 20, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
-            transition={{ duration: 0.8, delay: 0.6, ease: "easeOut" }}
+            transition={{ duration: 0.6, delay: 0.3, ease: "easeOut" }}
           >
             <m.button
               onClick={() => onScrollToSection("dos")}
