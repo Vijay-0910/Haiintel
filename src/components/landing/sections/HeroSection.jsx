@@ -15,7 +15,7 @@ const HeroSection = memo(({ onScrollToSection }) => {
         transition={{ duration: 1.2, ease: "easeOut" }}
       >
         <img
-          src="/hero-intelligence-CXC1fGWY.jpg"
+          src="https://img.sanishtech.com/u/eeb2ea7052137150d3a8349e9e443d62.jpg"
           alt="Hero Background"
           className="absolute inset-0 w-full h-full object-cover"
         />
