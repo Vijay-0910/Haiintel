@@ -1,8 +1,10 @@
 import { memo } from "react";
 import { motion } from "framer-motion";
-import heroImageWebp from "../../../assets/hero-desktop.webp";
-import heroImageMobile from "../../../assets/hero-mobile.webp";
-import heroImageFallback from "../../../assets/hero-intelligence-CXC1fGWY.jpg";
+
+// Using Cloudinary CDN for optimized image delivery
+const heroImageMobile = "https://res.cloudinary.com/di9opoguc/image/upload/f_auto,q_auto,w_768/v1766678008/hero-intelligence-CXC1fGWY_eb8wfc.jpg";
+const heroImageDesktop = "https://res.cloudinary.com/di9opoguc/image/upload/f_auto,q_auto,w_1920/v1766678008/hero-intelligence-CXC1fGWY_eb8wfc.jpg";
+const heroImageFallback = "https://res.cloudinary.com/di9opoguc/image/upload/v1766678008/hero-intelligence-CXC1fGWY_eb8wfc.jpg";
 
 const HeroSection = memo(({ onScrollToSection }) => {
   return (
@@ -17,28 +19,17 @@ const HeroSection = memo(({ onScrollToSection }) => {
         animate={{ scale: 1, opacity: 1 }}
         transition={{ duration: 1.2, ease: "easeOut" }}
       >
-        <picture>
-          <source
-            // srcSet={heroImageMobile}
-            src={
-              "https://res.cloudinary.com/di9opoguc/image/upload/v1766678008/hero-intelligence-CXC1fGWY_eb8wfc.jpg"
-            }
-            media="(max-width: 640px)"
-            type="image/webp"
-          />
-          <source srcSet={heroImageWebp} type="image/webp" />
-          <img
-            src={heroImageFallback}
-            alt="AI-powered enterprise intelligence background"
-            className="absolute inset-0 w-full h-full object-cover"
-            fetchpriority="high"
-            importance="high"
-            decoding="sync"
-            loading="eager"
-            width="1920"
-            height="1080"
-          />
-        </picture>
+        <img
+          srcSet={`${heroImageMobile} 768w, ${heroImageDesktop} 1920w`}
+          sizes="100vw"
+          src={heroImageFallback}
+          alt="AI-powered enterprise intelligence background"
+          className="absolute inset-0 w-full h-full object-cover"
+          fetchPriority="high"
+          decoding="async"
+          width="1920"
+          height="1080"
+        />
         <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/40 to-black/70" />
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(46,144,250,0.08),transparent_70%)]" />
       </motion.div>
