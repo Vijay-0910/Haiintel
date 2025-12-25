@@ -10,8 +10,7 @@
     "lint:fix": "eslint . --fix",
     "format": "prettier --write \"src/**/*.{js,jsx,json,css,html}\" \"*.{js,jsx,json,html}\"",
     "format:check": "prettier --check \"src/**/*.{js,jsx,json,css,html}\" \"*.{js,jsx,json,html}\"",
-    "preview": "vite preview",
-    "serve": "node server.js"
+    "preview": "vite preview"
   },
   "dependencies": {
     "framer-motion": "^12.23.26",

@@ -16,7 +16,7 @@ A fully functional chat widget application with:
 - **Voice & Image Input** - Web Speech API integration and multi-image upload with validation
 - **Dark/Light Themes** - Seamless theme switching with localStorage persistence
 - **Mobile-First Design** - Fully responsive from 360px to 4K displays
-- **Production Server** - Express server with Brotli/Gzip compression and optimized caching
+- **Production Ready** - Optimized build with Brotli/Gzip compression and code splitting
 
 ## Tools & Technologies Used
 
@@ -41,9 +41,9 @@ A fully functional chat widget application with:
 
 ### Production Infrastructure
 
-- **Express 5.2.1** - Production server
-- **vite-plugin-compression** - Build-time file compression
-- **compression** - Runtime Gzip/Brotli middleware
+- **Vite 5.4.21** - Production build system
+- **vite-plugin-compression** - Build-time Brotli/Gzip compression
+- **Vercel** - Deployment platform with automatic optimization
 
 ### Development Assistants
 
@@ -203,22 +203,23 @@ A fully functional chat widget application with:
 
 ### Production Readiness
 
-#### Server Features
+#### Build Optimization
 
-- ✅ Express 5 production server
-- ✅ Automatic pre-compressed file serving (.br, .gz)
-- ✅ Proper MIME types for all resources
-- ✅ SPA fallback routing
-- ✅ Cache-Control headers for optimal caching
-- ✅ Vary: Accept-Encoding for compression negotiation
+- ✅ Pre-compressed files (.br, .gz) for fast delivery
+- ✅ Code splitting with manual chunks for optimal loading
+- ✅ Tree shaking and dead code elimination
+- ✅ Terser minification for smallest bundle size
+- ✅ SPA-ready routing configuration
+- ✅ Asset hashing for cache busting
 
 #### Deployment
 
+- ✅ Vercel-optimized build configuration
 - ✅ Single-command production build
 - ✅ Environment-agnostic configuration
-- ✅ CDN-ready static assets
-- ✅ Docker-compatible structure
-- ✅ Monitoring and analytics hooks
+- ✅ CDN-ready static assets with automatic compression
+- ✅ Zero-config deployment to Vercel
+- ✅ Analytics and monitoring ready
 
 ## Project Structure
 
@@ -233,8 +234,8 @@ chat-widget/
 │   ├── utils/                 # Helper functions
 │   ├── data/                  # Mock responses
 │   └── assets/                # Images and icons
+├── docs/                      # Project screenshots
 ├── dist/                      # Production build output
-├── server.js                  # Express production server
 ├── vite.config.js            # Build configuration
 └── tailwind.config.js        # Design system
 ```
@@ -253,17 +254,16 @@ npm run dev
 # Build for production
 npm run build
 
-# Serve production build
-npm run serve
+# Preview production build locally
+npm run preview
 ```
 
 ### Available Commands
 
 ```bash
 npm run dev              # Development server (localhost:5173)
-npm run build            # Production build
-npm run preview          # Preview production build
-npm run serve            # Serve with compression (localhost:3000)
+npm run build            # Production build with compression
+npm run preview          # Preview production build (localhost:4173)
 npm run lint             # Check code quality
 npm run lint:fix         # Fix linting issues
 npm run format           # Format code
@@ -288,6 +288,46 @@ npm run format:check     # Check formatting
 - ✅ Firefox 90+
 - ✅ Safari 14+
 - ✅ Mobile browsers (iOS Safari, Chrome Mobile)
+
+## Deployment to Vercel
+
+This project is optimized for Vercel deployment with zero configuration:
+
+### Quick Deploy
+
+1. **Install Vercel CLI** (optional):
+   ```bash
+   npm i -g vercel
+   ```
+
+2. **Deploy via GitHub** (Recommended):
+   - Push your code to GitHub
+   - Visit [vercel.com](https://vercel.com)
+   - Import your repository
+   - Vercel auto-detects Vite and deploys
+
+3. **Deploy via CLI**:
+   ```bash
+   npm run build  # Build first
+   vercel         # Deploy to Vercel
+   ```
+
+### Vercel Configuration
+
+No `vercel.json` needed! Vercel automatically:
+- ✅ Detects Vite framework
+- ✅ Runs `npm run build`
+- ✅ Serves from `dist/` folder
+- ✅ Enables Brotli/Gzip compression
+- ✅ Configures SPA routing
+- ✅ Sets up global CDN
+- ✅ Provides automatic HTTPS
+
+### Environment Variables
+
+If needed, add in Vercel Dashboard:
+- `VITE_API_URL` - Your API endpoint
+- `VITE_ANALYTICS_ID` - Analytics tracking
 
 ## Development Approach
 
