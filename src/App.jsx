@@ -20,9 +20,7 @@ const CTASection = lazy(
   () => import("./components/landing/sections/CTASection")
 );
 const Footer = lazy(() => import("./components/landing/Footer"));
-
-// DON'T import ChatWidget here - it will be dynamically imported only when needed
-// This removes 179 KB from initial bundle
+const ChatWidget = lazy(() => import("./components/ChatWidget"));
 
 // Lazy Section wrapper - only loads when in view
 const LazySection = memo(({ Component, isDarkMode, ...props }) => {
@@ -43,6 +41,7 @@ LazySection.displayName = "LazySection";
 function App() {
   const [activeSection, setActiveSection] = useState("home");
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [shouldLoadChat, setShouldLoadChat] = useState(false);
   const [isDarkMode, setIsDarkMode] = useState(() => {
     if (typeof window !== "undefined") {
       const saved = localStorage.getItem("haiintel-theme");
@@ -57,6 +56,10 @@ function App() {
     localStorage.setItem("haiintel-theme", isDarkMode ? "dark" : "light");
   }, [isDarkMode]);
 
+  // Load chat widget immediately on mount
+  useEffect(() => {
+    setShouldLoadChat(true);
+  }, []);
 
   const toggleTheme = useCallback(() => setIsDarkMode((p) => !p), []);
   const toggleMobileMenu = useCallback(
@@ -124,6 +127,12 @@ function App() {
       <LazySection Component={CTASection} isDarkMode={isDarkMode} />
       <LazySection Component={Footer} isDarkMode={isDarkMode} />
 
+      {/* Chat widget - delays until interaction */}
+      {shouldLoadChat && (
+        <Suspense fallback={null}>
+          <ChatWidget isDarkMode={isDarkMode} />
+        </Suspense>
+      )}
     </div>
   );
 }
