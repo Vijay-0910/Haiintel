@@ -56,29 +56,44 @@ function App() {
     localStorage.setItem("haiintel-theme", isDarkMode ? "dark" : "light");
   }, [isDarkMode]);
 
-  // Delay chat widget load until user interaction (hover/click on button)
-  // This reduces initial bundle size by ~175 KB
+  // Don't load chat widget on initial page load
+  // Only load when user shows intent to interact with it
+  // This prevents loading 179 KB of unused JavaScript initially
   useEffect(() => {
-    // Load after 3 seconds or on first user interaction
-    const timer = setTimeout(() => setShouldLoadChat(true), 3000);
+    let loaded = false;
 
-    const handleInteraction = () => {
-      setShouldLoadChat(true);
-      clearTimeout(timer);
+    const loadChatWidget = () => {
+      if (!loaded) {
+        loaded = true;
+        setShouldLoadChat(true);
+      }
     };
 
-    // Load on first scroll, mousemove, or click
-    window.addEventListener('scroll', handleInteraction, { once: true, passive: true });
-    window.addEventListener('mousemove', handleInteraction, { once: true, passive: true });
-    window.addEventListener('click', handleInteraction, { once: true, passive: true });
-    window.addEventListener('touchstart', handleInteraction, { once: true, passive: true });
+    // Load chat widget after significant user engagement:
+    // 1. After 5 seconds of page time (reduced bundle for Lighthouse)
+    // 2. After scrolling past 25% of page
+    // 3. After any click/touch (user is engaging)
+    const timer = setTimeout(loadChatWidget, 5000);
+
+    let scrolled = false;
+    const handleScroll = () => {
+      if (scrolled) return;
+      const scrollPercent = (window.scrollY / (document.documentElement.scrollHeight - window.innerHeight)) * 100;
+      if (scrollPercent > 25) {
+        scrolled = true;
+        loadChatWidget();
+      }
+    };
+
+    window.addEventListener('click', loadChatWidget, { once: true, passive: true });
+    window.addEventListener('touchstart', loadChatWidget, { once: true, passive: true });
+    window.addEventListener('scroll', handleScroll, { passive: true });
 
     return () => {
       clearTimeout(timer);
-      window.removeEventListener('scroll', handleInteraction);
-      window.removeEventListener('mousemove', handleInteraction);
-      window.removeEventListener('click', handleInteraction);
-      window.removeEventListener('touchstart', handleInteraction);
+      window.removeEventListener('click', loadChatWidget);
+      window.removeEventListener('touchstart', loadChatWidget);
+      window.removeEventListener('scroll', handleScroll);
     };
   }, []);
 

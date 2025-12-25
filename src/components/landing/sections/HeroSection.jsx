@@ -20,7 +20,7 @@ const HeroSection = memo(({ onScrollToSection }) => {
         <picture>
           <source
             srcSet={heroImageMobile}
-            media="(max-width: 768px)"
+            media="(max-width: 640px)"
             type="image/webp"
           />
           <source srcSet={heroImageWebp} type="image/webp" />
@@ -29,6 +29,7 @@ const HeroSection = memo(({ onScrollToSection }) => {
             alt="AI-powered enterprise intelligence background"
             className="absolute inset-0 w-full h-full object-cover"
             fetchpriority="high"
+            importance="high"
             decoding="sync"
             loading="eager"
             width="1920"
