@@ -138,17 +138,28 @@ const ArtifactsPanel = memo(({ artifacts, isOpen, onClose, isDarkMode = true }) 
   return (
     <AnimatePresence>
       {isOpen && artifacts && artifacts.length > 0 && (
-        <motion.div
-          initial={{ x: '100%' }}
-          animate={{ x: 0 }}
-          exit={{ x: '100%' }}
-          transition={{ type: 'spring', damping: 30, stiffness: 300 }}
-          className={`fixed right-0 top-0 h-full w-full lg:w-1/2 xl:w-2/5 flex flex-col border-l shadow-2xl z-[9998] ${
-            isDarkMode
-              ? 'bg-haiintel-darker border-haiintel-border'
-              : 'bg-white border-gray-200'
-          }`}
-        >
+        <>
+          {/* Backdrop */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={onClose}
+            className="fixed inset-0 bg-black/50 z-[9997]"
+          />
+
+          {/* Panel */}
+          <motion.div
+            initial={{ x: '100%' }}
+            animate={{ x: 0 }}
+            exit={{ x: '100%' }}
+            transition={{ type: 'spring', damping: 30, stiffness: 300 }}
+            className={`fixed right-0 top-0 h-full w-full lg:w-1/2 xl:w-2/5 flex flex-col border-l shadow-2xl z-[9998] ${
+              isDarkMode
+                ? 'bg-haiintel-darker border-haiintel-border'
+                : 'bg-white border-gray-200'
+            }`}
+          >
         {/* Header */}
         <div className={`flex items-center justify-between px-4 py-3 border-b ${
           isDarkMode ? 'border-haiintel-border' : 'border-gray-200'
@@ -218,8 +229,8 @@ const ArtifactsPanel = memo(({ artifacts, isOpen, onClose, isDarkMode = true }) 
               </div>
             )}
 
-            {/* View Mode Toggle (Code/Preview) */}
-            {canPreview && (
+            {/* View Mode Toggle (Code/Preview) - only for code artifacts */}
+            {canPreview && !isChart && (
               <div className={`flex items-center gap-1 p-1 rounded-lg ${
                 isDarkMode ? 'bg-haiintel-dark' : 'bg-gray-100'
               }`}>
@@ -235,7 +246,7 @@ const ArtifactsPanel = memo(({ artifacts, isOpen, onClose, isDarkMode = true }) 
                       : 'text-gray-600 hover:text-gray-900'
                   }`}
                 >
-                  {isChart ? 'Data' : 'Code'}
+                  Code
                 </button>
                 <button
                   onClick={() => setViewMode('preview')}
@@ -332,36 +343,15 @@ const ArtifactsPanel = memo(({ artifacts, isOpen, onClose, isDarkMode = true }) 
 
         {/* Content */}
         <div className="flex-1 overflow-hidden">
-          {viewMode === 'code' ? (
+          {isChart ? (
+            // Chart - always show preview
             <div className="h-full overflow-auto">
-              {isChart ? (
-                // Chart data view
-                <div className={`p-4 ${isDarkMode ? 'bg-[#0d1117]' : 'bg-gray-50'}`}>
-                  <div className="text-xs font-medium mb-4 uppercase tracking-wide opacity-60">
-                    Chart Data
-                  </div>
-                  <div className={`space-y-2 ${isDarkMode ? 'text-gray-300' : 'text-gray-700'}`}>
-                    <div className="font-semibold">{currentArtifact.data.title}</div>
-                    <table className="w-full text-sm">
-                      <thead>
-                        <tr className={`border-b ${isDarkMode ? 'border-gray-700' : 'border-gray-300'}`}>
-                          <th className="text-left py-2">Label</th>
-                          <th className="text-right py-2">Value</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {currentArtifact.data.labels.map((label, index) => (
-                          <tr key={index} className={`border-b ${isDarkMode ? 'border-gray-800' : 'border-gray-200'}`}>
-                            <td className="py-2">{label}</td>
-                            <td className="text-right py-2 font-mono">{currentArtifact.data.values[index]}</td>
-                          </tr>
-                        ))}
-                      </tbody>
-                    </table>
-                  </div>
-                </div>
-              ) : (
-                // Code view
+              {previewContent}
+            </div>
+          ) : (
+            // Code - show code or preview based on viewMode
+            viewMode === 'code' ? (
+              <div className="h-full overflow-auto">
                 <div className={`p-4 ${isDarkMode ? 'bg-[#0d1117]' : 'bg-gray-50'}`}>
                   <div className="text-xs font-medium mb-2 uppercase tracking-wide opacity-60">
                     {currentArtifact?.language || 'code'}
@@ -390,15 +380,16 @@ const ArtifactsPanel = memo(({ artifacts, isOpen, onClose, isDarkMode = true }) 
                     {`\`\`\`${currentArtifact?.language || ''}\n${currentArtifact?.code}\n\`\`\``}
                   </ReactMarkdown>
                 </div>
-              )}
-            </div>
-          ) : (
-            <div className="h-full overflow-auto">
-              {previewContent}
-            </div>
+              </div>
+            ) : (
+              <div className="h-full overflow-auto">
+                {previewContent}
+              </div>
+            )
           )}
         </div>
-        </motion.div>
+          </motion.div>
+        </>
       )}
     </AnimatePresence>
   );
