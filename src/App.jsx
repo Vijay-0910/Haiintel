@@ -19,7 +19,8 @@ const UseCasesSection = lazy(
 const CTASection = lazy(
   () => import("./components/landing/sections/CTASection")
 );
-const Footer = lazy(() => import("./components/landing/Footer"));
+// const Footer = lazy(() => import("./components/landing/Footer"));
+import Footer from "./components/landing/Footer";
 const ChatWidget = lazy(() => import("./components/ChatWidget"));
 
 // Lazy Section wrapper - only loads when in view
