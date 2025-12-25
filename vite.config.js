@@ -77,29 +77,32 @@ export default defineConfig({
     rollupOptions: {
       output: {
         manualChunks: (id) => {
-          // Keep React and React-DOM together - critical for initial render
-          if (
-            id.includes("node_modules/react") ||
-            id.includes("node_modules/react-dom")
-          ) {
+          // React core - deduplicate completely
+          if (id.includes("node_modules/react/") || id.includes("node_modules/react-dom/")) {
+            if (id.includes("node_modules/react/index")) return "react-vendor";
+            if (id.includes("node_modules/react-dom/index")) return "react-vendor";
+            if (id.includes("node_modules/react/jsx-runtime")) return "react-vendor";
+            if (id.includes("node_modules/react-dom/client")) return "react-vendor";
             return "react-vendor";
           }
-          // Framer Motion - used in hero section (critical)
+          // Framer Motion
           if (id.includes("node_modules/framer-motion")) {
             return "framer-motion";
           }
-          // Chat widget - lazy loaded
+          // Markdown & highlight - only in chat widget
+          if (id.includes("react-markdown") || id.includes("highlight.js") ||
+              id.includes("rehype-") || id.includes("remark-")) {
+            return "chat-libs";
+          }
+          // Chat widget components
           if (id.includes("src/components/ChatWidget")) {
             return "chat-widget";
           }
-          // Landing sections - lazy loaded
-          if (
-            id.includes("src/components/landing/sections") &&
-            !id.includes("HeroSection")
-          ) {
+          // Landing sections
+          if (id.includes("src/components/landing/sections") && !id.includes("HeroSection")) {
             return "landing-sections";
           }
-          // Other node_modules
+          // All other vendor code
           if (id.includes("node_modules")) {
             return "vendor";
           }

@@ -1,10 +1,11 @@
 import { memo } from "react";
 import { motion } from "framer-motion";
 
-// Using Cloudinary CDN for optimized image delivery
-const heroImageMobile = "https://res.cloudinary.com/di9opoguc/image/upload/f_auto,q_auto,w_768/v1766678008/hero-intelligence-CXC1fGWY_eb8wfc.jpg";
-const heroImageDesktop = "https://res.cloudinary.com/di9opoguc/image/upload/f_auto,q_auto,w_1920/v1766678008/hero-intelligence-CXC1fGWY_eb8wfc.jpg";
-const heroImageFallback = "https://res.cloudinary.com/di9opoguc/image/upload/v1766678008/hero-intelligence-CXC1fGWY_eb8wfc.jpg";
+// Cloudinary with aggressive optimization
+const heroImageMobile = "https://res.cloudinary.com/di9opoguc/image/upload/f_auto,q_auto:eco,w_640,c_limit/v1766678008/hero-intelligence-CXC1fGWY_eb8wfc.jpg";
+const heroImageTablet = "https://res.cloudinary.com/di9opoguc/image/upload/f_auto,q_auto:eco,w_1024,c_limit/v1766678008/hero-intelligence-CXC1fGWY_eb8wfc.jpg";
+const heroImageDesktop = "https://res.cloudinary.com/di9opoguc/image/upload/f_auto,q_auto:eco,w_1280,c_limit/v1766678008/hero-intelligence-CXC1fGWY_eb8wfc.jpg";
+const heroImageFallback = "https://res.cloudinary.com/di9opoguc/image/upload/f_auto,q_auto:eco,w_1280/v1766678008/hero-intelligence-CXC1fGWY_eb8wfc.jpg";
 
 const HeroSection = memo(({ onScrollToSection }) => {
   return (
@@ -20,15 +21,15 @@ const HeroSection = memo(({ onScrollToSection }) => {
         transition={{ duration: 1.2, ease: "easeOut" }}
       >
         <img
-          srcSet={`${heroImageMobile} 768w, ${heroImageDesktop} 1920w`}
+          srcSet={`${heroImageMobile} 640w, ${heroImageTablet} 1024w, ${heroImageDesktop} 1280w`}
           sizes="100vw"
           src={heroImageFallback}
           alt="AI-powered enterprise intelligence background"
           className="absolute inset-0 w-full h-full object-cover"
           fetchPriority="high"
           decoding="async"
-          width="1920"
-          height="1080"
+          width="1280"
+          height="720"
         />
         <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/40 to-black/70" />
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(46,144,250,0.08),transparent_70%)]" />
