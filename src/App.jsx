@@ -24,11 +24,19 @@ const ChatWidget = lazy(() => import("./components/ChatWidget"));
 
 // Lazy Section wrapper - only loads when in view
 const LazySection = memo(({ Component, isDarkMode, ...props }) => {
-  const [ref, isInView] = useInView({ rootMargin: "200px" });
+  const [ref, isInView] = useInView({ rootMargin: "50px", threshold: 0 });
+  const [hasLoaded, setHasLoaded] = useState(false);
+
+  // Load once and keep loaded
+  useEffect(() => {
+    if (isInView && !hasLoaded) {
+      setHasLoaded(true);
+    }
+  }, [isInView, hasLoaded]);
 
   return (
-    <div ref={ref} style={{ minHeight: isInView ? "auto" : "400px" }}>
-      {isInView ? (
+    <div ref={ref} style={{ minHeight: hasLoaded ? "auto" : "400px" }}>
+      {hasLoaded ? (
         <Suspense fallback={null}>
           <Component isDarkMode={isDarkMode} {...props} />
         </Suspense>
@@ -56,7 +64,7 @@ function App() {
     localStorage.setItem("haiintel-theme", isDarkMode ? "dark" : "light");
   }, [isDarkMode]);
 
-  // Load chat widget on user interaction or after delay
+  // Load chat widget only after page is fully loaded and idle
   useEffect(() => {
     let loaded = false;
 
@@ -66,27 +74,39 @@ function App() {
         setShouldLoadChat(true);
         // Cleanup listeners
         window.removeEventListener("scroll", loadChatWidget);
-        window.removeEventListener("mousemove", loadChatWidget);
+        window.removeEventListener("click", loadChatWidget);
         window.removeEventListener("touchstart", loadChatWidget);
-        window.removeEventListener("keydown", loadChatWidget);
       }
     };
 
-    // Load on user interaction
-    window.addEventListener("scroll", loadChatWidget, { passive: true });
-    window.addEventListener("mousemove", loadChatWidget, { passive: true });
-    window.addEventListener("touchstart", loadChatWidget, { passive: true });
-    window.addEventListener("keydown", loadChatWidget, { passive: true });
+    // Wait for page to be fully loaded first
+    const initializeChatLoading = () => {
+      // Use requestIdleCallback to defer until browser is idle
+      const scheduleLoad = window.requestIdleCallback || ((cb) => setTimeout(cb, 1));
 
-    // Fallback: Load after 3 seconds if no interaction
-    const timeout = setTimeout(loadChatWidget, 3000);
+      scheduleLoad(() => {
+        // Load on actual user interaction (not passive events like mousemove)
+        window.addEventListener("scroll", loadChatWidget, { passive: true, once: true });
+        window.addEventListener("click", loadChatWidget, { passive: true, once: true });
+        window.addEventListener("touchstart", loadChatWidget, { passive: true, once: true });
+
+        // Fallback: Load after 5 seconds of idle time if no interaction
+        setTimeout(loadChatWidget, 5000);
+      });
+    };
+
+    // Wait for window load event
+    if (document.readyState === "complete") {
+      initializeChatLoading();
+    } else {
+      window.addEventListener("load", initializeChatLoading, { once: true });
+    }
 
     return () => {
-      clearTimeout(timeout);
       window.removeEventListener("scroll", loadChatWidget);
-      window.removeEventListener("mousemove", loadChatWidget);
+      window.removeEventListener("click", loadChatWidget);
       window.removeEventListener("touchstart", loadChatWidget);
-      window.removeEventListener("keydown", loadChatWidget);
+      window.removeEventListener("load", initializeChatLoading);
     };
   }, []);
 
