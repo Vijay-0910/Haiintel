@@ -1,5 +1,4 @@
 import { memo, useCallback } from "react";
-import { m } from "framer-motion";
 import AIIcon from "../common/AIIcon";
 
 // Preload ChatWindow when user hovers over button
@@ -13,32 +12,24 @@ const ChatButton = memo(({ onClick, isOpen, isDarkMode = true }) => {
   }, []);
 
   return (
-    <m.button
+    <button
       onClick={onClick}
       onMouseEnter={handleMouseEnter}
       onFocus={handleMouseEnter}
       aria-label={isOpen ? "Close chat" : "Open chat"}
       aria-expanded={isOpen}
-      initial={{ scale: 0, opacity: 0 }}
-      animate={{ scale: 1, opacity: 1 }}
-      transition={{
-        type: "spring",
-        stiffness: 260,
-        damping: 20,
-        delay: 1.5
-      }}
-      whileHover={{ scale: 1.1 }}
-      whileTap={{ scale: 0.95 }}
       style={{
         backfaceVisibility: "hidden",
         WebkitBackfaceVisibility: "hidden",
         transform: "translateZ(0)",
+        animation: "scaleIn 0.5s ease-out 0.3s both",
       }}
       className={`
         fixed bottom-4 right-4 sm:bottom-6 sm:right-6
         z-[9999] p-3 sm:p-4
         rounded-full
-        transition-colors duration-300 ease-out
+        transition-all duration-300 ease-out
+        hover:scale-110 active:scale-95
         focus:outline-none focus:ring-2 focus:ring-offset-2
         ${
           isDarkMode
@@ -89,7 +80,7 @@ const ChatButton = memo(({ onClick, isOpen, isDarkMode = true }) => {
           />
         </svg>
       </div>
-    </m.button>
+    </button>
   );
 });
 
