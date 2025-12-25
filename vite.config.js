@@ -102,25 +102,29 @@ export default defineConfig({
             return "vendor";
           }
 
-          // ✅ REMOVED Framer Motion manual chunking
-          // Let Vite tree-shake it automatically with LazyMotion
+          // Syntax highlighting - separate chunk for code blocks only
+          // Only loads when code blocks are detected in messages
+          if (
+            id.includes("highlight.js") ||
+            id.includes("CodeBlockWithHighlight") ||
+            id.includes("highlightConfig")
+          ) {
+            return "syntax";
+          }
 
-          // Markdown rendering (includes MarkdownMessage component)
+          // Markdown rendering (without syntax highlighting)
+          // Loads for any markdown content
           if (
             id.includes("react-markdown") ||
             id.includes("rehype-") ||
             id.includes("remark-") ||
-            id.includes("MarkdownMessage")
+            id.includes("MarkdownMessage") ||
+            id.includes("LazyMarkdown")
           ) {
             return "markdown";
           }
 
-          // Syntax highlighting
-          if (id.includes("highlight.js")) {
-            return "syntax";
-          }
-
-          // Chat widget core (excludes MarkdownMessage - that goes in markdown chunk)
+          // Chat widget core
           if (id.includes("src/components/ChatWidget")) {
             return "chat";
           }
@@ -128,6 +132,10 @@ export default defineConfig({
         chunkFileNames: "assets/js/[name]-[hash].js",
         entryFileNames: "assets/js/[name]-[hash].js",
         assetFileNames: "assets/[ext]/[name]-[hash].[ext]",
+      },
+      treeshake: {
+        moduleSideEffects: false,
+        propertyReadSideEffects: false,
       },
     },
   },

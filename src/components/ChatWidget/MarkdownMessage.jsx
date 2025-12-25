@@ -1,31 +1,19 @@
-import { memo, useState, useCallback } from "react";
+import { memo, lazy, Suspense } from "react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
-import rehypeHighlight from "rehype-highlight";
 import rehypeRaw from "rehype-raw";
-import "highlight.js/styles/github-dark.css";
-import { CopyIcon, CheckIcon } from "../common/Icon";
+
+// Lazy load syntax highlighting only when code blocks exist
+const CodeBlockWithHighlight = lazy(() =>
+  import("./CodeBlockWithHighlight")
+);
 
 /**
- * Code Block Component with Copy Button (like Claude)
+ * Simple Code Block Component (no syntax highlighting)
+ * Used when content has no code blocks to avoid loading highlight.js
  */
-const CodeBlock = memo(
-  ({ node, inline, className, children, isDarkMode, ...props }) => {
-    const [copied, setCopied] = useState(false);
-    const match = /language-(\w+)/.exec(className || "");
-    const language = match ? match[1] : "";
-
-    const handleCopy = useCallback(async () => {
-      const code = String(children).replace(/\n$/, "");
-      try {
-        await navigator.clipboard.writeText(code);
-        setCopied(true);
-        setTimeout(() => setCopied(false), 2000);
-      } catch (err) {
-        console.error("Failed to copy code:", err);
-      }
-    }, [children]);
-
+const SimpleCodeBlock = memo(
+  ({ inline, className, children, isDarkMode, ...props }) => {
     if (inline) {
       return (
         <code
@@ -42,68 +30,61 @@ const CodeBlock = memo(
     }
 
     return (
-      <div className="relative group my-4">
-        {/* Language Label & Copy Button */}
-        <div
-          className={`flex items-center justify-between px-4 py-2 rounded-t-lg border-b ${
-            isDarkMode
-              ? "bg-haiintel-dark border-haiintel-border"
-              : "bg-gray-100 border-gray-300"
-          }`}
-        >
-          <span
-            className={`text-xs font-medium ${
-              isDarkMode ? "text-gray-400" : "text-gray-600"
-            }`}
-          >
-            {language || "code"}
-          </span>
-          <button
-            onClick={handleCopy}
-            className={`flex items-center gap-1.5 px-2 py-1 rounded text-xs transition-colors ${
-              copied
-                ? "text-green-500"
-                : isDarkMode
-                  ? "text-gray-400 hover:text-gray-200 hover:bg-haiintel-border/50"
-                  : "text-gray-600 hover:text-gray-900 hover:bg-gray-200"
-            }`}
-            title={copied ? "Copied!" : "Copy code"}
-          >
-            {copied ? (
-              <>
-                <CheckIcon size="xs" />
-                <span>Copied!</span>
-              </>
-            ) : (
-              <>
-                <CopyIcon size="xs" />
-                <span>Copy code</span>
-              </>
-            )}
-          </button>
-        </div>
-
-        {/* Code Content */}
-        <pre
-          className={`!mt-0 rounded-t-none rounded-b-lg overflow-x-auto ${
-            isDarkMode ? "bg-[#0d1117]" : "bg-gray-50"
-          }`}
-        >
-          <code className={className} {...props}>
-            {children}
-          </code>
-        </pre>
-      </div>
+      <pre
+        className={`my-4 p-4 rounded-lg overflow-x-auto ${
+          isDarkMode ? "bg-[#0d1117]" : "bg-gray-50"
+        }`}
+      >
+        <code className={className} {...props}>
+          {children}
+        </code>
+      </pre>
     );
   }
 );
-CodeBlock.displayName = "CodeBlock";
+SimpleCodeBlock.displayName = "SimpleCodeBlock";
+
+const CodeBlockSkeleton = memo(({ isDarkMode }) => (
+  <div
+    className={`my-4 h-24 rounded-lg animate-pulse ${
+      isDarkMode ? "bg-haiintel-border/50" : "bg-gray-200"
+    }`}
+  />
+));
+CodeBlockSkeleton.displayName = "CodeBlockSkeleton";
 
 /**
  * Markdown Message Component (like Claude)
  * Renders markdown with syntax highlighting, tables, lists, etc.
+ * Optimized to lazy load syntax highlighting only when needed
  */
-const MarkdownMessage = memo(({ content, isDarkMode = true }) => {
+const MarkdownMessage = memo(({ content, isDarkMode = true, hasCodeBlocks = false }) => {
+  // Choose code block component based on whether syntax highlighting is needed
+  const CodeComponent = hasCodeBlocks
+    ? ({ node, inline, className, children, ...props }) => (
+        <Suspense fallback={<CodeBlockSkeleton isDarkMode={isDarkMode} />}>
+          <CodeBlockWithHighlight
+            node={node}
+            inline={inline}
+            className={className}
+            isDarkMode={isDarkMode}
+            {...props}
+          >
+            {children}
+          </CodeBlockWithHighlight>
+        </Suspense>
+      )
+    : ({ inline, className, children, ...props }) => (
+        <SimpleCodeBlock
+          inline={inline}
+          className={className}
+          isDarkMode={isDarkMode}
+          {...props}
+        >
+          {children}
+        </SimpleCodeBlock>
+      );
+
   return (
     <div
       className={`prose prose-sm max-w-none ${
@@ -112,20 +93,10 @@ const MarkdownMessage = memo(({ content, isDarkMode = true }) => {
     >
       <ReactMarkdown
         remarkPlugins={[remarkGfm]}
-        rehypePlugins={[rehypeHighlight, rehypeRaw]}
+        rehypePlugins={[rehypeRaw]}
         components={{
-          // Code blocks
-          code: ({ node, inline, className, children, ...props }) => (
-            <CodeBlock
-              node={node}
-              inline={inline}
-              className={className}
-              isDarkMode={isDarkMode}
-              {...props}
-            >
-              {children}
-            </CodeBlock>
-          ),
+          // Code blocks - conditionally use syntax highlighting
+          code: CodeComponent,
 
           // Links
           a: ({ node, children, ...props }) => (
