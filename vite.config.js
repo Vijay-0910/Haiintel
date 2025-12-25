@@ -112,12 +112,17 @@ export default defineConfig({
             return "syntax";
           }
 
+          // Simplified markdown - ultra lightweight (no dependencies)
+          // For simple formatting without react-markdown
+          if (id.includes("SimplifiedMarkdown")) {
+            return "markdown-simple";
+          }
+
           // Markdown rendering (core - without optional plugins)
-          // Loads for any markdown content
+          // Loads for complex markdown content
           if (
             id.includes("react-markdown") ||
-            id.includes("OptimizedMarkdown") ||
-            id.includes("LazyMarkdown")
+            id.includes("OptimizedMarkdown")
           ) {
             return "markdown";
           }
