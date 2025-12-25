@@ -55,7 +55,7 @@ export default defineConfig({
     },
   },
   build: {
-    // Target modern browsers
+    // Target modern browsers for better tree shaking
     target: "esnext",
     // Use terser for better production minification
     minify: "terser",
@@ -64,10 +64,18 @@ export default defineConfig({
         drop_console: true,
         drop_debugger: true,
         pure_funcs: ["console.log", "console.info", "console.debug"],
-        passes: 2,
+        passes: 3,
+        unsafe: true,
+        unsafe_comps: true,
+        unsafe_math: true,
+        unsafe_methods: true,
+        unsafe_proto: true,
+        unsafe_regexp: true,
+        unsafe_undefined: true,
       },
       mangle: {
         safari10: true,
+        toplevel: true,
       },
       format: {
         comments: false,
@@ -89,16 +97,19 @@ export default defineConfig({
     rollupOptions: {
       output: {
         manualChunks: (id) => {
-          // Core vendor bundle (React + critical deps)
+          // Core vendor bundle (React only - critical deps)
           if (
             id.includes("node_modules/react/") ||
             id.includes("node_modules/react-dom/") ||
             id.includes("node_modules/scheduler/") ||
             id.includes("node_modules/react-is/") ||
-            id.includes("node_modules/prop-types/") ||
-            id.includes("node_modules/framer-motion")
+            id.includes("node_modules/prop-types/")
           ) {
             return "vendor";
+          }
+          // Framer Motion - separate chunk (not in initial bundle)
+          if (id.includes("node_modules/framer-motion")) {
+            return "animations";
           }
           // Chat libraries (lazy loaded)
           if (
