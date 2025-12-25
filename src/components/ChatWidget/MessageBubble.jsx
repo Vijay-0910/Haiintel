@@ -27,10 +27,16 @@ const RichContentLoader = memo(() => (
 ));
 RichContentLoader.displayName = "RichContentLoader";
 
-// AI Avatar - Memoized with AI brain icon (same container size as user, but bigger icon inside)
-const AIAvatar = memo(() => (
-  <div className="flex-shrink-0 w-7 h-7 sm:w-8 sm:h-8 md:w-9 md:h-9 rounded-full bg-gradient-to-br from-haiintel-blue to-haiintel-cyan flex items-center justify-center shadow-lg">
-    <AIIcon className="w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8 text-black" />
+// AI Avatar - Memoized with AI brain icon (matches widget button styling)
+const AIAvatar = memo(({ isDarkMode = true }) => (
+  <div
+    className={`flex-shrink-0 w-7 h-7 sm:w-8 sm:h-8 md:w-9 md:h-9 rounded-full flex items-center justify-center shadow-lg ${
+      isDarkMode
+        ? "bg-transparent border-2 border-white"
+        : "bg-black border-2 border-black"
+    }`}
+  >
+    <AIIcon className="w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8 text-white" />
   </div>
 ));
 AIAvatar.displayName = "AIAvatar";
@@ -383,7 +389,7 @@ const MessageBubble = memo(
         }`}
         style={{ contentVisibility: "auto", containIntrinsicSize: "0 100px" }}
       >
-        {!isUser && <AIAvatar />}
+        {!isUser && <AIAvatar isDarkMode={isDarkMode} />}
         {isUser && (
           <div className="order-2">
             <UserAvatar />
