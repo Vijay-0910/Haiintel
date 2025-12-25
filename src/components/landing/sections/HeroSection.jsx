@@ -15,7 +15,7 @@ const HeroSection = memo(({ onScrollToSection }) => {
         transition={{ duration: 1.2, ease: "easeOut" }}
       >
         <img
-          src="https://img.sanishtech.com/u/eeb2ea7052137150d3a8349e9e443d62.jpg"
+          src="https://kovaion-prod-backup.s3.ap-south-1.amazonaws.com/Engage/Absence%20Request/704ac1ee-25fc-498a-81ec-cc58b4efbd8f_hero-intelligence-CXC1fGWY.jpg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIAZEBAZEFJREIZNHKC%2F20251225%2Fap-south-1%2Fs3%2Faws4_request&X-Amz-Date=20251225T070027Z&X-Amz-Expires=120&X-Amz-Signature=2636205e25bfb6d5f10c27d1172f4536b14ba618455d5195213859b579885603&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject"
           alt="Hero Background"
           className="absolute inset-0 w-full h-full object-cover"
         />
@@ -47,9 +47,9 @@ const HeroSection = memo(({ onScrollToSection }) => {
             animate={{ y: 0, opacity: 1 }}
             transition={{ duration: 0.8, delay: 0.4, ease: "easeOut" }}
           >
-            Haiintel partners with CIOs to embed human-rooted AI into
-            enterprise transformation — accelerating outcomes through
-            domain-aware, intelligence-first systems.
+            Haiintel partners with CIOs to embed human-rooted AI into enterprise
+            transformation — accelerating outcomes through domain-aware,
+            intelligence-first systems.
           </motion.p>
 
           {/* CTA Buttons */}
@@ -66,8 +66,18 @@ const HeroSection = memo(({ onScrollToSection }) => {
               whileTap={{ scale: 0.95 }}
             >
               Meet Haiintel HaiPODs
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
+              <svg
+                className="w-4 h-4"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M14 5l7 7m0 0l-7 7m7-7H3"
+                />
               </svg>
             </motion.button>
             <motion.button
