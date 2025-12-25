@@ -296,6 +296,7 @@ This project is optimized for Vercel deployment with zero configuration:
 ### Quick Deploy
 
 1. **Install Vercel CLI** (optional):
+
    ```bash
    npm i -g vercel
    ```
@@ -315,6 +316,7 @@ This project is optimized for Vercel deployment with zero configuration:
 ### Vercel Configuration
 
 No `vercel.json` needed! Vercel automatically:
+
 - ✅ Detects Vite framework
 - ✅ Runs `npm run build`
 - ✅ Serves from `dist/` folder
@@ -326,6 +328,7 @@ No `vercel.json` needed! Vercel automatically:
 ### Environment Variables
 
 If needed, add in Vercel Dashboard:
+
 - `VITE_API_URL` - Your API endpoint
 - `VITE_ANALYTICS_ID` - Analytics tracking
 
@@ -358,21 +361,29 @@ This project was built using modern development practices:
 ## Screenshots
 
 ### Landing Page
-*Professional hero section with responsive design and call-to-action buttons*
+
+_Professional hero section with responsive design and call-to-action buttons_
 
 ![HaiIntel Landing Page](docs/Haiintel-Landing-Page.png)
 
 ### Chat Interface - Main Window
-*Interactive conversation interface with AI responses and streaming text*
+
+_Interactive conversation interface with AI responses and streaming text_
 
 ![HaiIntel Chat Widget - Main Interface](docs/Haiintel-chat-area1.png)
 
 ### Chat Features - Rich Content
-*Charts, code blocks, and formatted content display*
+
+_Charts, code blocks, and formatted content display_
 
 ![Chat Widget - Rich Content Display](docs/Haiintel-chat-area2.png)
 
 ### Mobile Responsive Chat
-*Mobile-optimized interface with voice input and image upload*
+
+_Mobile-optimized interface with voice input and image upload_
 
 ![Chat Widget - Mobile View](docs/Haiintel-chat-area3.png)
+
+### Performance Report
+
+![Chat Widget - Mobile View](docs/Lighthouse Report Viewer.pdf)

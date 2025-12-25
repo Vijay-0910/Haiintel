@@ -20,7 +20,9 @@ const CTASection = lazy(
   () => import("./components/landing/sections/CTASection")
 );
 const Footer = lazy(() => import("./components/landing/Footer"));
-const ChatWidget = lazy(() => import("./components/ChatWidget"));
+
+// DON'T import ChatWidget here - it will be dynamically imported only when needed
+// This removes 179 KB from initial bundle
 
 // Lazy Section wrapper - only loads when in view
 const LazySection = memo(({ Component, isDarkMode, ...props }) => {
@@ -41,7 +43,7 @@ LazySection.displayName = "LazySection";
 function App() {
   const [activeSection, setActiveSection] = useState("home");
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [shouldLoadChat, setShouldLoadChat] = useState(false);
+  const [ChatWidget, setChatWidget] = useState(null);
   const [isDarkMode, setIsDarkMode] = useState(() => {
     if (typeof window !== "undefined") {
       const saved = localStorage.getItem("haiintel-theme");
@@ -56,44 +58,39 @@ function App() {
     localStorage.setItem("haiintel-theme", isDarkMode ? "dark" : "light");
   }, [isDarkMode]);
 
-  // Don't load chat widget on initial page load
-  // Only load when user shows intent to interact with it
-  // This prevents loading 179 KB of unused JavaScript initially
+  // Dynamically import chat widget only when needed
+  // This removes 179 KB from the initial bundle completely
   useEffect(() => {
     let loaded = false;
 
-    const loadChatWidget = () => {
+    const loadChatWidget = async () => {
       if (!loaded) {
         loaded = true;
-        setShouldLoadChat(true);
+        // Dynamic import - only fetches the chunk when called
+        const { default: ChatWidgetComponent } = await import("./components/ChatWidget");
+        setChatWidget(() => ChatWidgetComponent);
       }
     };
 
-    // Load chat widget after significant user engagement:
-    // 1. After 5 seconds of page time (reduced bundle for Lighthouse)
-    // 2. After scrolling past 25% of page
-    // 3. After any click/touch (user is engaging)
-    const timer = setTimeout(loadChatWidget, 5000);
+    // Load after user interaction or 10 seconds
+    const timer = setTimeout(loadChatWidget, 10000);
 
-    let scrolled = false;
-    const handleScroll = () => {
-      if (scrolled) return;
-      const scrollPercent = (window.scrollY / (document.documentElement.scrollHeight - window.innerHeight)) * 100;
-      if (scrollPercent > 25) {
-        scrolled = true;
-        loadChatWidget();
-      }
+    const handleInteraction = () => {
+      loadChatWidget();
+      clearTimeout(timer);
     };
 
-    window.addEventListener('click', loadChatWidget, { once: true, passive: true });
-    window.addEventListener('touchstart', loadChatWidget, { once: true, passive: true });
-    window.addEventListener('scroll', handleScroll, { passive: true });
+    window.addEventListener('click', handleInteraction, { once: true, passive: true });
+    window.addEventListener('scroll', handleInteraction, { once: true, passive: true });
+    window.addEventListener('touchstart', handleInteraction, { once: true, passive: true });
+    window.addEventListener('mousemove', handleInteraction, { once: true, passive: true });
 
     return () => {
       clearTimeout(timer);
-      window.removeEventListener('click', loadChatWidget);
-      window.removeEventListener('touchstart', loadChatWidget);
-      window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener('click', handleInteraction);
+      window.removeEventListener('scroll', handleInteraction);
+      window.removeEventListener('touchstart', handleInteraction);
+      window.removeEventListener('mousemove', handleInteraction);
     };
   }, []);
 
@@ -163,12 +160,8 @@ function App() {
       <LazySection Component={CTASection} isDarkMode={isDarkMode} />
       <LazySection Component={Footer} isDarkMode={isDarkMode} />
 
-      {/* Chat widget - delays until interaction */}
-      {shouldLoadChat && (
-        <Suspense fallback={null}>
-          <ChatWidget isDarkMode={isDarkMode} />
-        </Suspense>
-      )}
+      {/* Chat widget - dynamically loaded only when needed */}
+      {ChatWidget && <ChatWidget isDarkMode={isDarkMode} />}
     </div>
   );
 }

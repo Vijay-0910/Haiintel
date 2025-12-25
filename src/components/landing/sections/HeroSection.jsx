@@ -19,7 +19,10 @@ const HeroSection = memo(({ onScrollToSection }) => {
       >
         <picture>
           <source
-            srcSet={heroImageMobile}
+            // srcSet={heroImageMobile}
+            src={
+              "https://res.cloudinary.com/di9opoguc/image/upload/v1766678008/hero-intelligence-CXC1fGWY_eb8wfc.jpg"
+            }
             media="(max-width: 640px)"
             type="image/webp"
           />
