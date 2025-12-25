@@ -96,11 +96,7 @@ export default defineConfig({
             id.includes("react-markdown") ||
             id.includes("highlight.js") ||
             id.includes("rehype-") ||
-            id.includes("remark-") ||
-            id.includes("unified") ||
-            id.includes("micromark") ||
-            id.includes("mdast-") ||
-            id.includes("hast-")
+            id.includes("remark-")
           ) {
             return "chat-libs";
           }
