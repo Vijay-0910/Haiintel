@@ -1,4 +1,4 @@
-import { memo, useState, useCallback, useMemo, lazy, Suspense } from 'react';
+import { memo, useState, useCallback, useMemo, useEffect, lazy, Suspense } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import ReactMarkdown from 'react-markdown';
 import rehypeHighlight from 'rehype-highlight';
@@ -15,12 +15,28 @@ const LineChart = lazy(() => import('./RichContent/LineChart'));
  */
 const ArtifactsPanel = memo(({ artifacts, isOpen, onClose, isDarkMode = true }) => {
   const [activeTab, setActiveTab] = useState(0);
-  const [viewMode, setViewMode] = useState('code'); // 'code' or 'preview'
+  const [viewMode, setViewMode] = useState('preview');
   const [copied, setCopied] = useState(false);
   const [chartType, setChartType] = useState('bar'); // 'bar', 'pie', or 'line'
 
   const currentArtifact = artifacts?.[activeTab];
   const isChart = currentArtifact?.type === 'chart';
+
+  // Auto-switch to preview mode for charts
+  useEffect(() => {
+    if (isChart) {
+      setViewMode('preview');
+    }
+  }, [isChart]);
+
+  // Reset state when panel opens
+  useEffect(() => {
+    if (isOpen) {
+      setActiveTab(0);
+      setChartType('bar');
+    }
+  }, [isOpen]);
+
   const canPreview = useMemo(() => {
     if (!currentArtifact) return false;
     if (isChart) return true;
@@ -119,21 +135,20 @@ const ArtifactsPanel = memo(({ artifacts, isOpen, onClose, isDarkMode = true }) 
     );
   }, [currentArtifact, viewMode, isDarkMode, isChart, chartType]);
 
-  if (!isOpen || !artifacts || artifacts.length === 0) return null;
-
   return (
     <AnimatePresence>
-      <motion.div
-        initial={{ x: '100%' }}
-        animate={{ x: 0 }}
-        exit={{ x: '100%' }}
-        transition={{ type: 'spring', damping: 30, stiffness: 300 }}
-        className={`fixed right-0 top-0 h-full w-full lg:w-1/2 xl:w-2/5 flex flex-col border-l shadow-2xl z-[9998] ${
-          isDarkMode
-            ? 'bg-haiintel-darker border-haiintel-border'
-            : 'bg-white border-gray-200'
-        }`}
-      >
+      {isOpen && artifacts && artifacts.length > 0 && (
+        <motion.div
+          initial={{ x: '100%' }}
+          animate={{ x: 0 }}
+          exit={{ x: '100%' }}
+          transition={{ type: 'spring', damping: 30, stiffness: 300 }}
+          className={`fixed right-0 top-0 h-full w-full lg:w-1/2 xl:w-2/5 flex flex-col border-l shadow-2xl z-[9998] ${
+            isDarkMode
+              ? 'bg-haiintel-darker border-haiintel-border'
+              : 'bg-white border-gray-200'
+          }`}
+        >
         {/* Header */}
         <div className={`flex items-center justify-between px-4 py-3 border-b ${
           isDarkMode ? 'border-haiintel-border' : 'border-gray-200'
@@ -383,7 +398,8 @@ const ArtifactsPanel = memo(({ artifacts, isOpen, onClose, isDarkMode = true }) 
             </div>
           )}
         </div>
-      </motion.div>
+        </motion.div>
+      )}
     </AnimatePresence>
   );
 });
