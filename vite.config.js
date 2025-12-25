@@ -9,7 +9,6 @@ function nonBlockingCss() {
   return {
     name: "non-blocking-css",
     transformIndexHtml(html) {
-      // Convert CSS link tags to use preload with async loading
       return html.replace(
         /<link rel="stylesheet" crossorigin href="([^"]+)">/g,
         '<link rel="preload" as="style" href="$1" onload="this.onload=null;this.rel=\'stylesheet\'" crossorigin><noscript><link rel="stylesheet" href="$1" crossorigin></noscript>'
@@ -23,7 +22,6 @@ export default defineConfig({
     react({
       jsxRuntime: "automatic",
     }),
-    // HTML optimization plugin
     createHtmlPlugin({
       minify: true,
       inject: {
@@ -32,22 +30,18 @@ export default defineConfig({
         },
       },
     }),
-    // Make CSS non-render-blocking
     nonBlockingCss(),
-    // Gzip compression
     compression({
       algorithm: "gzip",
       ext: ".gz",
     }),
-    // Brotli compression (better for web)
     compression({
       algorithm: "brotliCompress",
       ext: ".br",
     }),
-    // Bundle analyzer (run build to generate stats.html)
     visualizer({
       filename: "dist/stats.html",
-      open: false,
+      open: true, // ✅ Changed to true - opens after build
       gzipSize: true,
       brotliSize: true,
     }),
@@ -63,9 +57,7 @@ export default defineConfig({
     },
   },
   build: {
-    // Target modern browsers for better tree shaking
     target: "esnext",
-    // Use terser for better production minification
     minify: "terser",
     terserOptions: {
       compress: {
@@ -73,13 +65,14 @@ export default defineConfig({
         drop_debugger: true,
         pure_funcs: ["console.log", "console.info", "console.debug"],
         passes: 3,
-        unsafe: true,
-        unsafe_comps: true,
-        unsafe_math: true,
-        unsafe_methods: true,
-        unsafe_proto: true,
-        unsafe_regexp: true,
-        unsafe_undefined: true,
+        // ✅ Removed aggressive unsafe optimizations that can break Framer Motion
+        unsafe: false,
+        unsafe_comps: false,
+        unsafe_math: false,
+        unsafe_methods: false,
+        unsafe_proto: false,
+        unsafe_regexp: false,
+        unsafe_undefined: false,
       },
       mangle: {
         safari10: true,
@@ -89,24 +82,16 @@ export default defineConfig({
         comments: false,
       },
     },
-    // Inline only very small assets (4KB instead of 8KB)
-    // Prevents large images from being inlined as base64
     assetsInlineLimit: 4096,
-    // No source maps
     sourcemap: false,
-    // Disable CSS code splitting to reduce render-blocking requests
     cssCodeSplit: false,
-    // Warning threshold
     chunkSizeWarningLimit: 500,
-    // Disable modulePreload to eliminate dependency chains
     modulePreload: false,
-    // CSS minification
     cssMinify: true,
-    // Optimized chunk splitting to reduce initial requests
     rollupOptions: {
       output: {
         manualChunks: (id) => {
-          // Core vendor bundle (React only - critical deps)
+          // Core vendor bundle (React only)
           if (
             id.includes("node_modules/react/") ||
             id.includes("node_modules/react-dom/") ||
@@ -116,30 +101,35 @@ export default defineConfig({
           ) {
             return "vendor";
           }
-          // Framer Motion - keep all in animations chunk for proper dependency resolution
-          // NOTE: With LazyMotion pattern, this bundle is now 38% smaller (71 KB vs 115 KB)
-          if (id.includes("node_modules/framer-motion")) {
-            return "animations";
-          }
-          // Chat libraries (lazy loaded)
+
+          // ✅ REMOVED Framer Motion manual chunking
+          // Let Vite tree-shake it automatically with LazyMotion
+
+          // Markdown rendering
           if (
             id.includes("react-markdown") ||
-            id.includes("highlight.js") ||
             id.includes("rehype-") ||
-            id.includes("remark-") ||
-            id.includes("src/components/ChatWidget")
+            id.includes("remark-")
           ) {
+            return "markdown";
+          }
+
+          // Syntax highlighting
+          if (id.includes("highlight.js")) {
+            return "syntax";
+          }
+
+          // Chat widget core
+          if (id.includes("src/components/ChatWidget")) {
             return "chat";
           }
         },
-        // Optimize chunk file names
         chunkFileNames: "assets/js/[name]-[hash].js",
         entryFileNames: "assets/js/[name]-[hash].js",
         assetFileNames: "assets/[ext]/[name]-[hash].[ext]",
       },
     },
   },
-  // Pre-bundle and deduplicate
   optimizeDeps: {
     include: [
       "react",
@@ -148,13 +138,12 @@ export default defineConfig({
       "scheduler",
       "react-is",
       "prop-types",
+      "framer-motion", // ✅ Added - pre-optimize in dev
     ],
     esbuildOptions: {
-      // Optimize dependencies during dev
       target: "esnext",
     },
   },
-  // Deduplicate React packages
   resolve: {
     dedupe: ["react", "react-dom", "scheduler"],
   },

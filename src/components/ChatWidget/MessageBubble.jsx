@@ -10,9 +10,12 @@ import {
 } from "react";
 import { useStreamingText } from "../../hooks/useStreamingText";
 import { extractArtifacts } from "../../utils/extractCodeBlocks";
-import MarkdownMessage from "./MarkdownMessage";
 import ThinkingBlock from "./ThinkingBlock";
 import AIIcon from "../common/AIIcon";
+
+// Lazy load markdown renderer (React Markdown + Syntax Highlighting)
+// This saves ~100 KB until user sees markdown content
+const MarkdownMessage = lazy(() => import("./MarkdownMessage"));
 
 // Lazy load rich content components
 const StatsCard = lazy(() => import("./RichContent/StatsCard"));
