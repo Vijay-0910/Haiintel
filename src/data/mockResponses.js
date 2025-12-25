@@ -305,6 +305,28 @@ export const mockResponses = {
     ],
   },
 
+  // Analytics
+  analytics: {
+    thinking: "The user is asking about analytics. I should show them relevant data with a downloadable chart to demonstrate our analytics capabilities.",
+    text: "Here's an overview of our chat widget analytics features. You can download the chart data by clicking the download button on the chart.",
+    chart: {
+      title: "Monthly User Engagement",
+      labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun"],
+      values: [1200, 1900, 2400, 2100, 2800, 3200],
+    },
+    stats: [
+      { value: "3.2K", label: "Active Users" },
+      { value: "85%", label: "Satisfaction" },
+      { value: "2.4min", label: "Avg. Session" },
+    ],
+    suggestions: [
+      "Tell me about pricing",
+      "How do I integrate this?",
+      "What services do you offer?",
+      "Contact sales team",
+    ],
+  },
+
   // Default response
   default: {
     text: "I'm here to help you learn about HaiIntel! We're part of Vibrant Capital, building human-centered AI experiences. Ask me about our services, team, technology, or how to join us!",
