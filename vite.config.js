@@ -3,6 +3,20 @@ import react from "@vitejs/plugin-react";
 import compression from "vite-plugin-compression";
 import { createHtmlPlugin } from "vite-plugin-html";
 
+// Custom plugin to make CSS non-render-blocking
+function nonBlockingCss() {
+  return {
+    name: "non-blocking-css",
+    transformIndexHtml(html) {
+      // Convert CSS link tags to use preload with async loading
+      return html.replace(
+        /<link rel="stylesheet" crossorigin href="([^"]+)">/g,
+        '<link rel="preload" as="style" href="$1" onload="this.onload=null;this.rel=\'stylesheet\'" crossorigin><noscript><link rel="stylesheet" href="$1" crossorigin></noscript>'
+      );
+    },
+  };
+}
+
 export default defineConfig({
   plugins: [
     react({
@@ -17,6 +31,8 @@ export default defineConfig({
         },
       },
     }),
+    // Make CSS non-render-blocking
+    nonBlockingCss(),
     // Gzip compression
     compression({
       algorithm: "gzip",
@@ -64,58 +80,35 @@ export default defineConfig({
     // Disable CSS code splitting to reduce render-blocking requests
     cssCodeSplit: false,
     // Warning threshold
-    chunkSizeWarningLimit: 200,
-    // Optimize modulePreload to reduce initial requests
-    modulePreload: {
-      polyfill: false,
-      resolveDependencies: (filename, deps) => {
-        // Only preload critical chunks (react-vendor and index)
-        return deps.filter(dep =>
-          dep.includes('react-vendor') ||
-          dep.includes('index')
-        );
-      },
-    },
+    chunkSizeWarningLimit: 500,
+    // Disable modulePreload to eliminate dependency chains
+    modulePreload: false,
     // CSS minification
     cssMinify: true,
-    // Manual chunk splitting for better caching
+    // Optimized chunk splitting to reduce initial requests
     rollupOptions: {
       output: {
         manualChunks: (id) => {
-          // React ecosystem - complete deduplication
+          // Core vendor bundle (React + critical deps)
           if (
             id.includes("node_modules/react/") ||
             id.includes("node_modules/react-dom/") ||
             id.includes("node_modules/scheduler/") ||
             id.includes("node_modules/react-is/") ||
-            id.includes("node_modules/prop-types/")
+            id.includes("node_modules/prop-types/") ||
+            id.includes("node_modules/framer-motion")
           ) {
-            return "react-vendor";
+            return "vendor";
           }
-          // Framer Motion
-          if (id.includes("node_modules/framer-motion")) {
-            return "framer-motion";
-          }
-          // Markdown & highlight - only in chat widget
+          // Chat libraries (lazy loaded)
           if (
             id.includes("react-markdown") ||
             id.includes("highlight.js") ||
             id.includes("rehype-") ||
-            id.includes("remark-")
+            id.includes("remark-") ||
+            id.includes("src/components/ChatWidget")
           ) {
-            return "chat-libs";
-          }
-          // Chat widget components
-          if (id.includes("src/components/ChatWidget")) {
-            return "chat-widget";
-          }
-          // Landing sections
-          if (id.includes("src/components/landing/sections") && !id.includes("HeroSection")) {
-            return "landing-sections";
-          }
-          // All other vendor code
-          if (id.includes("node_modules")) {
-            return "vendor";
+            return "chat";
           }
         },
         // Optimize chunk file names
