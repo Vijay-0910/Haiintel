@@ -1,17 +1,12 @@
 import { memo } from "react";
-import { m } from "framer-motion";
 
 const ChatSkeleton = memo(({ isDarkMode = true }) => (
-  <m.div
-    className={`fixed z-[9999] flex flex-col shadow-2xl inset-0 sm:inset-auto sm:bottom-4 sm:right-4 sm:w-[min(90vw,380px)] sm:h-[min(85vh,600px)] sm:rounded-2xl md:w-[min(85vw,440px)] md:h-[min(80vh,650px)] lg:w-[500px] lg:h-[min(80vh,700px)] xl:w-[550px] xl:max-h-[750px] border overflow-hidden ${
+  <div
+    className={`fixed z-[9999] flex flex-col shadow-2xl inset-0 sm:inset-auto sm:bottom-4 sm:right-4 sm:w-[min(90vw,380px)] sm:h-[min(85vh,600px)] sm:rounded-2xl md:w-[min(85vw,440px)] md:h-[min(80vh,650px)] lg:w-[500px] lg:h-[min(80vh,700px)] xl:w-[550px] xl:max-h-[750px] border overflow-hidden animate-slide-up ${
       isDarkMode
         ? "bg-haiintel-darker border-haiintel-border"
         : "bg-white border-gray-200"
     }`}
-    initial={{ opacity: 0, y: 20, scale: 0.95 }}
-    animate={{ opacity: 1, y: 0, scale: 1 }}
-    exit={{ opacity: 0, y: 20, scale: 0.95 }}
-    transition={{ duration: 0.25, ease: [0.4, 0, 0.2, 1] }}
   >
     {/* Skeleton Header */}
     <div
@@ -173,7 +168,7 @@ const ChatSkeleton = memo(({ isDarkMode = true }) => (
         />
       </div>
     </div>
-  </m.div>
+  </div>
 ));
 
 ChatSkeleton.displayName = "ChatSkeleton";

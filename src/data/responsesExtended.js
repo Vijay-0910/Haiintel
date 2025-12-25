@@ -1,8 +1,6 @@
-// HaiIntel Chat - Real Content from HaiIntel.com
-// Hardcoded responses for the UI Developer Challenge
-
-export const mockResponses = {
-  // Welcome message
+// Extended responses - lazy loaded on demand
+export const extendedResponses = {
+  // Welcome message  
   welcome: {
     text: "Welcome to **HaiIntel**! 👋\n\nPart of *Vibrant Capital*, we build human-centered AI experiences that merge design, performance, and intelligence.\n\n**How can I help you today?**",
     suggestions: [
@@ -64,8 +62,7 @@ export const mockResponses = {
       "How do I integrate this?",
     ],
   },
-
-  // Services
+// Services
   services: {
     thinking:
       "The user wants to know about our services. I should present our comprehensive service offerings in a clear, organized way that demonstrates our full-stack AI capabilities - from strategy to design to implementation.",
@@ -506,154 +503,4 @@ export const mockResponses = {
       "What's your tech stack?",
     ],
   },
-
-  // Default response
-  default: {
-    text: "I'm here to help you learn about HaiIntel! We're part of Vibrant Capital, building human-centered AI experiences. Ask me about our services, team, technology, or how to join us!",
-    suggestions: [
-      "What is HaiIntel?",
-      "What services do you offer?",
-      "What are the open positions?",
-      "What's your tech stack?",
-      "Show me code examples",
-      "Tell me about Vibrant Capital",
-    ],
-  },
-
-  // Help
-  help: {
-    text: "Here's what I can help you with:",
-    list: [
-      "Learn about HaiIntel and our mission",
-      "Discover our AI development services",
-      "Explore our technology stack",
-      "Find out about career opportunities",
-      "Learn about Vibrant Capital",
-      "Get in touch with our team",
-    ],
-    listOrdered: false,
-    suggestions: [
-      "What is HaiIntel?",
-      "What services do you offer?",
-      "What are the open positions?",
-      "What's your tech stack?",
-      "Show me code examples",
-      "Tell me about Vibrant Capital",
-    ],
-  },
 };
-
-// Intelligent response matcher
-export const getResponse = (userMessage) => {
-  const msg = userMessage.toLowerCase().trim();
-
-  // Keyword mappings
-  const keywords = {
-    // About HaiIntel
-    haiintel: "what is haiintel",
-    about: "what is haiintel",
-    "who are you": "what is haiintel",
-    company: "what is haiintel",
-
-    // Services
-    service: "services",
-    offer: "services",
-    "what do you do": "services",
-    solutions: "services",
-
-    // Vibrant Capital
-    vibrant: "vibrant capital",
-    capital: "vibrant capital",
-    parent: "vibrant capital",
-
-    // Tech Stack
-    tech: "tech stack",
-    technology: "tech stack",
-    stack: "tech stack",
-    tools: "tech stack",
-
-    // Frontend
-    frontend: "frontend technologies",
-    react: "frontend technologies",
-    "front-end": "frontend technologies",
-
-    // Backend
-    backend: "backend technologies",
-    "back-end": "backend technologies",
-    nodejs: "backend technologies",
-    python: "backend technologies",
-    api: "backend technologies",
-
-    // Database & Cloud
-    database: "databases and cloud",
-    cloud: "databases and cloud",
-    mongodb: "databases and cloud",
-    postgresql: "databases and cloud",
-    aws: "databases and cloud",
-
-    // Team
-    team: "team",
-    culture: "team",
-    people: "team",
-
-    // Careers
-    career: "careers",
-    job: "careers",
-    hire: "careers",
-    hiring: "careers",
-    work: "careers",
-    position: "careers",
-
-    // Projects
-    project: "projects",
-    portfolio: "projects",
-    built: "projects",
-    "what have you built": "projects",
-
-    // Contact
-    contact: "contact",
-    email: "contact",
-    reach: "contact",
-    "get in touch": "contact",
-
-    // Benefits
-    benefit: "benefits",
-    perk: "benefits",
-    "why work": "benefits",
-    "why join": "benefits",
-
-    // Apply
-    apply: "apply",
-    "how to apply": "apply",
-    join: "apply",
-
-    // Interview
-    interview: "interview process",
-    "application process": "application process",
-
-    // Analytics
-    analytic: "analytics",
-
-    // Help
-    help: "help",
-    "what can you": "help",
-  };
-
-  // Find matching keyword
-  for (const [keyword, responseKey] of Object.entries(keywords)) {
-    if (msg.includes(keyword)) {
-      return mockResponses[responseKey] || mockResponses.default;
-    }
-  }
-
-  // Check for exact match
-  if (mockResponses[msg]) {
-    return mockResponses[msg];
-  }
-
-  // Default response
-  return mockResponses.default;
-};
-
-// Export welcome message
-export const getWelcomeMessage = () => mockResponses.welcome;

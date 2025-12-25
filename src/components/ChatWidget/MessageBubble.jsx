@@ -295,9 +295,10 @@ const MessageBubble = memo(
   }) => {
     const isUser = message.role === "user";
     const hasError = message.error === true;
+    // Faster streaming: 30ms base, dynamic adjustment for long texts
     const { displayedText, isComplete } = useStreamingText(
       message.text,
-      80,
+      30,
       isStreaming
     );
     const textToShow = isStreaming ? displayedText : message.text;
@@ -397,7 +398,11 @@ const MessageBubble = memo(
         >
           {/* Thinking Block - for AI messages only */}
           {!isUser && message.thinking && (
-            <Suspense fallback={<div className="h-8 animate-pulse bg-haiintel-border/30 rounded" />}>
+            <Suspense
+              fallback={
+                <div className="h-8 animate-pulse bg-haiintel-border/30 rounded" />
+              }
+            >
               <ThinkingBlock
                 thinking={message.thinking}
                 isThinking={isStreaming && !message.text}
@@ -462,7 +467,9 @@ const MessageBubble = memo(
                         content={textToShow}
                         isDarkMode={isDarkMode}
                         isStreaming={isStreaming}
-                        onOpenArtifacts={hasArtifacts ? () => onOpenArtifacts(message) : null}
+                        onOpenArtifacts={
+                          hasArtifacts ? () => onOpenArtifacts(message) : null
+                        }
                       />
                     )}
                   </div>

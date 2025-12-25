@@ -160,6 +160,10 @@ export default defineConfig({
     },
   },
   resolve: {
-    dedupe: ["react", "react-dom", "scheduler"],
+    dedupe: ["react", "react-dom", "scheduler", "framer-motion"],
+  },
+  // Ensure proper tree-shaking
+  esbuild: {
+    treeShaking: true,
   },
 });

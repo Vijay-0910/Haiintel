@@ -1,5 +1,4 @@
 import { useEffect, useRef, useState, useCallback, useMemo, memo, lazy, Suspense } from "react";
-import { m, AnimatePresence } from "framer-motion";
 import ChatHeader from "./ChatHeader";
 import ChatMessages from "./ChatMessages";
 import ChatInput from "./ChatInput";
@@ -10,209 +9,8 @@ const ArtifactsPanel = lazy(() => import("./ArtifactsPanel"));
 import SkeletonLoader from "./SkeletonLoader";
 import ChatContentSkeleton from "./ChatContentSkeleton";
 import { useChatSession } from "../../hooks/useChatSession";
-import { getResponse } from "../../data/mockResponses";
+import { getResponseAsync } from "../../data/responsesCore";
 import { extractArtifacts } from "../../utils/extractCodeBlocks";
-
-// HaiIntel-related helper chips pool (shown on empty state)
-// Each time the chat loads, 4 random chips are selected from this pool
-const HAIINTEL_CHIPS_POOL = [
-  {
-    icon: "🎯",
-    label: "About HaiIntel",
-    description: "Learn about our mission",
-    query: "What is HaiIntel?",
-  },
-  {
-    icon: "💼",
-    label: "Our Services",
-    description: "Explore what we offer",
-    query: "What services do you offer?",
-  },
-  {
-    icon: "🏢",
-    label: "Vibrant Capital",
-    description: "Our parent company",
-    query: "Tell me about Vibrant Capital",
-  },
-  {
-    icon: "💻",
-    label: "Tech Stack",
-    description: "Technologies we use",
-    query: "What is your tech stack?",
-  },
-  {
-    icon: "🚀",
-    label: "Get Started",
-    description: "Quick start guide",
-    query: "How do I get started with HaiIntel?",
-  },
-  {
-    icon: "💡",
-    label: "Use Cases",
-    description: "Real-world examples",
-    query: "What are HaiIntel's use cases?",
-  },
-  {
-    icon: "📊",
-    label: "Analytics",
-    description: "Track conversations",
-    query: "Tell me about HaiIntel analytics features",
-  },
-  {
-    icon: "🔧",
-    label: "Integration",
-    description: "Setup instructions",
-    query: "How do I integrate HaiIntel?",
-  },
-  {
-    icon: "💰",
-    label: "Pricing",
-    description: "View pricing plans",
-    query: "What are HaiIntel's pricing plans?",
-  },
-  {
-    icon: "🎨",
-    label: "Customization",
-    description: "Personalize your chat",
-    query: "Can I customize HaiIntel chat widget?",
-  },
-  {
-    icon: "🔒",
-    label: "Security",
-    description: "Enterprise-grade protection",
-    query: "How secure is HaiIntel?",
-  },
-  {
-    icon: "📱",
-    label: "Mobile Support",
-    description: "Works on all devices",
-    query: "Does HaiIntel work on mobile?",
-  },
-  {
-    icon: "🤖",
-    label: "AI Capabilities",
-    description: "Intelligent features",
-    query: "What AI capabilities does HaiIntel have?",
-  },
-  {
-    icon: "🌐",
-    label: "Industries",
-    description: "Sectors we serve",
-    query: "What industries does HaiIntel serve?",
-  },
-  {
-    icon: "📈",
-    label: "Success Stories",
-    description: "Client achievements",
-    query: "What are HaiIntel's success stories?",
-  },
-  {
-    icon: "⚡",
-    label: "Performance",
-    description: "Speed and reliability",
-    query: "How fast is HaiIntel?",
-  },
-  {
-    icon: "🎓",
-    label: "Training",
-    description: "Learn the platform",
-    query: "How do I learn to use HaiIntel?",
-  },
-  {
-    icon: "🌟",
-    label: "Key Features",
-    description: "What makes us unique",
-    query: "What are HaiIntel's key features?",
-  },
-  {
-    icon: "💬",
-    label: "Support",
-    description: "Get help anytime",
-    query: "What kind of support does HaiIntel offer?",
-  },
-  {
-    icon: "🔄",
-    label: "Updates",
-    description: "Latest improvements",
-    query: "What's new in HaiIntel?",
-  },
-];
-
-// Helper chip suggestions pool (shown after AI responses)
-const HELPER_CHIPS_POOL = [
-  {
-    icon: "🎯",
-    label: "About HaiIntel",
-    description: "Learn about our mission",
-    query: "What is HaiIntel?",
-  },
-  {
-    icon: "💼",
-    label: "Our Services",
-    description: "Explore what we offer",
-    query: "What services do you offer?",
-  },
-  {
-    icon: "🏢",
-    label: "Vibrant Capital",
-    description: "Our parent company",
-    query: "Tell me about Vibrant Capital",
-  },
-  {
-    icon: "💻",
-    label: "Code Examples",
-    description: "See integration code",
-    query: "Show me code examples",
-  },
-  {
-    icon: "🚀",
-    label: "Get Started",
-    description: "Quick start guide",
-    query: "How do I get started?",
-  },
-  {
-    icon: "💡",
-    label: "Use Cases",
-    description: "Real-world examples",
-    query: "What are the use cases?",
-  },
-  {
-    icon: "📊",
-    label: "Analytics",
-    description: "Track conversations",
-    query: "Tell me about analytics features",
-  },
-  {
-    icon: "🔧",
-    label: "Integration",
-    description: "Setup instructions",
-    query: "How do I integrate this?",
-  },
-  {
-    icon: "💰",
-    label: "Pricing",
-    description: "View pricing plans",
-    query: "What are your pricing plans?",
-  },
-  {
-    icon: "🎨",
-    label: "Customization",
-    description: "Personalize your chat",
-    query: "Can I customize the chat widget?",
-  },
-  {
-    icon: "🔒",
-    label: "Security",
-    description: "Enterprise-grade protection",
-    query: "How secure is HaiIntel?",
-  },
-  {
-    icon: "📱",
-    label: "Mobile Support",
-    description: "Works on all devices",
-    query: "Does it work on mobile?",
-  },
-];
 
 const ChatWindow = memo(({ onClose, isDarkMode = true }) => {
   const { messages, addMessage, clearChat, setMessages } = useChatSession();
@@ -240,10 +38,13 @@ const ChatWindow = memo(({ onClose, isDarkMode = true }) => {
   // Initialize helper chips with 4 random HaiIntel questions
   // These are shown ONLY on the initial empty state before any conversation
   // Each time the chat loads, different questions are shown
+  // Lazy load chips data only when needed
   useEffect(() => {
-    const shuffled = [...HAIINTEL_CHIPS_POOL].sort(() => Math.random() - 0.5);
-    const selectedChips = shuffled.slice(0, 4);
-    setHelperChips(selectedChips);
+    import("./chipsData").then(({ HAIINTEL_CHIPS_POOL }) => {
+      const shuffled = [...HAIINTEL_CHIPS_POOL].sort(() => Math.random() - 0.5);
+      const selectedChips = shuffled.slice(0, 4);
+      setHelperChips(selectedChips);
+    });
   }, []);
 
   // Cleanup timeouts
@@ -306,7 +107,7 @@ const ChatWindow = memo(({ onClose, isDarkMode = true }) => {
       if (streamingTimeoutRef.current)
         clearTimeout(streamingTimeoutRef.current);
 
-      typingTimeoutRef.current = setTimeout(() => {
+      typingTimeoutRef.current = setTimeout(async () => {
         try {
           let response;
 
@@ -342,8 +143,8 @@ ${
               ],
             };
           } else {
-            // Normal text response
-            response = getResponse(messageData.text);
+            // Normal text response - lazy load on demand
+            response = await getResponseAsync(messageData.text);
           }
 
           const aiMessage = addMessage({
@@ -443,9 +244,9 @@ ${
       setIsTyping(true);
       setSuggestions([]);
 
-      typingTimeoutRef.current = setTimeout(() => {
+      typingTimeoutRef.current = setTimeout(async () => {
         try {
-          const response = getResponse(userMessage.text);
+          const response = await getResponseAsync(userMessage.text);
           const newAiMessage = addMessage({
             role: "assistant",
             text: response.text,
@@ -554,26 +355,15 @@ ${
   return (
     <>
       {/* Backdrop - Click outside to close */}
-      <m.div
-        className="fixed inset-0 z-[9998] bg-black/20 backdrop-blur-sm"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        exit={{ opacity: 0 }}
-        transition={{ duration: 0.2 }}
+      <div
+        className="fixed inset-0 z-[9998] bg-black/20 backdrop-blur-sm animate-fade-in"
         onClick={onClose}
         aria-hidden="true"
       />
 
       {/* Chat Window */}
-      <m.div
-        className={windowClassName}
-        initial={{ opacity: 0, y: 20, scale: 0.95 }}
-        animate={{ opacity: 1, y: 0, scale: 1 }}
-        exit={{ opacity: 0, y: 20, scale: 0.95 }}
-        transition={{
-          duration: 0.25,
-          ease: [0.4, 0, 0.2, 1],
-        }}
+      <div
+        className={`${windowClassName} animate-slide-up`}
         style={{
           willChange: "transform, opacity",
           backfaceVisibility: "hidden",
@@ -631,7 +421,7 @@ ${
           message="Are you sure you want to delete the entire chat history? This action cannot be undone."
           isDarkMode={isDarkMode}
         />
-      </m.div>
+      </div>
     </>
   );
 });

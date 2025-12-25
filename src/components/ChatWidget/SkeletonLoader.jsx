@@ -1,15 +1,8 @@
 import { memo } from "react";
-import { m } from "framer-motion";
 
 const SkeletonLoader = memo(({ isDarkMode = true }) => {
   return (
-    <m.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-      transition={{ duration: 0.3 }}
-      className="flex flex-col h-full"
-    >
+    <div className="flex flex-col h-full animate-fade-in">
       {/* Header Skeleton */}
       <div
         className={`flex items-center justify-between px-4 py-3 border-b ${
@@ -112,7 +105,7 @@ const SkeletonLoader = memo(({ isDarkMode = true }) => {
           />
         </div>
       </div>
-    </m.div>
+    </div>
   );
 });
 

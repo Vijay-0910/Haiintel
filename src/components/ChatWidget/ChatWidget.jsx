@@ -1,5 +1,4 @@
 import { useState, lazy, Suspense, useCallback, memo } from "react";
-import { AnimatePresence } from "framer-motion";
 import ChatButton from "./ChatButton";
 import ChatSkeleton from "./ChatSkeleton";
 import { ErrorBoundary } from "../common";
@@ -79,20 +78,18 @@ const ChatWidget = memo(({ isDarkMode = true }) => {
         isOpen={isOpen}
         isDarkMode={isDarkMode}
       />
-      <AnimatePresence>
-        {isOpen && (
-          <ErrorBoundary
-            isDarkMode={isDarkMode}
-            fallback={
-              <ChatErrorFallback isDarkMode={isDarkMode} onClose={closeChat} />
-            }
-          >
-            <Suspense fallback={<ChatSkeleton isDarkMode={isDarkMode} />}>
-              <ChatWindow onClose={closeChat} isDarkMode={isDarkMode} />
-            </Suspense>
-          </ErrorBoundary>
-        )}
-      </AnimatePresence>
+      {isOpen && (
+        <ErrorBoundary
+          isDarkMode={isDarkMode}
+          fallback={
+            <ChatErrorFallback isDarkMode={isDarkMode} onClose={closeChat} />
+          }
+        >
+          <Suspense fallback={<ChatSkeleton isDarkMode={isDarkMode} />}>
+            <ChatWindow onClose={closeChat} isDarkMode={isDarkMode} />
+          </Suspense>
+        </ErrorBoundary>
+      )}
     </>
   );
 });
