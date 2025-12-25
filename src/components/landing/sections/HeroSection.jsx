@@ -2,10 +2,14 @@ import { memo } from "react";
 import { motion } from "framer-motion";
 
 // Cloudinary with aggressive optimization
-const heroImageMobile = "https://res.cloudinary.com/di9opoguc/image/upload/f_auto,q_auto:eco,w_640,c_limit/v1766678008/hero-intelligence-CXC1fGWY_eb8wfc.jpg";
-const heroImageTablet = "https://res.cloudinary.com/di9opoguc/image/upload/f_auto,q_auto:eco,w_1024,c_limit/v1766678008/hero-intelligence-CXC1fGWY_eb8wfc.jpg";
-const heroImageDesktop = "https://res.cloudinary.com/di9opoguc/image/upload/f_auto,q_auto:eco,w_1280,c_limit/v1766678008/hero-intelligence-CXC1fGWY_eb8wfc.jpg";
-const heroImageFallback = "https://res.cloudinary.com/di9opoguc/image/upload/f_auto,q_auto:eco,w_1280/v1766678008/hero-intelligence-CXC1fGWY_eb8wfc.jpg";
+const heroImageMobile =
+  "https://res.cloudinary.com/di9opoguc/image/upload/f_auto,q_auto:eco,w_640,c_limit/v1766678008/hero-intelligence-CXC1fGWY_eb8wfc.jpg";
+const heroImageTablet =
+  "https://res.cloudinary.com/di9opoguc/image/upload/f_auto,q_auto:eco,w_1024,c_limit/v1766678008/hero-intelligence-CXC1fGWY_eb8wfc.jpg";
+const heroImageDesktop =
+  "https://res.cloudinary.com/di9opoguc/image/upload/f_auto,q_auto:eco,w_1280,c_limit/v1766678008/hero-intelligence-CXC1fGWY_eb8wfc.jpg";
+const heroImageFallback =
+  "https://res.cloudinary.com/di9opoguc/image/upload/f_auto,q_auto:eco,w_1280/v1766678008/hero-intelligence-CXC1fGWY_eb8wfc.jpg";
 
 const HeroSection = memo(({ onScrollToSection }) => {
   return (
@@ -26,7 +30,6 @@ const HeroSection = memo(({ onScrollToSection }) => {
           src={heroImageFallback}
           alt="AI-powered enterprise intelligence background"
           className="absolute inset-0 w-full h-full object-cover"
-          fetchPriority="high"
           decoding="async"
           width="1280"
           height="720"
