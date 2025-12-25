@@ -1,0 +1,275 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  html {
+    /* Prevent text size adjustment on orientation change */
+    -webkit-text-size-adjust: 100%;
+    /* Enable smooth scrolling */
+    scroll-behavior: smooth;
+    /* Prevent layout shift */
+    overflow-x: hidden;
+  }
+
+  body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+      'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+      sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    /* Official HaiIntel background gradient */
+    background: linear-gradient(135deg, #0a1628 0%, #141d2e 100%);
+    color: #fafafa;
+    min-height: 100vh;
+    /* Support for safe areas on notched devices */
+    padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+    /* Performance: Enable font display swap */
+    font-display: swap;
+    /* Prevent content shift */
+    overflow-x: hidden;
+  }
+
+  button {
+    font-family: inherit;
+    /* Remove tap highlight on mobile */
+    -webkit-tap-highlight-color: transparent;
+    /* Improve click responsiveness */
+    touch-action: manipulation;
+  }
+
+  /* Optimize images */
+  img, video {
+    max-width: 100%;
+    height: auto;
+    /* Prevent layout shift */
+    aspect-ratio: attr(width) / attr(height);
+  }
+
+  /* Prevent pull-to-refresh on mobile when inside chat */
+  .chat-container {
+    overscroll-behavior: contain;
+  }
+
+  /* Improve touch targets for accessibility */
+  @media (pointer: coarse) {
+    button, a, input, textarea {
+      min-height: 44px;
+    }
+  }
+
+  /* Reduce motion for users who prefer it */
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}
+
+@layer utilities {
+  /* Scrollbar utilities */
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Glass effect */
+  .glass-effect {
+    background: rgba(26, 41, 66, 0.8);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+  }
+
+  /* HaiIntel brand gradient text */
+  .gradient-text {
+    background: linear-gradient(135deg, #2e90fa 0%, #f59e0b 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  /* Safe area utilities for notched devices */
+  .safe-bottom {
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+
+  .safe-top {
+    padding-top: env(safe-area-inset-top);
+  }
+
+  /* Touch action optimization */
+  .touch-none {
+    touch-action: none;
+  }
+
+  .touch-pan-y {
+    touch-action: pan-y;
+  }
+
+  .touch-pan-x {
+    touch-action: pan-x;
+  }
+
+  /* Prevent text selection on interactive elements */
+  .no-select {
+    -webkit-user-select: none;
+    user-select: none;
+  }
+
+  /* Hardware acceleration for smooth animations */
+  .gpu-accelerated {
+    transform: translateZ(0);
+    will-change: transform;
+    backface-visibility: hidden;
+  }
+
+  /* CSS Containment for performance */
+  .contain-strict {
+    contain: strict;
+  }
+
+  .contain-content {
+    contain: content;
+  }
+
+  .contain-layout {
+    contain: layout;
+  }
+
+  .contain-paint {
+    contain: paint;
+  }
+
+  .contain-size {
+    contain: size;
+  }
+
+  /* Content visibility for off-screen optimization */
+  .content-auto {
+    content-visibility: auto;
+    contain-intrinsic-size: auto 500px;
+  }
+
+  /* Optimize rendering */
+  .will-change-transform {
+    will-change: transform;
+  }
+
+  .will-change-opacity {
+    will-change: opacity;
+  }
+
+  .will-change-scroll {
+    will-change: scroll-position;
+  }
+
+  /* Isolation for stacking context optimization */
+  .isolate {
+    isolation: isolate;
+  }
+
+  /* Text overflow wrap for long words */
+  .overflow-wrap-anywhere {
+    overflow-wrap: anywhere;
+    word-break: break-word;
+  }
+
+  /* Fade in animation */
+  .animate-fade-in {
+    animation: fadeIn 0.2s ease-out forwards;
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(8px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  /* Slide up animation */
+  .animate-slide-up {
+    animation: slideUp 0.3s ease-out forwards;
+  }
+
+  @keyframes slideUp {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+}
+
+/* Custom scrollbar for desktop (when visible) */
+@media (min-width: 640px) {
+  .custom-scrollbar::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    background: #262e3f;
+    border-radius: 3px;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: #2f3a52;
+  }
+}
+
+/* Print styles */
+@media print {
+  body {
+    background: white;
+    color: black;
+  }
+  
+  /* Hide non-essential elements when printing */
+  .no-print,
+  [data-chat-widget] {
+    display: none !important;
+  }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  :root {
+    --border-width: 2px;
+  }
+  
+  button, a {
+    border-width: var(--border-width);
+  }
+}
+
+/* Responsive breakpoint reference:
+   - Mobile: < 480px (default)
+   - Small Mobile: 480px+ (min-[480px])
+   - Tablet: 640px+ (sm)
+   - Medium Tablet: 768px+ (md)
+   - Desktop: 1024px+ (lg)
+   - Large Desktop: 1280px+ (xl)
+*/

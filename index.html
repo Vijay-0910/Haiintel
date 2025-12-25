@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+
+    <!-- Resource hints for performance -->
+    <link rel="dns-prefetch" href="//fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin />
+
+    <!-- SEO & Meta -->
+    <title>HaiIntel - AI-Powered Enterprise Solutions</title>
+    <meta name="description" content="HaiIntel partners with CIOs to embed human-rooted AI into enterprise transformation." />
+    <meta name="theme-color" content="#0a1628" />
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    
+    <!-- Critical CSS - Inline for instant FCP -->
+    <style>
+      *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+      html{-webkit-text-size-adjust:100%;background:#0a1628;scroll-behavior:auto}
+      body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;background:linear-gradient(135deg,#0a1628,#141d2e);color:#fafafa;min-height:100vh}
+      #root{min-height:100vh}
+
+      /* Loading skeleton */
+      .skeleton{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;padding:1rem;will-change:opacity;transform:translateZ(0)}
+      .skeleton h1{font-size:clamp(2.5rem,8vw,5rem);font-weight:700;color:#fff;text-align:center;margin-bottom:1rem}
+      .skeleton h2{font-size:clamp(2rem,6vw,4rem);font-weight:700;color:#00d4ff;text-align:center}
+
+      /* Hide skeleton when React renders */
+      #root:not(:empty) + .skeleton{display:none}
+
+      /* Performance optimizations */
+      img,video{transform:translateZ(0)}
+      .animate-fade-in,.animate-slide-up{will-change:transform,opacity}
+      .transition-colors,.transition-all{will-change:auto}
+    </style>
+  </head>
+  <body>
+    <div id="root"></div>
+    
+    <!-- Skeleton for FCP -->
+    <div class="skeleton">
+      <h1>Intelligence.</h1>
+      <h2>Not Just Software.</h2>
+    </div>
+    
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
+</html>
