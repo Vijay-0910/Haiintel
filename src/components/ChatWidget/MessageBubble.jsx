@@ -1,5 +1,6 @@
 import { lazy, Suspense, memo, useMemo, useState, useCallback, useRef, Fragment } from "react";
 import { useStreamingText } from "../../hooks/useStreamingText";
+import { extractCodeBlocks } from "../../utils/extractCodeBlocks";
 import MarkdownMessage from "./MarkdownMessage";
 import ThinkingBlock from "./ThinkingBlock";
 
@@ -140,6 +141,27 @@ const RegenerateButton = memo(({ onRegenerate, isDarkMode }) => {
 });
 RegenerateButton.displayName = "RegenerateButton";
 
+// Open Artifacts Button
+const OpenArtifactsButton = memo(({ onOpenArtifacts, isDarkMode }) => {
+  return (
+    <button
+      onClick={onOpenArtifacts}
+      className={`flex items-center gap-1 px-2 py-1 rounded text-xs transition-colors duration-150 ${
+        isDarkMode
+          ? "bg-haiintel-blue/10 text-haiintel-blue hover:bg-haiintel-blue/20"
+          : "bg-blue-50 text-blue-600 hover:bg-blue-100"
+      }`}
+      title="Open in Artifacts panel"
+    >
+      <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
+      </svg>
+      <span>Artifacts</span>
+    </button>
+  );
+});
+OpenArtifactsButton.displayName = "OpenArtifactsButton";
+
 // Retry Button (for failed messages)
 const RetryButton = memo(({ onRetry, isDarkMode }) => {
   return (
@@ -162,7 +184,7 @@ const RetryButton = memo(({ onRetry, isDarkMode }) => {
 RetryButton.displayName = "RetryButton";
 
 // Message Actions
-const MessageActions = memo(({ text, isUser, isDarkMode, onRegenerate, hasError, onRetry }) => (
+const MessageActions = memo(({ text, isUser, isDarkMode, onRegenerate, hasError, onRetry, onOpenArtifacts, hasCodeBlocks }) => (
   <div className={`flex items-center gap-1.5`}>
     {hasError ? (
       <RetryButton onRetry={onRetry} isDarkMode={isDarkMode} />
@@ -173,6 +195,7 @@ const MessageActions = memo(({ text, isUser, isDarkMode, onRegenerate, hasError,
           <>
             <SpeakButton text={text} isDarkMode={isDarkMode} />
             {onRegenerate && <RegenerateButton onRegenerate={onRegenerate} isDarkMode={isDarkMode} />}
+            {hasCodeBlocks && onOpenArtifacts && <OpenArtifactsButton onOpenArtifacts={onOpenArtifacts} isDarkMode={isDarkMode} />}
           </>
         )}
       </>
@@ -181,7 +204,7 @@ const MessageActions = memo(({ text, isUser, isDarkMode, onRegenerate, hasError,
 ));
 MessageActions.displayName = "MessageActions";
 
-const MessageBubble = memo(({ message, isStreaming = false, isDarkMode = true, onRegenerate, onRetry }) => {
+const MessageBubble = memo(({ message, isStreaming = false, isDarkMode = true, onRegenerate, onRetry, onOpenArtifacts }) => {
   const isUser = message.role === "user";
   const hasError = message.error === true;
   const { displayedText, isComplete } = useStreamingText(message.text, 80, isStreaming);
@@ -198,6 +221,12 @@ const MessageBubble = memo(({ message, isStreaming = false, isDarkMode = true, o
     () => message.images && message.images.length > 0,
     [message.images]
   );
+
+  const hasCodeBlocks = useMemo(() => {
+    if (!message.text || isUser) return false;
+    const codeBlocks = extractCodeBlocks(message.text);
+    return codeBlocks.length > 0;
+  }, [message.text, isUser]);
 
   // Format timestamp
   const formattedTime = useMemo(() => {
@@ -326,6 +355,8 @@ const MessageBubble = memo(({ message, isStreaming = false, isDarkMode = true, o
                 hasError={hasError}
                 onRegenerate={!isUser ? onRegenerate : null}
                 onRetry={hasError ? onRetry : null}
+                onOpenArtifacts={!isUser ? onOpenArtifacts : null}
+                hasCodeBlocks={hasCodeBlocks}
               />
             )}
           </div>

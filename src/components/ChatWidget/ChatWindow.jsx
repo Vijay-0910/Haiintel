@@ -3,8 +3,10 @@ import { motion, AnimatePresence } from "framer-motion";
 import ChatHeader from "./ChatHeader";
 import ChatMessages from "./ChatMessages";
 import ChatInput from "./ChatInput";
+import ArtifactsPanel from "./ArtifactsPanel";
 import { useChatSession } from "../../hooks/useChatSession";
 import { getResponse } from "../../data/mockResponses";
+import { extractCodeBlocks } from "../../utils/extractCodeBlocks";
 
 // Helper chip suggestions pool
 const HELPER_CHIPS_POOL = [
@@ -28,6 +30,8 @@ const ChatWindow = memo(({ onClose, isDarkMode = true }) => {
   const [streamingMessageId, setStreamingMessageId] = useState(null);
   const [suggestions, setSuggestions] = useState([]);
   const [helperChips, setHelperChips] = useState([]);
+  const [isArtifactsPanelOpen, setIsArtifactsPanelOpen] = useState(false);
+  const [currentArtifacts, setCurrentArtifacts] = useState([]);
   const typingTimeoutRef = useRef(null);
   const streamingTimeoutRef = useRef(null);
 
@@ -132,6 +136,18 @@ ${messageData.text ? `\n\nRegarding your message: "${messageData.text}"\n\nI'd l
     (suggestion) => handleSendMessage(suggestion),
     [handleSendMessage]
   );
+
+  const handleOpenArtifacts = useCallback((messageText) => {
+    const artifacts = extractCodeBlocks(messageText);
+    if (artifacts.length > 0) {
+      setCurrentArtifacts(artifacts);
+      setIsArtifactsPanelOpen(true);
+    }
+  }, []);
+
+  const handleCloseArtifacts = useCallback(() => {
+    setIsArtifactsPanelOpen(false);
+  }, []);
 
   const handleStopGeneration = useCallback(() => {
     if (streamingTimeoutRef.current) {
@@ -297,12 +313,19 @@ ${messageData.text ? `\n\nRegarding your message: "${messageData.text}"\n\nI'd l
         onSuggestionClick={handleSuggestionClick}
         onRegenerate={handleRegenerate}
         onRetry={handleRetry}
+        onOpenArtifacts={handleOpenArtifacts}
       />
       <ChatInput
         onSend={handleSendMessage}
         onStop={handleStopGeneration}
         disabled={isTyping || streamingMessageId !== null}
         isStreaming={streamingMessageId !== null}
+        isDarkMode={isDarkMode}
+      />
+      <ArtifactsPanel
+        artifacts={currentArtifacts}
+        isOpen={isArtifactsPanelOpen}
+        onClose={handleCloseArtifacts}
         isDarkMode={isDarkMode}
       />
     </motion.div>

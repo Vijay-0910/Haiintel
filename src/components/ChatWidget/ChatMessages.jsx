@@ -14,6 +14,7 @@ const ChatMessages = memo(
     onSuggestionClick,
     onRegenerate,
     onRetry,
+    onOpenArtifacts,
   }) => {
     const messagesEndRef = useRef(null);
     const containerRef = useRef(null);
@@ -101,9 +102,14 @@ const ChatMessages = memo(
             message.role === "assistant" ? () => onRegenerate(message.id) : null
           }
           onRetry={message.error ? () => onRetry(message.id) : null}
+          onOpenArtifacts={
+            message.role === "assistant" && onOpenArtifacts
+              ? () => onOpenArtifacts(message.text)
+              : null
+          }
         />
       ));
-    }, [messages, streamingMessageId, isDarkMode, onRegenerate, onRetry]);
+    }, [messages, streamingMessageId, isDarkMode, onRegenerate, onRetry, onOpenArtifacts]);
 
     return (
       <div
