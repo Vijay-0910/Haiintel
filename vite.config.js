@@ -112,16 +112,24 @@ export default defineConfig({
             return "syntax";
           }
 
-          // Markdown rendering (without syntax highlighting)
+          // Markdown rendering (core - without optional plugins)
           // Loads for any markdown content
           if (
             id.includes("react-markdown") ||
-            id.includes("rehype-") ||
-            id.includes("remark-") ||
-            id.includes("MarkdownMessage") ||
+            id.includes("OptimizedMarkdown") ||
             id.includes("LazyMarkdown")
           ) {
             return "markdown";
+          }
+
+          // Markdown plugins - separate chunks for lazy loading
+          // Only loaded when specific features are detected
+          if (id.includes("remark-gfm")) {
+            return "markdown-gfm";
+          }
+
+          if (id.includes("rehype-raw") || id.includes("rehype-")) {
+            return "markdown-rehype";
           }
 
           // Chat widget core

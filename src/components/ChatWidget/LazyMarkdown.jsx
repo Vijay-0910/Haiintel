@@ -1,8 +1,8 @@
 import { lazy, Suspense, memo } from "react";
 import { hasMarkdownSyntax, hasCodeBlocks } from "../../utils/detectMarkdown";
 
-// Lazy load markdown renderer (96.8 KB) - only when markdown detected
-const MarkdownRenderer = lazy(() => import("./MarkdownMessage"));
+// Lazy load optimized markdown renderer - only loads plugins it actually uses
+const MarkdownRenderer = lazy(() => import("./OptimizedMarkdown"));
 
 // Loading skeleton for markdown content
 const MarkdownSkeleton = memo(({ isDarkMode }) => (
