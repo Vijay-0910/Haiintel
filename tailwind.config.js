@@ -11,6 +11,9 @@ export default {
   content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
   theme: {
     extend: {
+      screens: {
+        xs: "375px", // Extra small devices (small phones)
+      },
       colors: {
         haiintel: {
           // Background colors (from hsl(220 40% 8%) and hsl(220 35% 12%))

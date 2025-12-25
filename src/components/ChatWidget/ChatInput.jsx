@@ -214,7 +214,7 @@ const ChatInput = memo(
 
         <form onSubmit={handleSubmit}>
           <div
-            className={`relative flex items-end gap-1.5 sm:gap-2 rounded-xl sm:rounded-2xl border transition-all duration-150 px-2 py-1.5 sm:px-3 sm:py-2 ${
+            className={`relative flex items-center gap-1.5 sm:gap-2 rounded-xl sm:rounded-2xl border transition-all duration-150 px-2 py-1.5 sm:px-3 sm:py-2 ${
               isDarkMode
                 ? `bg-haiintel-dark/80 ${
                     isFocused
@@ -244,7 +244,7 @@ const ChatInput = memo(
               type="button"
               onClick={handleImageClick}
               disabled={disabled}
-              className={`flex-shrink-0 p-1 sm:p-1.5 rounded-lg transition-all duration-150 ${
+              className={`flex items-center justify-center flex-shrink-0 p-1 sm:p-1.5 rounded-lg transition-all duration-150 ${
                 isDarkMode
                   ? "text-gray-500 hover:text-gray-300 hover:bg-haiintel-border/50"
                   : "text-gray-400 hover:text-gray-600 hover:bg-gray-100"
@@ -267,12 +267,12 @@ const ChatInput = memo(
               </svg>
             </button>
 
-            {/* Voice button */}
+            {/* Voice button - Always visible on all screen sizes */}
             <button
               type="button"
               onClick={handleVoiceInput}
               disabled={disabled}
-              className={`hidden min-[400px]:flex flex-shrink-0 p-1 sm:p-1.5 rounded-lg transition-all duration-150 ${
+              className={`flex items-center justify-center flex-shrink-0 p-1 sm:p-1.5 rounded-lg transition-all duration-150 ${
                 isListening
                   ? "text-red-500 bg-red-500/10 animate-pulse"
                   : isDarkMode
@@ -298,7 +298,7 @@ const ChatInput = memo(
             </button>
 
             {/* Text input */}
-            <div className="flex-1 min-w-0">
+            <div className="flex-1 min-w-0 flex items-center">
               <textarea
                 ref={textareaRef}
                 value={message}
@@ -325,7 +325,7 @@ const ChatInput = memo(
               <button
                 type="button"
                 onClick={onStop}
-                className="flex-shrink-0 p-1.5 sm:p-2 rounded-lg sm:rounded-xl transition-all duration-150 bg-red-500 text-white hover:bg-red-600 hover:scale-105 active:scale-95 shadow-sm"
+                className="flex items-center justify-center flex-shrink-0 p-1.5 sm:p-2 rounded-lg sm:rounded-xl transition-all duration-150 bg-red-500 text-white hover:bg-red-600 hover:scale-105 active:scale-95 shadow-sm"
                 aria-label="Stop generation"
                 title="Stop generation"
               >
@@ -343,7 +343,7 @@ const ChatInput = memo(
                 disabled={
                   (!message.trim() && uploadedImages.length === 0) || disabled
                 }
-                className={`flex-shrink-0 p-1.5 sm:p-2 rounded-lg sm:rounded-xl transition-all duration-150 ${
+                className={`flex items-center justify-center flex-shrink-0 p-1.5 sm:p-2 rounded-lg sm:rounded-xl transition-all duration-150 ${
                   (message.trim() || uploadedImages.length > 0) && !disabled
                     ? "bg-haiintel-blue text-white hover:bg-haiintel-blue/90 hover:scale-105 active:scale-95 shadow-sm"
                     : isDarkMode

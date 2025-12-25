@@ -68,7 +68,7 @@ export default defineConfig({
     // Enable modulePreload for faster loading
     modulePreload: {
       polyfill: true,
-      resolveDependencies: (filename, deps, { hostId, hostType }) => {
+      resolveDependencies: (filename, deps) => {
         // Preload all dependencies
         return deps;
       },
@@ -78,7 +78,10 @@ export default defineConfig({
       output: {
         manualChunks: (id) => {
           // Keep React and React-DOM together - critical for initial render
-          if (id.includes("node_modules/react") || id.includes("node_modules/react-dom")) {
+          if (
+            id.includes("node_modules/react") ||
+            id.includes("node_modules/react-dom")
+          ) {
             return "react-vendor";
           }
           // Framer Motion - used in hero section (critical)

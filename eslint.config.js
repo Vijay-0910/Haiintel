@@ -9,7 +9,10 @@ export default [
     files: ["**/*.{js,jsx}"],
     languageOptions: {
       ecmaVersion: 2020,
-      globals: globals.browser,
+      globals: {
+        ...globals.browser,
+        ...globals.node,
+      },
       parserOptions: {
         ecmaVersion: "latest",
         ecmaFeatures: { jsx: true },
@@ -32,6 +35,7 @@ export default [
         {
           varsIgnorePattern: "^[A-Z_]|^motion$",
           argsIgnorePattern: "^_|^node$|^index$|^Component$|^onRegenerate$",
+          caughtErrorsIgnorePattern: "^_",
         },
       ],
     },

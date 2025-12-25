@@ -25,15 +25,15 @@ const ChatButton = memo(({ onClick, isOpen, isDarkMode = true }) => {
       }}
       className={`
         fixed bottom-4 right-4 sm:bottom-6 sm:right-6
-        z-50 p-3 sm:p-4
+        z-[9999] p-3 sm:p-4
         rounded-full
         transition-all duration-300 ease-out
         hover:scale-110 active:scale-95
         focus:outline-none focus:ring-2 focus:ring-offset-2
         ${
           isDarkMode
-            ? "bg-transparent border-2 border-white hover:bg-white/10 focus:ring-white focus:ring-offset-haiintel-dark"
-            : "bg-black hover:bg-gray-900 focus:ring-black focus:ring-offset-white shadow-lg"
+            ? "bg-transparent border-2 border-white hover:bg-white/10 focus:ring-white focus:ring-offset-haiintel-dark shadow-2xl"
+            : "bg-black hover:bg-gray-900 focus:ring-black focus:ring-offset-white shadow-2xl"
         }
         ${isOpen ? "rotate-0" : ""}
       `}

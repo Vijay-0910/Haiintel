@@ -87,6 +87,29 @@ const ChatMessages = memo(
       }
     }, [messages.length, isTyping, scrollToBottom, isNearBottom]);
 
+    // Observe container size changes (handles async content like images, charts)
+    useEffect(() => {
+      const container = containerRef.current;
+      if (!container) return;
+
+      // Use ResizeObserver to detect content height changes
+      const resizeObserver = new ResizeObserver(() => {
+        // Only auto-scroll if user is near bottom or hasn't manually scrolled
+        if (!isUserScrollingRef.current || isNearBottom()) {
+          // Use RAF for smooth performance
+          requestAnimationFrame(() => {
+            scrollToBottom("smooth");
+          });
+        }
+      });
+
+      resizeObserver.observe(container);
+
+      return () => {
+        resizeObserver.disconnect();
+      };
+    }, [scrollToBottom, isNearBottom]);
+
     // Auto-scroll when suggestions appear (after AI response completes)
     useEffect(() => {
       if (suggestions.length > 0 && !streamingMessageId && !isTyping) {
