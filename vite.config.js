@@ -77,12 +77,14 @@ export default defineConfig({
     rollupOptions: {
       output: {
         manualChunks: (id) => {
-          // React core - deduplicate completely
-          if (id.includes("node_modules/react/") || id.includes("node_modules/react-dom/")) {
-            if (id.includes("node_modules/react/index")) return "react-vendor";
-            if (id.includes("node_modules/react-dom/index")) return "react-vendor";
-            if (id.includes("node_modules/react/jsx-runtime")) return "react-vendor";
-            if (id.includes("node_modules/react-dom/client")) return "react-vendor";
+          // React ecosystem - complete deduplication
+          if (
+            id.includes("node_modules/react/") ||
+            id.includes("node_modules/react-dom/") ||
+            id.includes("node_modules/scheduler/") ||
+            id.includes("node_modules/react-is/") ||
+            id.includes("node_modules/prop-types/")
+          ) {
             return "react-vendor";
           }
           // Framer Motion
@@ -90,8 +92,16 @@ export default defineConfig({
             return "framer-motion";
           }
           // Markdown & highlight - only in chat widget
-          if (id.includes("react-markdown") || id.includes("highlight.js") ||
-              id.includes("rehype-") || id.includes("remark-")) {
+          if (
+            id.includes("react-markdown") ||
+            id.includes("highlight.js") ||
+            id.includes("rehype-") ||
+            id.includes("remark-") ||
+            id.includes("unified") ||
+            id.includes("micromark") ||
+            id.includes("mdast-") ||
+            id.includes("hast-")
+          ) {
             return "chat-libs";
           }
           // Chat widget components
@@ -114,12 +124,23 @@ export default defineConfig({
       },
     },
   },
-  // Pre-bundle
+  // Pre-bundle and deduplicate
   optimizeDeps: {
-    include: ["react", "react-dom"],
+    include: [
+      "react",
+      "react-dom",
+      "react/jsx-runtime",
+      "scheduler",
+      "react-is",
+      "prop-types",
+    ],
     esbuildOptions: {
       // Optimize dependencies during dev
       target: "esnext",
     },
+  },
+  // Deduplicate React packages
+  resolve: {
+    dedupe: ["react", "react-dom", "scheduler"],
   },
 });

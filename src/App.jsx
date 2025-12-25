@@ -56,9 +56,38 @@ function App() {
     localStorage.setItem("haiintel-theme", isDarkMode ? "dark" : "light");
   }, [isDarkMode]);
 
-  // Load chat widget immediately on mount
+  // Load chat widget on user interaction or after delay
   useEffect(() => {
-    setShouldLoadChat(true);
+    let loaded = false;
+
+    const loadChatWidget = () => {
+      if (!loaded) {
+        loaded = true;
+        setShouldLoadChat(true);
+        // Cleanup listeners
+        window.removeEventListener("scroll", loadChatWidget);
+        window.removeEventListener("mousemove", loadChatWidget);
+        window.removeEventListener("touchstart", loadChatWidget);
+        window.removeEventListener("keydown", loadChatWidget);
+      }
+    };
+
+    // Load on user interaction
+    window.addEventListener("scroll", loadChatWidget, { passive: true });
+    window.addEventListener("mousemove", loadChatWidget, { passive: true });
+    window.addEventListener("touchstart", loadChatWidget, { passive: true });
+    window.addEventListener("keydown", loadChatWidget, { passive: true });
+
+    // Fallback: Load after 3 seconds if no interaction
+    const timeout = setTimeout(loadChatWidget, 3000);
+
+    return () => {
+      clearTimeout(timeout);
+      window.removeEventListener("scroll", loadChatWidget);
+      window.removeEventListener("mousemove", loadChatWidget);
+      window.removeEventListener("touchstart", loadChatWidget);
+      window.removeEventListener("keydown", loadChatWidget);
+    };
   }, []);
 
   const toggleTheme = useCallback(() => setIsDarkMode((p) => !p), []);
