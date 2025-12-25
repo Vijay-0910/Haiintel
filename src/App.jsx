@@ -43,7 +43,6 @@ LazySection.displayName = "LazySection";
 function App() {
   const [activeSection, setActiveSection] = useState("home");
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [ChatWidget, setChatWidget] = useState(null);
   const [isDarkMode, setIsDarkMode] = useState(() => {
     if (typeof window !== "undefined") {
       const saved = localStorage.getItem("haiintel-theme");
@@ -58,17 +57,6 @@ function App() {
     localStorage.setItem("haiintel-theme", isDarkMode ? "dark" : "light");
   }, [isDarkMode]);
 
-  // Don't load chat widget at all
-  // Removed to achieve perfect Lighthouse score
-  // Chat widget adds 179 KB - keeping page lean
-  useEffect(() => {
-    // Chat widget disabled for optimal performance
-    // Can be re-enabled by uncommenting the dynamic import
-    // const loadChat = async () => {
-    //   const { default: ChatWidgetComponent } = await import("./components/ChatWidget");
-    //   setChatWidget(() => ChatWidgetComponent);
-    // };
-  }, []);
 
   const toggleTheme = useCallback(() => setIsDarkMode((p) => !p), []);
   const toggleMobileMenu = useCallback(
@@ -136,8 +124,6 @@ function App() {
       <LazySection Component={CTASection} isDarkMode={isDarkMode} />
       <LazySection Component={Footer} isDarkMode={isDarkMode} />
 
-      {/* Chat widget - dynamically loaded only when needed */}
-      {ChatWidget && <ChatWidget isDarkMode={isDarkMode} />}
     </div>
   );
 }
