@@ -31,7 +31,7 @@ const BrandColumn = memo(({ isDarkMode }) => (
     </div>
     <p
       className={`mb-6 text-sm leading-relaxed ${
-        isDarkMode ? "text-gray-500" : "text-gray-600"
+        isDarkMode ? "text-gray-400" : "text-gray-600"
       }`}
     >
       AI-powered chat widget for modern businesses. Deliver exceptional customer
@@ -62,13 +62,13 @@ BrandColumn.displayName = "BrandColumn";
 // Link Column - Memoized
 const LinkColumn = memo(({ title, links, isDarkMode }) => (
   <div>
-    <h4
+    <h3
       className={`font-semibold mb-4 text-sm ${
         isDarkMode ? "text-haiintel-text" : "text-gray-900"
       }`}
     >
       {title}
-    </h4>
+    </h3>
     <ul className="space-y-3">
       {links.map((item) => (
         <li key={item}>
@@ -76,7 +76,7 @@ const LinkColumn = memo(({ title, links, isDarkMode }) => (
             href="#"
             className={`transition-colors duration-150 text-sm ${
               isDarkMode
-                ? "text-gray-500 hover:text-haiintel-cyan"
+                ? "text-gray-400 hover:text-haiintel-cyan"
                 : "text-gray-600 hover:text-haiintel-blue"
             }`}
           >
@@ -106,7 +106,7 @@ const BottomBar = memo(({ isDarkMode }) => (
           href="#"
           className={`transition-colors duration-150 ${
             isDarkMode
-              ? "text-gray-500 hover:text-haiintel-cyan"
+              ? "text-gray-400 hover:text-haiintel-cyan"
               : "text-gray-600 hover:text-haiintel-blue"
           }`}
         >
