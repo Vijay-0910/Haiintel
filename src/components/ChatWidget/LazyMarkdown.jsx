@@ -2,8 +2,8 @@ import { lazy, Suspense, memo } from "react";
 import { hasMarkdownSyntax, hasCodeBlocks, needsFullMarkdown } from "../../utils/detectMarkdown";
 
 // Lazy load renderers based on content complexity
-const SimplifiedMarkdown = lazy(() => import("./SimplifiedMarkdown")); // ~2 KB - for simple formatting
-const OptimizedMarkdown = lazy(() => import("./OptimizedMarkdown"));   // ~36 KB - for complex features
+const SimplifiedMarkdown = lazy(() => import("./SimplifiedMarkdown"));   // ~1 KB - for simple formatting
+const CustomMarkdown = lazy(() => import("./CustomMarkdown"));           // ~3 KB - ZERO dependencies, all features!
 
 // Loading skeleton for markdown content
 const MarkdownSkeleton = memo(({ isDarkMode }) => (
@@ -32,9 +32,10 @@ MarkdownSkeleton.displayName = "MarkdownSkeleton";
 
 /**
  * Smart Markdown Component - Three-tier strategy:
- * 1. Plain text: Direct render (0 KB overhead)
- * 2. Simple markdown: SimplifiedMarkdown (~2 KB) - bold, italic, links, lists, headings
- * 3. Complex markdown: OptimizedMarkdown (~36 KB) - tables, HTML, code blocks, etc.
+ * 1. Plain text: Direct render (0 KB)
+ * 2. Simple markdown: SimplifiedMarkdown (~1 KB) - bold, italic, links, lists, headings
+ * 3. Complex markdown: CustomMarkdown (~3 KB) - ZERO dependencies, ALL features!
+ *    Supports: tables, task lists, strikethrough, blockquotes, code blocks, images
  */
 const LazyMarkdown = memo(({ content, isDarkMode, isStreaming, onOpenArtifacts }) => {
   // Quick check: Is this plain text?
@@ -55,7 +56,7 @@ const LazyMarkdown = memo(({ content, isDarkMode, isStreaming, onOpenArtifacts }
     );
   }
 
-  // Simple markdown: Use lightweight renderer (no react-markdown dependency)
+  // Simple markdown: Use ultra-lightweight renderer (no dependencies)
   if (!needsComplex) {
     return (
       <Suspense fallback={<MarkdownSkeleton isDarkMode={isDarkMode} />}>
@@ -64,14 +65,12 @@ const LazyMarkdown = memo(({ content, isDarkMode, isStreaming, onOpenArtifacts }
     );
   }
 
-  // Complex markdown: Load full optimized renderer
+  // Complex markdown: Use our custom parser (ZERO external dependencies!)
   return (
     <Suspense fallback={<MarkdownSkeleton isDarkMode={isDarkMode} />}>
-      <OptimizedMarkdown
+      <CustomMarkdown
         content={content}
         isDarkMode={isDarkMode}
-        isStreaming={isStreaming}
-        onOpenArtifacts={onOpenArtifacts}
         hasCodeBlocks={hasCode}
       />
     </Suspense>

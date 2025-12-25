@@ -112,29 +112,16 @@ export default defineConfig({
             return "syntax";
           }
 
-          // Simplified markdown - ultra lightweight (no dependencies)
-          // For simple formatting without react-markdown
+          // Simplified markdown - ultra lightweight (~1 KB, no dependencies)
+          // For simple formatting: bold, italic, links, lists, headings
           if (id.includes("SimplifiedMarkdown")) {
             return "markdown-simple";
           }
 
-          // Markdown rendering (core - without optional plugins)
-          // Loads for complex markdown content
-          if (
-            id.includes("react-markdown") ||
-            id.includes("OptimizedMarkdown")
-          ) {
+          // Custom markdown - full-featured, ZERO dependencies (~3 KB)
+          // Supports: tables, task lists, strikethrough, blockquotes, code, images
+          if (id.includes("CustomMarkdown")) {
             return "markdown";
-          }
-
-          // Markdown plugins - separate chunks for lazy loading
-          // Only loaded when specific features are detected
-          if (id.includes("remark-gfm")) {
-            return "markdown-gfm";
-          }
-
-          if (id.includes("rehype-raw") || id.includes("rehype-")) {
-            return "markdown-rehype";
           }
 
           // Chat widget core
